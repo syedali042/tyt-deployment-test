@@ -3,14 +3,14 @@ import Head from 'next/head';
 import favicon from '../../../public/assets/images/brand/favicon.ico';
 
 const Seo = ({title}) => {
-  let i = `Sash - ${title}`;
+  let i = `Tip you teacher - ${title}`;
   return (
     <Head>
       <title>{i}</title>
       <link rel="icon" href={favicon.src} />
       <meta
         name="description"
-        content="Sash - Nextjs Admin &amp; Dashboard Template"
+        content="Tip you teacher - Nextjs Admin &amp; Dashboard Template"
       />
       <meta name="author" content="Spruko Technologies Private Limited" />
       <meta

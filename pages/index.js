@@ -42,19 +42,23 @@ export default function Home() {
         <div className="login-img">
           <div className="page">
             {/* <!-- CONTAINER OPEN --> */}
-            <div className="col-login mx-auto mt-7">
-              <div className="text-center">
-                <img
-                  src={'../../../assets/images/brand/logo-white.png'}
-                  className="header-brand-img"
-                  alt=""
-                />
-              </div>
-            </div>
+            <div className="col-login mx-auto mt-7"></div>
             <div className="container-login100">
               <div className="wrap-login100 p-6">
+                <div className="text-center">
+                  <img
+                    src={'../../../assets/images/brand/logo-dark.png'}
+                    className="header-brand-img"
+                    alt=""
+                    style={{width: '200px'}}
+                  />
+                </div>
                 <form className="login100-form validate-form">
-                  <span className="login100-form-title pb-5"> Login</span>
+                  <h1 className="text-center mt-5"> Login</h1>
+                  <div
+                    className="mx-auto mb-5"
+                    style={{width: '25px', borderBottom: '1px solid #555'}}
+                  ></div>
                   <div>
                     <Form.Group
                       className="text-start form-group"
