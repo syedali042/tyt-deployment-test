@@ -9,6 +9,7 @@ export default function Home() {
     email: 'adminnextjs@gmail.com',
     password: '1234567890',
   });
+  const [error, setError] = useState('');
   const {email, password} = data;
   const changeHandler = (e) => {
     setData({...data, [e.target.name]: e.target.value});
@@ -116,16 +117,6 @@ export default function Home() {
                       <Link href="#!">
                         <div className="social-login me-4 text-center">
                           <i className="fa fa-google"></i>
-                        </div>
-                      </Link>
-                      <Link href="#!">
-                        <div className="social-login me-4 text-center">
-                          <i className="fa fa-facebook"></i>
-                        </div>
-                      </Link>
-                      <Link href="#!">
-                        <div className="social-login text-center">
-                          <i className="fa fa-twitter"></i>
                         </div>
                       </Link>
                     </div>
