@@ -1,3 +1,4 @@
+'use client';
 import React, {Fragment} from 'react';
 import {Col, Row} from 'react-bootstrap';
 import Link from 'next/link';

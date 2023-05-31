@@ -1,6 +1,7 @@
+'use client';
 import React, {Fragment, useEffect, useState} from 'react';
 import Link from 'next/link';
-import {useRouter} from 'next/router';
+import {useRouter} from 'next/navigation';
 import {MENUITEMS} from './sidemenu';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
@@ -252,32 +253,24 @@ const Sidebar = () => {
               href={`/components/dashboard/dashboard/`}
             >
               <img
-                src={`${
-                  process.env.NODE_ENV === 'production' ? basePath : ''
-                }/assets/images/brand/logo-white.png`}
+                src={`/assets/images/brand/logo-white.png`}
                 className="header-brand-img desktop-logo"
                 alt="logo1"
                 style={{width: '200px'}}
               />
               <img
-                src={`${
-                  process.env.NODE_ENV === 'production' ? basePath : ''
-                }/assets/images/brand/icon-white.png`}
+                src={`/assets/images/brand/icon-white.png`}
                 className="header-brand-img toggle-logo"
                 alt="logo-2"
               />
               <img
-                src={`${
-                  process.env.NODE_ENV === 'production' ? basePath : ''
-                }/assets/images/brand/icon-dark.png`}
+                src={`/assets/images/brand/icon-dark.png`}
                 className="header-brand-img light-logo"
                 alt="logo-3"
                 style={{width: '200px'}}
               />
               <img
-                src={`${
-                  process.env.NODE_ENV === 'production' ? basePath : ''
-                }/assets/images/brand/logo-dark.png`}
+                src={`/assets/images/brand/logo-dark.png`}
                 className="header-brand-img light-logo1"
                 alt="logo-4"
                 style={{width: '200px'}}

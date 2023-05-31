@@ -23724,7 +23724,7 @@ ul.timeline>li:before {
 .header .dropdown-menu {
     box-shadow: 0 10px 40px 0 rgba(104, 113, 123, 0.2);
     border: 1px solid #e9edf4;
-    inset-block-start: 3.5rem !important;
+    inset-block-start: 1rem !important;
 }
 
 .header .dropdown-menu .badge {

@@ -4,12 +4,13 @@ const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
   swcMinify: true,
-  basePath: "",
-  assetPrefix: "",
+  basePath: '',
+  assetPrefix: '',
   images: {
     loader: 'akamai',
-    path: ''
-  }
+    path: '',
+  },
+  output: 'export',
 };
 
 module.exports = nextConfig;

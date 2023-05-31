@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Link from 'next/link';
-import {useRouter} from 'next/router';
+import {useRouter} from 'next/navigation';
 import {
   FormControl,
   Nav,
@@ -156,16 +156,12 @@ const Header = () => {
               href={`/components/dashboard/dashboard/`}
             >
               <img
-                src={`${
-                  process.env.NODE_ENV === 'production' ? basePath : ''
-                }/assets/images/brand/logo-white.png`}
+                src={`/assets/images/brand/logo-white.png`}
                 className="header-brand-img desktop-logo"
                 alt="logo"
               />
               <img
-                src={`${
-                  process.env.NODE_ENV === 'production' ? basePath : ''
-                }/assets/images/brand/logo-dark.png`}
+                src={`/assets/images/brand/logo-dark.png`}
                 className="header-brand-img light-logo1"
                 alt="logo"
               />
@@ -957,11 +953,7 @@ const Header = () => {
                         className="nav-link leading-none d-flex no-caret"
                       >
                         <img
-                          src={`${
-                            process.env.NODE_ENV === 'production'
-                              ? basePath
-                              : ''
-                          }/assets/images/users/21.jpg`}
+                          src={`/assets/images/users/21.jpg`}
                           alt="profile-user"
                           className="avatar  profile-user brround cover-image"
                         />
