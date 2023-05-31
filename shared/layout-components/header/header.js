@@ -272,11 +272,7 @@ const Header = ({localVaraiable}) => {
                         className="nav-link leading-none d-flex no-caret"
                       >
                         <img
-                          src={`${
-                            process.env.NODE_ENV === 'production'
-                              ? basePath
-                              : ''
-                          }/assets/images/users/21.jpg`}
+                          src={`/assets/images/users/21.jpg`}
                           alt="profile-user"
                           className="avatar  profile-user brround cover-image"
                         />
