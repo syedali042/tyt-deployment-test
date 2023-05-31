@@ -1,3 +1,4 @@
+'use client';
 import React, {useEffect} from 'react';
 import Footer from '../footer/footer';
 import {Provider} from 'react-redux';

@@ -1,3 +1,4 @@
+'use client';
 import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
 import {
@@ -16,7 +17,8 @@ import {MENUITEMS} from '../sidebar/sidemenu';
 import {connect} from 'react-redux';
 import {shopingData} from '../../data/data-ecommerce/datashoppingcart';
 import {AddToCart} from '../../redux/action';
-import {useRouter} from 'next/router';
+import {useRouter} from 'next/navigation';
+import {Stack} from 'immutable';
 
 //leftsidemenu
 const SideMenuIcon = () => {
@@ -179,7 +181,7 @@ const Header = ({localVaraiable}) => {
               aria-label="Hide Sidebar"
               className="app-sidebar__toggle"
               data-bs-toggle="sidebar"
-              href="#!"
+              href="javascript://"
               onClick={() => SideMenuIcon()}
             />
             <Link
@@ -284,34 +286,42 @@ const Header = ({localVaraiable}) => {
                           className="avatar  profile-user brround cover-image"
                         />
                       </Dropdown.Toggle>
-                      <Dropdown.Menu className="dropdown-menu-end dropdown-menu-arrow">
-                        <div className="drop-heading">
-                          <div className="text-center">
-                            <h5 className="text-dark mb-0 fs-14 fw-semibold">
-                              Syed Ali
-                            </h5>
-                            <small className="text-muted">User</small>
+                      <Row
+                        style={{
+                          position: 'absolute',
+                          right: '200px',
+                          top: '40px',
+                        }}
+                      >
+                        <Dropdown.Menu className="dropdown-menu-end dropdown-menu-arrow">
+                          <div className="drop-heading">
+                            <div className="text-center">
+                              <h5 className="text-dark mb-0 fs-14 fw-semibold">
+                                Syed Ali
+                              </h5>
+                              <small className="text-muted">User</small>
+                            </div>
                           </div>
-                        </div>
-                        <div className="dropdown-divider m-0"></div>
-                        <Link
-                          className="dropdown-item"
-                          href={`/components/pages/profile/`}
-                        >
-                          <i className="dropdown-icon fe fe-user"></i> Profile
-                        </Link>
-                        <Link
-                          className="dropdown-item"
-                          href={`/components/authentication/lockscreen/`}
-                        >
-                          <i className="dropdown-icon fe fe-lock"></i>{' '}
-                          Lockscreen
-                        </Link>
-                        <Link className="dropdown-item" href={`/`}>
-                          <i className="dropdown-icon fe fe-alert-circle"></i>{' '}
-                          Sign out
-                        </Link>
-                      </Dropdown.Menu>
+                          <div className="dropdown-divider m-0"></div>
+                          <Link
+                            className="dropdown-item"
+                            href={`/components/pages/profile/`}
+                          >
+                            <i className="dropdown-icon fe fe-user"></i> Profile
+                          </Link>
+                          <Link
+                            className="dropdown-item"
+                            href={`/components/authentication/lockscreen/`}
+                          >
+                            <i className="dropdown-icon fe fe-lock"></i>{' '}
+                            Lockscreen
+                          </Link>
+                          <Link className="dropdown-item" href={`/`}>
+                            <i className="dropdown-icon fe fe-alert-circle"></i>{' '}
+                            Sign out
+                          </Link>
+                        </Dropdown.Menu>
+                      </Row>
                     </Dropdown>
                   </div>
                 </Navbar.Collapse>

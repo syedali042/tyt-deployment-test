@@ -1,4 +1,5 @@
-import {useRouter} from 'next/router';
+'use client';
+import {useRouter} from 'next/navigation';
 import Link from 'next/link';
 import {Form, Button} from 'react-bootstrap';
 import {useState} from 'react';

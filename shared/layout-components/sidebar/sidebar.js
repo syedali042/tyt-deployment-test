@@ -1,6 +1,7 @@
+'use client';
 import React, {Fragment, useEffect, useState} from 'react';
 import Link from 'next/link';
-import {useRouter} from 'next/router';
+import {useRouter} from 'next/navigation';
 import {MENUITEMS} from './sidemenu';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
