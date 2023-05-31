@@ -1,26 +1,34 @@
-import React, { useState, useEffect } from 'react';
+'use client';
+import React, {useState, useEffect} from 'react';
 import Link from 'next/link';
 
 const BacktoTop = () => {
-  const [BacktoTop, setBacktopTop] = useState("");
+  const [BacktoTop, setBacktopTop] = useState('');
   useEffect(() => {
-    window.addEventListener("scroll", () => {
+    window.addEventListener('scroll', () => {
       if (window.scrollY > 100) {
-        setBacktopTop("d-block");
-      } else setBacktopTop("");
+        setBacktopTop('d-block');
+      } else setBacktopTop('');
     });
   }, []);
 
   const screenup = () => {
     window.scrollTo({
       top: 10,
-      behavior: "auto",
+      behavior: 'auto',
       //   smooth
     });
   };
   return (
     <div>
-      <Link href="#!" id="back-to-top" onClick={screenup} className={`${BacktoTop}`} ><i className="fa fa-angle-up"></i></Link>
+      <Link
+        href="#!"
+        id="back-to-top"
+        onClick={screenup}
+        className={`${BacktoTop}`}
+      >
+        <i className="fa fa-angle-up"></i>
+      </Link>
     </div>
   );
 };
@@ -30,4 +38,3 @@ BacktoTop.propTypes = {};
 BacktoTop.defaultProps = {};
 
 export default BacktoTop;
-

@@ -177,11 +177,10 @@ const Header = ({localVaraiable}) => {
       <div className="header sticky app-header header1">
         <div className="container-fluid main-container">
           <div className="d-flex">
-            <Link
+            <a
               aria-label="Hide Sidebar"
               className="app-sidebar__toggle"
               data-bs-toggle="sidebar"
-              href="javascript://"
               onClick={() => SideMenuIcon()}
             />
             <Link
