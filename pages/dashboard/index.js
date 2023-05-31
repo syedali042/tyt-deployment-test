@@ -20,11 +20,7 @@ const DashboardCom = () => {
       <Seo title="Dashboard" />
 
       <div>
-        <PageHeader
-          titles="Dashboard 01"
-          active="Dashboard 01"
-          items={['Home']}
-        />
+        <PageHeader titles="Dashboard" active="Dashboard" items={['Home']} />
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ export const MENUITEMS = [
     menutitle: 'MAIN',
     Items: [
       {
-        path: `/components/dashboard/dashboard`,
+        path: `/dashboard`,
         icon: 'fe fe-home',
         type: 'link',
         active: false,

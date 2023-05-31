@@ -9,9 +9,9 @@ const Footer = () => {
         <div className="container">
           <Row className="align-items-center flex-row-reverse">
             <Col md={12} sm={12} className="text-center">
-              Copyright © 2023 <Link href="#!">Tip Your Teacher</Link>. Designed
-              with <span className="fa fa-heart text-danger"></span> by{' '}
-              <Link href="#!"> Desol Int. </Link> All rights reserved.
+              Copyright © 2023 <Link href="#!">Tip Your Teacher</Link>.
+              Developed by <Link href="#!"> Desol Int. </Link> All rights
+              reserved.
             </Col>
           </Row>
         </div>

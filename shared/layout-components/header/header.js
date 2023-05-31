@@ -288,9 +288,9 @@ const Header = ({localVaraiable}) => {
                         <div className="drop-heading">
                           <div className="text-center">
                             <h5 className="text-dark mb-0 fs-14 fw-semibold">
-                              Percy Kewshun
+                              Syed Ali
                             </h5>
-                            <small className="text-muted">Senior Admin</small>
+                            <small className="text-muted">User</small>
                           </div>
                         </div>
                         <div className="dropdown-divider m-0"></div>
