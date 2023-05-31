@@ -188,16 +188,12 @@ const Header = ({localVaraiable}) => {
               href={`/components/dashboard/dashboard/`}
             >
               <img
-                src={`${
-                  process.env.NODE_ENV === 'production' ? basePath : ''
-                }/assets/images/brand/logo-white.png`}
+                src={`/assets/images/brand/logo-white.png`}
                 className="header-brand-img desktop-logo"
                 alt="logo"
               />
               <img
-                src={`${
-                  process.env.NODE_ENV === 'production' ? basePath : ''
-                }/assets/images/brand/logo-dark.png`}
+                src={`/assets/images/brand/logo-dark.png`}
                 className="header-brand-img light-logo1"
                 alt="logo"
               />
