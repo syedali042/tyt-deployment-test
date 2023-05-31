@@ -95,7 +95,7 @@ export default function Home() {
 
                     <div className="container-login100-form-btn">
                       <Button
-                        onClick={Login}
+                        onClick={() => {}}
                         className="login100-form-btn btn-primary"
                       >
                         Login
@@ -105,9 +105,7 @@ export default function Home() {
                     <div className="text-center pt-3">
                       <p className="text-dark mb-0">
                         Not a member?{' '}
-                        <Link href={`/components/authentication/register/`}>
-                          Sign UP
-                        </Link>
+                        <Link href={`/auth/get-started`}>Sign Up</Link>
                       </p>
                     </div>
                     <div className="text-center pt-3"></div>
