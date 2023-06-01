@@ -27,7 +27,7 @@ export default function SignUp() {
   const methods = useForm({
     resolver: yupResolver(SignUpSchema),
     defaultValues: {
-      username: '',
+      username: params?.get('username') || '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -41,10 +41,6 @@ export default function SignUp() {
     setValue,
     formState: {errors},
   } = methods;
-
-  useEffect(() => {
-    setValue('username', params?.username);
-  }, []);
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -117,6 +113,7 @@ export default function SignUp() {
                         {...register('username')}
                         type="text"
                         required
+                        disabled={params.get('username')}
                       />
                       <FormFieldError error={errors?.username?.message} />
                     </Form.Group>
