@@ -84,10 +84,10 @@ export default function GetStarted() {
                       </Button>
                     </Col>
                     <br />
-                    <Stack className="my-2">
-                      <FormFieldError error={errors?.username?.message} />
-                    </Stack>
                   </Row>
+                  <Stack className="field-error-container mx-auto">
+                    <FormFieldError error={errors?.username?.message} />
+                  </Stack>
                 </Stack>
               </FormProvider>
             </Stack>
