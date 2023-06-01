@@ -80,7 +80,9 @@ export default function SignUp() {
                       fontWeight: '500',
                       cursor: 'pointer',
                     }}
-                    className="social-login mx-1 me-4 text-center"
+                    className={`social-login mx-1 me-4 text-center ${
+                      isUsernameAndPassword ? 'bg-dark text-white' : ''
+                    }`}
                     onClick={() =>
                       setIsUserNamePassword(!isUsernameAndPassword)
                     }
