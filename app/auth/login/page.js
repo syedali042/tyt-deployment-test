@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import FormFieldError from '@/shared/components/FormFieldError';
 
-export default function Home() {
+export default function Login() {
   const LoginSchema = Yup.object().shape({
     usernameOrEmail: Yup.string()
       .min(6)
