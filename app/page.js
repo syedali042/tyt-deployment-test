@@ -1,132 +1,100 @@
 'use client';
+import './page.css';
 import {useRouter} from 'next/navigation';
-import Link from 'next/link';
-import {Form, Button} from 'react-bootstrap';
-import {useState} from 'react';
-import Seo from '@/shared/layout-components/seo/seo';
+import {Stack, Row, Container, Image, Button, Col, Form} from 'react-bootstrap';
+import {useForm, FormProvider} from 'react-hook-form';
+import * as Yup from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
+import FormFieldError from '@/shared/components/FormFieldError';
+export default function GetStarted() {
+  let router = useRouter();
 
-export default function Home() {
-  const [data, setData] = useState({
-    email: 'adminnextjs@gmail.com',
-    password: '1234567890',
+  const GetStartedSchema = Yup.object().shape({
+    username: Yup.string().min(6).max(40).required('User Name is required'),
   });
-  const [error, setError] = useState('');
-  const {email, password} = data;
-  const changeHandler = (e) => {
-    setData({...data, [e.target.name]: e.target.value});
-    setError('');
-  };
-  let navigate = useRouter();
-  const routeChange = () => {
-    let path = `/dashboard/`;
-    navigate.push(path);
-  };
 
-  const Login = () => {
+  const methods = useForm({
+    resolver: yupResolver(GetStartedSchema),
+    defaultValues: {
+      username: '',
+    },
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: {errors},
+  } = methods;
+
+  const onSubmit = (data) => {
     console.log(data);
-    if (
-      data.email == 'adminnextjs@gmail.com' &&
-      data.password == '1234567890'
-    ) {
-      routeChange();
-    } else {
-      setError('The Auction details did not Match');
-      setData({
-        email: 'adminnextjs@gmail.com',
-        password: '1234567890',
-      });
-    }
   };
   return (
     <>
-      <div>
-        <Seo title="Login" />
-        <div className="login-img">
-          <div className="page">
-            {/* <!-- CONTAINER OPEN --> */}
-            <div className="col-login mx-auto mt-7"></div>
-            <div className="container-login100">
-              <div className="wrap-login100 p-6">
-                <div className="text-center">
-                  <img
-                    src={'../../../assets/images/brand/logo-dark.png'}
-                    className="header-brand-img"
-                    alt=""
-                    style={{width: '200px'}}
-                  />
-                </div>
-                <form className="login100-form validate-form">
-                  <h1 className="text-center mt-5"> Login</h1>
-                  <div
-                    className="mx-auto mb-5"
-                    style={{width: '25px', borderBottom: '1px solid #555'}}
-                  ></div>
-                  <div>
-                    <Form.Group
-                      className="text-start form-group"
-                      controlId="formEmail"
+      <Stack className="login-img">
+        <Stack className="page">
+          {/* <!-- CONTAINER OPEN --> */}
+          <Row className="col-login mx-auto mt-7"></Row>
+          <Container className="container">
+            <Stack className="wrap bg-white p-6">
+              <Stack className="d-flex justify-content-center">
+                <Image
+                  src={'/assets/images/brand/logo-dark.png'}
+                  style={{width: '200px'}}
+                />
+              </Stack>
+              <FormProvider methods={methods}>
+                <h1 className="text-center mt-5">
+                  {' '}
+                  Set Up Account & Start Getting Your Tips
+                </h1>
+                <Row
+                  className="mx-auto mb-5"
+                  style={{width: '30vh', borderBottom: '1px solid #555'}}
+                ></Row>
+                <Stack className="custom-input">
+                  <Row className="get-started-input-row justify-content-center mx-auto">
+                    <Col
+                      className="default-input-url"
+                      style={{transform: 'translateY(12%)'}}
                     >
-                      <Form.Label>Email</Form.Label>
-                      <Form.Control
-                        className="form-control"
-                        placeholder="Enter your email"
-                        name="email"
-                        type="text"
-                        value={email}
-                        onChange={changeHandler}
-                        required
-                      />
-                    </Form.Group>
-                    <Form.Group
-                      className="text-start form-group"
-                      controlId="formpassword"
+                      <h1 className="defualt-input-url-text">
+                        tipyourteacher.co
+                      </h1>
+                      <h1 className="defualt-input-url-slash">/</h1>
+                    </Col>
+                    <Col
+                      className="get-started-default-input-container"
+                      style={{transform: 'translateY(-5%) translateX(-14%)'}}
                     >
-                      <Form.Label>Password</Form.Label>
-                      <Form.Control
-                        className="form-control"
-                        placeholder="Enter your password"
-                        name="password"
-                        type="password"
-                        value={password}
-                        onChange={changeHandler}
-                        required
+                      <input
+                        name={'username'}
+                        {...register('username')}
+                        placeholder="yourname"
+                        className="get-started-default-input"
                       />
-                    </Form.Group>
-
-                    <div className="container-login100-form-btn">
+                    </Col>
+                    <Col className="get-started-default-input-button-container">
                       <Button
-                        onClick={() => {}}
-                        className="login100-form-btn btn-primary"
+                        type="submit"
+                        className="get-started-default-input-button btn-primary"
+                        onClick={handleSubmit(onSubmit)}
                       >
-                        Login
+                        Get started
                       </Button>
-                    </div>
-
-                    <div className="text-center pt-3">
-                      <p className="text-dark mb-0">
-                        Not a member?{' '}
-                        <Link href={`/auth/get-started`}>Sign Up</Link>
-                      </p>
-                    </div>
-                    <div className="text-center pt-3"></div>
-                    <label className="login-social-icon">
-                      <span>Login with Social</span>
-                    </label>
-                    <div className="d-flex justify-content-center">
-                      <Link href="#!">
-                        <div className="social-login me-4 text-center">
-                          <i className="fa fa-google"></i>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-            {/* // <!-- CONTAINER CLOSED --> */}
-          </div>
-        </div>
-      </div>
+                    </Col>
+                    <br />
+                    <Stack className="my-2">
+                      <FormFieldError error={errors?.username?.message} />
+                    </Stack>
+                  </Row>
+                </Stack>
+              </FormProvider>
+            </Stack>
+          </Container>
+          {/* // <!-- CONTAINER CLOSED --> */}
+        </Stack>
+      </Stack>
     </>
   );
 }
