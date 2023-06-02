@@ -74,6 +74,7 @@ export default function SignUp() {
       setIsUsernameVerified(false);
     } else {
       setIsUsernameVerified(true);
+      setError('username', {message: ''});
     }
   }, [values]);
 
