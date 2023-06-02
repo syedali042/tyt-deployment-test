@@ -169,7 +169,9 @@ export default function SignUp() {
                       <Button
                         style={{
                           width: '30%',
-                          cursor: ``,
+                          cursor: `${
+                            isUsernameVerified ? 'not-allowed' : 'pointer'
+                          }`,
                         }}
                         className="btn btn-sm"
                         disabled={isUsernameVerified}
@@ -198,7 +200,9 @@ export default function SignUp() {
                         fontWeight: '500',
                         cursor: 'pointer',
                       }}
-                      className={`social-login text-center `}
+                      className={`social-login text-center ${
+                        isUsernameAndPassword ? 'bg-dark text-white' : ''
+                      }`}
                       onClick={() =>
                         setIsUserNamePassword(!isUsernameAndPassword)
                       }
@@ -276,7 +280,9 @@ export default function SignUp() {
                         className="login100-form-btn btn-primary"
                         disabled={!isUsernameVerified}
                         style={{
-                          cursor: ``,
+                          cursor: `${
+                            !isUsernameVerified ? 'not-allowed' : 'pointer'
+                          }`,
                         }}
                       >
                         Sign Up
