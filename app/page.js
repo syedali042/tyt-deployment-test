@@ -6,8 +6,16 @@ import {useForm, FormProvider} from 'react-hook-form';
 import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import FormFieldError from '@/shared/components/FormFieldError';
+import {
+  checkUsernameAvailability,
+  getCurrentUser,
+} from '@/shared/redux/slices/user';
+import {useDispatch, useSelector} from 'react-redux';
+
 export default function GetStarted() {
   let router = useRouter();
+  const dispatch = useDispatch();
+  const currentUser = useSelector(getCurrentUser);
 
   const GetStartedSchema = Yup.object().shape({
     username: Yup.string().min(6).max(40).required('User Name is required'),
@@ -23,11 +31,18 @@ export default function GetStarted() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: {errors},
   } = methods;
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const {username} = data;
+      await dispatch(checkUsernameAvailability({username}));
+      router.push('/auth/signup');
+    } catch (error) {
+      setError('username', {message: 'Username already taken'});
+    }
   };
   return (
     <>
