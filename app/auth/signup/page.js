@@ -6,18 +6,43 @@ import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import FormFieldError from '@/shared/components/FormFieldError';
 import {useEffect, useState} from 'react';
 import {useSearchParams} from 'next/navigation';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  checkUsernameAvailability,
+  getCurrentUser,
+} from '@/shared/redux/slices/user';
+import {auth as firebaseAuth} from '@/shared/firebase';
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth';
 
 export default function SignUp() {
-  const params = useSearchParams();
+  const dispatch = useDispatch();
+  const currentUser = useSelector(getCurrentUser);
   const [isUsernameAndPassword, setIsUserNamePassword] = useState(false);
+  const [isUsernameVerified, setIsUsernameVerified] = useState(false);
   const SignUpSchema = Yup.object().shape({
     username: Yup.string().min(6).max(40).required('Username is required'),
     email: Yup.string().email().required('Email is required'),
     password: Yup.string()
       .required('Enter your password')
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-        'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+        /[a-z]+/,
+        'Password should have lowercases, uppercases, numbers & symbols'
+      )
+      .matches(
+        /[A-Z]+/,
+        'Password should have lowercases, uppercases, numbers & symbols'
+      )
+      .matches(
+        /[@$!%*#?&]+/,
+        'Password should have lowercases, uppercases, numbers & symbols'
+      )
+      .matches(
+        /\d+/,
+        'Password should have lowercases, uppercases, numbers & symbols'
       ),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], "Passwords don't match")
@@ -27,7 +52,7 @@ export default function SignUp() {
   const methods = useForm({
     resolver: yupResolver(SignUpSchema),
     defaultValues: {
-      username: params?.get('username') || '',
+      username: currentUser?.username,
       email: '',
       password: '',
       confirmPassword: '',
@@ -38,13 +63,58 @@ export default function SignUp() {
     register,
     handleSubmit,
     watch,
-    setValue,
+    setError,
     formState: {errors},
   } = methods;
 
+  const values = watch();
+
+  useEffect(() => {
+    if (currentUser?.username !== values?.username) {
+      setIsUsernameVerified(false);
+    } else {
+      setIsUsernameVerified(true);
+    }
+  }, [values]);
+
   const onSubmit = async (data) => {
-    console.log(data);
+    const {username, email, password} = data;
+    await createUserWithEmailAndPassword(firebaseAuth, email, password)
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((error) => {
+        setError('email', {message: 'Email Already Taken'});
+      });
   };
+
+  const verifyUsernameAvailability = async () => {
+    try {
+      const {username} = values;
+      await dispatch(checkUsernameAvailability({username}));
+      setIsUsernameVerified(true);
+    } catch (error) {
+      setError('username', {message: 'Username already taken'});
+    }
+  };
+
+  const signUpWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({
+      display: 'popup',
+    });
+    signInWithPopup(firebaseAuth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <Stack className="login-img">
@@ -72,42 +142,21 @@ export default function SignUp() {
                   className="mx-auto mb-5"
                   style={{width: '4vh', borderBottom: '1px solid #555'}}
                 ></Row>
-                <Stack className="d-flex justify-content-center">
-                  <Stack
-                    style={{
-                      width: '20vh',
-                      fontSize: '13px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                    }}
-                    className={`social-login mx-1 me-4 text-center ${
-                      isUsernameAndPassword ? 'bg-dark text-white' : ''
-                    }`}
-                    onClick={() =>
-                      setIsUserNamePassword(!isUsernameAndPassword)
-                    }
+                <Stack>
+                  <Form.Group
+                    className="text-start form-group"
+                    controlId="formEmail"
                   >
-                    Username/Password
-                  </Stack>
-                  <Stack
-                    style={{
-                      width: '20vh',
-                      fontSize: '13px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                    }}
-                    className="social-login mx-1 me-4 text-center"
-                  >
-                    Google
-                  </Stack>
-                </Stack>
-                {isUsernameAndPassword && (
-                  <Stack>
-                    <Form.Group
-                      className="text-start form-group"
-                      controlId="formEmail"
-                    >
-                      <Form.Label>Username</Form.Label>
+                    <Stack className={`d-flex align-items-center`}>
+                      <p
+                        style={{
+                          transform: 'translateY(35%)',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        tipyourteacher.co/
+                      </p>
+                      &nbsp;
                       <Form.Control
                         className="form-control"
                         placeholder="Enter your username"
@@ -115,10 +164,68 @@ export default function SignUp() {
                         {...register('username')}
                         type="text"
                         required
-                        disabled={params.get('username')}
                       />
-                      <FormFieldError error={errors?.username?.message} />
-                    </Form.Group>
+                      &nbsp;
+                      <Button
+                        style={{
+                          width: '30%',
+                          cursor: `${
+                            isUsernameVerified ? 'not-allowed' : 'pointer'
+                          }`,
+                        }}
+                        className="btn btn-sm"
+                        disabled={isUsernameVerified}
+                        onClick={() => verifyUsernameAvailability()}
+                      >
+                        Verify
+                      </Button>
+                    </Stack>
+                    <FormFieldError error={errors?.username?.message} />
+                    {isUsernameVerified && (
+                      <Stack
+                        className="text-success px-1"
+                        style={{fontSize: '0.8rem'}}
+                      >
+                        Username is available
+                      </Stack>
+                    )}
+                  </Form.Group>
+                </Stack>
+                {!isUsernameAndPassword && (
+                  <Stack className="d-flex justify-content-between">
+                    <Stack
+                      style={{
+                        width: '40%',
+                        fontSize: '16px',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                      }}
+                      className={`social-login text-center ${
+                        isUsernameAndPassword ? 'bg-dark text-white' : ''
+                      }`}
+                      onClick={() =>
+                        setIsUserNamePassword(!isUsernameAndPassword)
+                      }
+                    >
+                      Email/Password
+                    </Stack>
+                    <Stack
+                      style={{
+                        width: '40%',
+                        fontSize: '16px',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                      }}
+                      className="social-login text-center"
+                      onClick={() => signUpWithGoogle()}
+                    >
+                      Google
+                    </Stack>
+                  </Stack>
+                )}
+                {isUsernameAndPassword && (
+                  <Stack>
+                    <Row style={{border: '1px solid #eee'}}></Row>
                     <Form.Group
                       className="text-start form-group"
                       controlId="formEmail"
@@ -171,11 +278,26 @@ export default function SignUp() {
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
                         className="login100-form-btn btn-primary"
+                        disabled={!isUsernameVerified}
+                        style={{
+                          cursor: `${
+                            !isUsernameVerified ? 'not-allowed' : 'pointer'
+                          }`,
+                        }}
                       >
                         Sign Up
                       </Button>
                     </Stack>
                     <Row className="text-center pt-3"></Row>
+                    <center>
+                      <a
+                        href="#"
+                        className="cursor-pointer"
+                        onClick={() => setIsUserNamePassword(false)}
+                      >
+                        <u>Change Method</u>
+                      </a>
+                    </center>
                   </Stack>
                 )}
               </FormProvider>
