@@ -20,16 +20,11 @@ const Dashboard = () => {
           className={'bg-white p-5 mx-auto w-50'}
           style={{borderRadius: '10px'}}
         >
-          <h3>
-            Hi,{' '}
-            {/* <b>
-              <u>@{currentUser?.username},</u>
-            </b> */}
-          </h3>
+          <h3>Hi, </h3>
           <h3 className={'text-justify'}>
-            We can’t wait to launch our services and we show you all the great
-            things we’ve been working on. You'll get an email from us soon, when
-            we will go live.
+            We can&apos;t wait to launch our services and we show you all the
+            great things we&apos;ve been working on. You&apos;ll get an email
+            from us soon, when we will go live.
           </h3>
         </Stack>
       </Stack>
