@@ -1,5 +1,6 @@
 'use client';
 import {Form, Button, Stack, Row, Container, Col, Image} from 'react-bootstrap';
+import {useRouter} from 'next/navigation';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
@@ -10,6 +11,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   checkUsernameAvailability,
   getCurrentUser,
+  createUser,
 } from '@/shared/redux/slices/user';
 import {auth as firebaseAuth} from '@/shared/firebase';
 import {
@@ -19,6 +21,7 @@ import {
 } from 'firebase/auth';
 
 export default function SignUp() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
   const [isUsernameAndPassword, setIsUserNamePassword] = useState(false);
@@ -74,15 +77,28 @@ export default function SignUp() {
       setIsUsernameVerified(false);
     } else {
       setIsUsernameVerified(true);
-      setError('username', {message: ''});
+      // setError('username', {message: ''});
     }
   }, [values]);
 
   const onSubmit = async (data) => {
     const {username, email, password} = data;
     await createUserWithEmailAndPassword(firebaseAuth, email, password)
-      .then((user) => {
+      .then(async (user) => {
         console.log(user);
+        const {displayName, photoURL, uid, email} = user.user;
+        const username = values?.username;
+        const createUserObj = {
+          firebaseId: uid,
+          email,
+          username,
+          photoURL,
+          displayName,
+          loginType: 'email',
+        };
+
+        await dispatch(createUser(createUserObj));
+        router.push('/dashboard');
       })
       .catch((error) => {
         setError('email', {message: 'Email Already Taken'});
@@ -105,11 +121,22 @@ export default function SignUp() {
       display: 'popup',
     });
     signInWithPopup(firebaseAuth, provider)
-      .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
+      .then(async (result) => {
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
         const user = result.user;
-        console.log(user);
+        const {displayName, photoURL, uid, email} = user;
+        const username = values?.username;
+        const createUserObj = {
+          firebaseId: uid,
+          email,
+          username,
+          photoURL,
+          displayName,
+          loginType: 'google',
+        };
+        await dispatch(createUser(createUserObj));
+        router.push('/dashboard');
       })
       .catch((error) => {
         console.log(error);

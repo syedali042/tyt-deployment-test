@@ -1,11 +1,14 @@
 'use client';
 import React from 'react';
 import {Stack} from 'react-bootstrap';
+import {useSelector} from 'react-redux';
+import {getCurrentUser} from '@/shared/redux/slices/user';
 // For Later Use
 // import PageHeader from '../../shared/layout-components/pageheader/pageHeader';
 // import Contentlayout from '@/shared/layout-components/layout/content-layout';
 
 const Dashboard = () => {
+  const currentUser = useSelector(getCurrentUser);
   return (
     // For Later Use
     // <Contentlayout>
@@ -18,10 +21,10 @@ const Dashboard = () => {
           style={{borderRadius: '10px'}}
         >
           <h3>
-            Hi{' '}
-            <b>
-              <u>Syed,</u>
-            </b>
+            Hi,{' '}
+            {/* <b>
+              <u>@{currentUser?.username},</u>
+            </b> */}
           </h3>
           <h3 className={'text-justify'}>
             We can’t wait to launch our services and we show you all the great

@@ -10,8 +10,12 @@ const initialState = {
   error: null,
   currentUser: {
     id: '',
+    firebaseId: '',
     username: '',
     email: '',
+    photoURL: '',
+    displayName: '',
+    loginType: '',
   },
   token: '',
 };
@@ -78,6 +82,21 @@ export const checkUsernameAvailability =
       throw error;
     }
   };
+
+export const createUser = (user) => async (dispatch) => {
+  dispatch(actions.startLoading());
+  try {
+    const response = await axios.post('/users/create-user', user);
+
+    dispatch(actions.setCurrentUser(response.data.body));
+
+    dispatch(actions.stopLoading());
+  } catch (error) {
+    dispatch(actions.stopLoading());
+    dispatch(actions.hasError(error));
+    throw error;
+  }
+};
 
 // Selectors
 export const getUserToken = (state) => state.user.token;
