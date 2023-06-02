@@ -128,7 +128,7 @@ export default function SignUp() {
                 <Image
                   src={'/assets/images/brand/logo-dark.png'}
                   className="header-brand-img"
-                  alt=""
+                  alt="logo-dark"
                   style={{width: '30vh'}}
                 />
               </Col>
@@ -196,7 +196,7 @@ export default function SignUp() {
                   <Stack className="d-flex justify-content-between">
                     <Stack
                       style={{
-                        width: '40%',
+                        width: '45%',
                         fontSize: '16px',
                         fontWeight: '500',
                         cursor: 'pointer',
@@ -212,7 +212,7 @@ export default function SignUp() {
                     </Stack>
                     <Stack
                       style={{
-                        width: '40%',
+                        width: '45%',
                         fontSize: '16px',
                         fontWeight: '500',
                         cursor: 'pointer',
@@ -220,7 +220,12 @@ export default function SignUp() {
                       className="social-login text-center"
                       onClick={() => signUpWithGoogle()}
                     >
-                      Google
+                      <Image
+                        style={{
+                          transform: 'translateY(-8%)',
+                        }}
+                        src="/assets/images/brand/google.svg"
+                      />
                     </Stack>
                   </Stack>
                 )}
