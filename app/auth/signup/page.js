@@ -77,7 +77,7 @@ export default function SignUp() {
       setIsUsernameVerified(false);
     } else {
       setIsUsernameVerified(true);
-      setError('username', {message: ''}); // Ali: this causing error
+      // setError('username', null); // Ali: this causing error
     }
   }, [values]);
 
@@ -101,6 +101,7 @@ export default function SignUp() {
         router.push('/dashboard');
       })
       .catch((error) => {
+        console.log(error);
         setError('email', {message: 'Email Already Taken'});
       });
   };
@@ -108,8 +109,9 @@ export default function SignUp() {
   const verifyUsernameAvailability = async () => {
     try {
       const {username} = values;
-      await dispatch(checkUsernameAvailability({username}));
-      setIsUsernameVerified(true);
+      await dispatch(checkUsernameAvailability({username, type: 'username'}));
+      if (currentUser.username) setIsUsernameVerified(true);
+      else setError('username', {message: 'Username already taken'});
     } catch (error) {
       setError('username', {message: 'Username already taken'});
     }
