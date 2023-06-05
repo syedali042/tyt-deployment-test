@@ -38,8 +38,9 @@ export default function GetStarted() {
   const onSubmit = async (data) => {
     try {
       const {username} = data;
-      await dispatch(checkUsernameAvailability({username}));
-      router.push('/auth/signup');
+      await dispatch(checkUsernameAvailability({username, type: 'username'}));
+      if (currentUser.username !== undefined) router.push('/auth/signup');
+      else setError('username', {message: 'Username already taken'});
     } catch (error) {
       setError('username', {message: 'Username already taken'});
     }
@@ -47,6 +48,25 @@ export default function GetStarted() {
   return (
     <>
       <Stack className="login-img">
+        <Stack
+          className="position-absolute p-5"
+          style={{right: 10, zIndex: 1000, cursor: 'pointer'}}
+        >
+          <Stack
+            className="d-flex align-items-center font-weight-bold text-white"
+            style={{fontSize: '1.5rem'}}
+            onClick={() => router.push('/auth/login')}
+          >
+            <i
+              className="fa fa-sign-in"
+              style={{transform: 'translateY(10%)'}}
+            ></i>
+            &nbsp;
+            <a className="pull-right" style={{textDecoration: 'underline'}}>
+              Login
+            </a>
+          </Stack>
+        </Stack>
         <Stack className="page">
           {/* <!-- CONTAINER OPEN --> */}
           <Row className="col-login mx-auto mt-7"></Row>
