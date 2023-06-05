@@ -5,8 +5,27 @@ import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import FormFieldError from '@/shared/components/FormFieldError';
-
+import {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  checkUsernameAvailability,
+  getCurrentUser,
+  signInUser,
+} from '@/shared/redux/slices/user';
+import {useEffect} from 'react';
+import {auth as firebaseAuth} from '@/shared/firebase';
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth';
+import {useRouter} from 'next/navigation';
 export default function Login() {
+  const router = useRouter();
+  const [user, setUser] = useState(false);
+  const [emailOrUsernameToVerify, setUsernameOrEmailToVerify] = useState('');
+  const dispatch = useDispatch();
+  const currentUser = useSelector(getCurrentUser);
   const LoginSchema = Yup.object().shape({
     usernameOrEmail: Yup.string()
       .min(6)
@@ -27,12 +46,60 @@ export default function Login() {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: {errors},
   } = methods;
+  const values = watch();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    const {usernameOrEmail, password} = data;
+    await signInWithEmailAndPassword(firebaseAuth, usernameOrEmail, password)
+      .then(async (user) => {
+        await dispatch(signInUser(user.user));
+        router.push('/dashboard');
+      })
+      .catch((error) => {
+        setError('usernameOrEmail', {message: 'Credentials Not Matched'});
+        setError('password', {message: 'Credentials Not Matched'});
+      });
   };
+
+  const checkIfUserExists = async () => {
+    try {
+      const {usernameOrEmail} = values;
+      setUsernameOrEmailToVerify(usernameOrEmail);
+      await dispatch(
+        checkUsernameAvailability({email: usernameOrEmail, type: 'email'})
+      );
+      setUser(true);
+    } catch (error) {
+      setUser(true);
+      setError('usernameOrEmail', null);
+    }
+  };
+
+  useEffect(() => {
+    if (values.usernameOrEmail !== emailOrUsernameToVerify) {
+      setUser(false);
+    }
+  }, [values.usernameOrEmail]);
+
+  const signUpWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({
+      display: 'popup',
+    });
+    signInWithPopup(firebaseAuth, provider)
+      .then(async (result) => {
+        const user = result.user;
+        await dispatch(signInUser(user));
+        router.push('/dashboard');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <Stack className="login-img">
@@ -75,36 +142,42 @@ export default function Login() {
                     />
                     <FormFieldError error={errors?.usernameOrEmail?.message} />
                   </Form.Group>
-                  <Form.Group
-                    className="text-start form-group"
-                    controlId="formpassword"
-                  >
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                      className="form-control"
-                      placeholder="Enter your password"
-                      name="password"
-                      {...register('password')}
-                      type="password"
-                      required
-                    />
-                    <FormFieldError error={errors?.password?.message} />
-                  </Form.Group>
-
+                  {user && (
+                    <Form.Group
+                      className="text-start form-group"
+                      controlId="formpassword"
+                    >
+                      <Form.Label>Password</Form.Label>
+                      <Form.Control
+                        className="form-control"
+                        placeholder="Enter your password"
+                        name="password"
+                        {...register('password')}
+                        type="password"
+                        required
+                      />
+                      <FormFieldError error={errors?.password?.message} />
+                    </Form.Group>
+                  )}
                   <Stack className="container-login100-form-btn">
                     <Button
-                      onClick={handleSubmit(onSubmit)}
+                      onClick={() => {
+                        if (user) {
+                          onSubmit(values);
+                        } else {
+                          checkIfUserExists();
+                        }
+                      }}
                       type="submit"
                       className="login100-form-btn btn-primary"
                     >
-                      Login
+                      {user ? 'Login' : 'Next'}
                     </Button>
                   </Stack>
 
                   <Stack className="text-center pt-3">
                     <p className="text-dark mb-0">
-                      Not a member?{' '}
-                      <Link href={`/auth/get-started`}>Sign Up</Link>
+                      Not a member? <Link href={`/auth/signup`}>Sign Up</Link>
                     </p>
                   </Stack>
                   <Row className="text-center pt-3"></Row>
@@ -112,11 +185,12 @@ export default function Login() {
                     <span>Login with Social</span>
                   </label>
                   <Stack className="d-flex justify-content-center">
-                    <Link href="#!">
-                      <Stack className="social-login me-4 text-center">
-                        <i className="fa fa-google"></i>
-                      </Stack>
-                    </Link>
+                    <Stack
+                      onClick={() => signUpWithGoogle()}
+                      className="social-login me-4 text-center"
+                    >
+                      <i className="fa fa-google"></i>
+                    </Stack>
                   </Stack>
                 </Stack>
               </FormProvider>

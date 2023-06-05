@@ -62,13 +62,15 @@ export default slice.reducer;
 const actions = slice.actions;
 
 export const checkUsernameAvailability =
-  ({username}) =>
+  ({username, email, type}) =>
   async (dispatch) => {
     dispatch(actions.startLoading());
     try {
+      const value = username || email;
+
       const response = await axios.post('/users/check-availability', {
-        value: username,
-        type: 'username',
+        value,
+        type,
       });
 
       if (response.data.statusCode === 200)
@@ -86,11 +88,30 @@ export const checkUsernameAvailability =
 export const createUser = (user) => async (dispatch) => {
   dispatch(actions.startLoading());
   try {
-    const response = await axios.post('/users/create-user', user);
-
+    const response = await axios.post('/users', user);
     dispatch(actions.setCurrentUser(response.data.body));
-
     dispatch(actions.stopLoading());
+  } catch (error) {
+    console.log(error);
+    dispatch(actions.stopLoading());
+    dispatch(actions.hasError(error));
+    throw error;
+  }
+};
+
+export const signInUser = (user) => async (dispatch) => {
+  dispatch(actions.startLoading());
+  try {
+    const response = await axios.post(
+      `/users/login`,
+      {},
+      {
+        headers: {
+          [tokenVariable]: user.accessToken,
+        },
+      }
+    );
+    dispatch(actions.setCurrentUser(response.data.body));
   } catch (error) {
     dispatch(actions.stopLoading());
     dispatch(actions.hasError(error));
