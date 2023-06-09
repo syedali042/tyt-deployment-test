@@ -6,12 +6,12 @@ import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import FormFieldError from '@/shared/components/FormFieldError';
 import {useEffect, useState} from 'react';
-import {useSearchParams} from 'next/navigation';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   checkUsernameAvailability,
   getCurrentUser,
   createUser,
+  isLoading as getIsUserRequestLoading,
 } from '@/shared/redux/slices/user';
 import {auth as firebaseAuth} from '@/shared/firebase';
 import {
@@ -19,15 +19,17 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
+import {CircularProgress} from '@mui/material';
 
 export default function SignUp() {
   const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
+  const isRequestLoading = useSelector(getIsUserRequestLoading);
   const [isUsernameAndPassword, setIsUserNamePassword] = useState(false);
   const [isUsernameVerified, setIsUsernameVerified] = useState(false);
   const SignUpSchema = Yup.object().shape({
-    username: Yup.string().min(6).max(40).required('Username is required'),
+    username: Yup.string().min(3).max(40).required('Username is required'),
     email: Yup.string().email().required('Email is required'),
     password: Yup.string()
       .required('Enter your password')
@@ -67,7 +69,7 @@ export default function SignUp() {
     handleSubmit,
     watch,
     setError,
-    formState: {errors},
+    formState: {errors, isSubmitting, isSubmitSuccessful},
   } = methods;
 
   const values = watch();
@@ -76,10 +78,17 @@ export default function SignUp() {
     if (currentUser?.username !== values?.username) {
       setIsUsernameVerified(false);
     } else {
-      setIsUsernameVerified(true);
-      // setError('username', null); // Ali: this causing error
+      if (values.username.length >= 3) {
+        setIsUsernameVerified(true);
+      }
     }
   }, [values]);
+
+  useEffect(() => {
+    if (isUsernameVerified) {
+      setError('username', null);
+    }
+  }, [isUsernameVerified]);
 
   const onSubmit = async (data) => {
     const {username, email, password} = data;
@@ -164,177 +173,245 @@ export default function SignUp() {
 
               <FormProvider
                 methods={methods}
-                onSubmit={handleSubmit(onSubmit)}
                 className="login100-form validate-form"
               >
-                <h1 className="text-center mt-5"> Sign Up</h1>
-                <Row
-                  className="mx-auto mb-5"
-                  style={{width: '4vh', borderBottom: '1px solid #555'}}
-                ></Row>
-                <Stack>
-                  <Form.Group
-                    className="text-start form-group"
-                    controlId="formEmail"
-                  >
-                    <Stack className={`d-flex align-items-center`}>
-                      <p
-                        style={{
-                          transform: 'translateY(35%)',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        tipyourteacher.co/
-                      </p>
-                      &nbsp;
-                      <Form.Control
-                        className="form-control"
-                        placeholder="Enter your username"
-                        name="username"
-                        {...register('username')}
-                        type="text"
-                        required
-                      />
-                      &nbsp;
-                      <Button
-                        style={{
-                          width: '30%',
-                          cursor: `${
-                            isUsernameVerified ? 'not-allowed' : 'pointer'
-                          }`,
-                        }}
-                        className="btn btn-sm"
-                        disabled={isUsernameVerified}
-                        onClick={() => verifyUsernameAvailability()}
-                      >
-                        Verify
-                      </Button>
-                    </Stack>
-                    <FormFieldError error={errors?.username?.message} />
-                    {isUsernameVerified && (
-                      <Stack
-                        className="text-success px-1"
-                        style={{fontSize: '0.8rem'}}
-                      >
-                        Username is available
-                      </Stack>
-                    )}
-                  </Form.Group>
-                </Stack>
-                {!isUsernameAndPassword && (
-                  <Stack className="d-flex justify-content-between">
-                    <Stack
-                      style={{
-                        width: '45%',
-                        fontSize: '16px',
-                        fontWeight: '500',
-                        cursor: 'pointer',
-                      }}
-                      className={`social-login text-center ${
-                        isUsernameAndPassword ? 'bg-dark text-white' : ''
-                      }`}
-                      onClick={() =>
-                        setIsUserNamePassword(!isUsernameAndPassword)
-                      }
-                    >
-                      Email/Password
-                    </Stack>
-                    <Stack
-                      style={{
-                        width: '45%',
-                        fontSize: '16px',
-                        fontWeight: '500',
-                        cursor: 'pointer',
-                      }}
-                      className="social-login text-center"
-                      onClick={() => signUpWithGoogle()}
-                    >
-                      <Image
-                        style={{
-                          transform: 'translateY(-8%)',
-                        }}
-                        src="/assets/images/brand/google.svg"
-                      />
-                    </Stack>
-                  </Stack>
-                )}
-                {isUsernameAndPassword && (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <h1 className="text-center mt-5"> Sign Up</h1>
+                  <Row
+                    className="mx-auto mb-5"
+                    style={{width: '4vh', borderBottom: '1px solid #555'}}
+                  ></Row>
                   <Stack>
-                    <Row style={{border: '1px solid #eee'}}></Row>
                     <Form.Group
                       className="text-start form-group"
                       controlId="formEmail"
                     >
-                      <Form.Label>Email</Form.Label>
-                      <Form.Control
-                        className="form-control"
-                        placeholder="Enter your email"
-                        name="email"
-                        {...register('email')}
-                        type="text"
-                        required
-                      />
-                      <FormFieldError error={errors?.email?.message} />
+                      <Stack className={`d-flex align-items-center`}>
+                        <p
+                          style={{
+                            transform: 'translateY(35%)',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          tipyourteacher.co/
+                        </p>
+                        &nbsp;
+                        <Form.Control
+                          className="form-control"
+                          placeholder="Enter your username"
+                          name="username"
+                          {...register('username')}
+                          type="text"
+                          required
+                          onKeyDown={(e) => {
+                            if (e.key == 'Enter') {
+                              verifyUsernameAvailability();
+                            }
+                          }}
+                        />
+                        &nbsp;
+                        <Button
+                          style={{
+                            width: '30%',
+                            cursor: `${
+                              isUsernameVerified ? 'not-allowed' : 'pointer'
+                            }`,
+                          }}
+                          className="btn btn-sm"
+                          disabled={isUsernameVerified}
+                          onClick={() => verifyUsernameAvailability()}
+                        >
+                          <span
+                            style={{
+                              display: isRequestLoading ? 'none' : 'inline',
+                            }}
+                          >
+                            Verify
+                          </span>
+                          <Stack
+                            style={{
+                              transform: 'translateY(15%)',
+                              display: isRequestLoading ? 'inline' : 'none',
+                            }}
+                          >
+                            <CircularProgress size={'15px'} color="inherit" />
+                          </Stack>
+                        </Button>
+                      </Stack>
+                      <FormFieldError error={errors?.username?.message} />
+                      {isUsernameVerified && (
+                        <Stack
+                          className="text-success px-1"
+                          style={{fontSize: '0.8rem'}}
+                        >
+                          Username is available
+                        </Stack>
+                      )}
                     </Form.Group>
-                    <Form.Group
-                      className="text-start form-group"
-                      controlId="formpassword"
-                    >
-                      <Form.Label>Password</Form.Label>
-                      <Form.Control
-                        className="form-control"
-                        placeholder="Enter your password"
-                        name="password"
-                        {...register('password')}
-                        type="password"
-                        required
-                      />
-                      <FormFieldError error={errors?.password?.message} />
-                    </Form.Group>
-                    <Form.Group
-                      className="text-start form-group"
-                      controlId="formpassword"
-                    >
-                      <Form.Label>Confirm Password</Form.Label>
-                      <Form.Control
-                        className="form-control"
-                        placeholder="Enter your password again"
-                        name="confirmPassword"
-                        {...register('confirmPassword')}
-                        type="password"
-                        required
-                      />
-                      <FormFieldError
-                        error={errors?.confirmPassword?.message}
-                      />
-                    </Form.Group>
-                    <Stack className="container-login100-form-btn">
-                      <Button
-                        onClick={handleSubmit(onSubmit)}
-                        type="submit"
-                        className="login100-form-btn btn-primary"
-                        disabled={!isUsernameVerified}
+                  </Stack>
+                  {!isUsernameAndPassword && (
+                    <Stack className="d-flex justify-content-between">
+                      <Stack
                         style={{
-                          cursor: `${
-                            !isUsernameVerified ? 'not-allowed' : 'pointer'
-                          }`,
+                          width: '45%',
+                          fontSize: '16px',
+                          fontWeight: '500',
+                          cursor: 'pointer',
+                        }}
+                        className={`social-login text-center ${
+                          isUsernameAndPassword ? 'bg-dark text-white' : ''
+                        }`}
+                        onClick={() => {
+                          if (!isUsernameVerified) {
+                            if (values.username.length >= 3) {
+                              setError('username', {
+                                message:
+                                  'Please verify if username is available',
+                              });
+                            } else {
+                              setError('username', {
+                                message:
+                                  'Username must be atleast 3 characters',
+                              });
+                            }
+                          } else {
+                            setIsUserNamePassword(!isUsernameAndPassword);
+                          }
                         }}
                       >
-                        Sign Up
-                      </Button>
-                    </Stack>
-                    <Row className="text-center pt-3"></Row>
-                    <center>
-                      <a
-                        href="#"
-                        className="cursor-pointer"
-                        onClick={() => setIsUserNamePassword(false)}
+                        Email/Password
+                      </Stack>
+                      <Stack
+                        style={{
+                          width: '45%',
+                          fontSize: '16px',
+                          fontWeight: '500',
+                          cursor: 'pointer',
+                        }}
+                        className="social-login text-center"
+                        onClick={() => {
+                          if (!isUsernameVerified) {
+                            setError('username', {
+                              message: 'Please choose a username first',
+                            });
+                          } else {
+                            signUpWithGoogle();
+                          }
+                        }}
                       >
-                        <u>Change Method</u>
-                      </a>
-                    </center>
-                  </Stack>
-                )}
+                        <Image
+                          style={{
+                            transform: 'translateY(-8%)',
+                          }}
+                          src="/assets/images/brand/google.svg"
+                        />
+                      </Stack>
+                    </Stack>
+                  )}
+                  {isUsernameAndPassword && (
+                    <Stack>
+                      <Row style={{border: '1px solid #eee'}}></Row>
+                      <Form.Group
+                        className="text-start form-group"
+                        controlId="formEmail"
+                      >
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                          className="form-control"
+                          placeholder="Enter your email"
+                          name="email"
+                          {...register('email')}
+                          type="text"
+                          required
+                        />
+                        <FormFieldError error={errors?.email?.message} />
+                      </Form.Group>
+                      <Form.Group
+                        className="text-start form-group"
+                        controlId="formpassword"
+                      >
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                          className="form-control"
+                          placeholder="Enter your password"
+                          name="password"
+                          {...register('password')}
+                          type="password"
+                          required
+                        />
+                        <FormFieldError error={errors?.password?.message} />
+                      </Form.Group>
+                      <Form.Group
+                        className="text-start form-group"
+                        controlId="formpassword"
+                      >
+                        <Form.Label>Confirm Password</Form.Label>
+                        <Form.Control
+                          className="form-control"
+                          placeholder="Enter your password again"
+                          name="confirmPassword"
+                          {...register('confirmPassword')}
+                          type="password"
+                          required
+                        />
+                        <FormFieldError
+                          error={errors?.confirmPassword?.message}
+                        />
+                      </Form.Group>
+                      <Stack className="container-login100-form-btn">
+                        <Button
+                          type="submit"
+                          className="login100-form-btn btn-primary"
+                          disabled={
+                            !isUsernameVerified ||
+                            isSubmitting ||
+                            isSubmitSuccessful
+                          }
+                          style={{
+                            cursor: `${
+                              !isUsernameVerified ||
+                              isSubmitting ||
+                              isSubmitSuccessful
+                                ? 'not-allowed'
+                                : 'pointer'
+                            }`,
+                          }}
+                        >
+                          {isSubmitSuccessful ? (
+                            <>Please wait, I&apos;m preparing dashboard</>
+                          ) : (
+                            <>
+                              <span
+                                style={{
+                                  display: isSubmitting ? 'none' : 'inline',
+                                }}
+                              >
+                                Sign Up
+                              </span>
+                              <CircularProgress
+                                style={{
+                                  display: isSubmitting ? 'inline' : 'none',
+                                }}
+                                size={'20px'}
+                                color="inherit"
+                              />
+                            </>
+                          )}
+                        </Button>
+                      </Stack>
+                      <Row className="text-center pt-3"></Row>
+                      <center>
+                        <a
+                          href="#"
+                          className="cursor-pointer"
+                          onClick={() => setIsUserNamePassword(false)}
+                        >
+                          <u>Change Method</u>
+                        </a>
+                      </center>
+                    </Stack>
+                  )}
+                </form>
               </FormProvider>
             </Row>
           </Stack>

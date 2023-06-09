@@ -112,6 +112,7 @@ export const signInUser = (user) => async (dispatch) => {
       }
     );
     dispatch(actions.setCurrentUser(response.data.body));
+    dispatch(actions.stopLoading());
   } catch (error) {
     dispatch(actions.stopLoading());
     dispatch(actions.hasError(error));
@@ -123,3 +124,5 @@ export const signInUser = (user) => async (dispatch) => {
 export const getUserToken = (state) => state.user.token;
 
 export const getCurrentUser = (state) => state.user.currentUser;
+
+export const isLoading = (state) => state.user.isLoading;
