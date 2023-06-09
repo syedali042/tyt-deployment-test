@@ -42,7 +42,7 @@ export default function GetStarted() {
       if (currentUser.username !== undefined) router.push('/auth/signup');
       else setError('username', {message: 'Username already taken'});
     } catch (error) {
-      setError('username', {message: 'Username already taken'});
+      setError('username', {message: error.message || error});
     }
   };
   return (

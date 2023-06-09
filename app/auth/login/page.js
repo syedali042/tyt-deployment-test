@@ -1,6 +1,15 @@
 'use client';
 import Link from 'next/link';
-import {Form, Button, Stack, Row, Container, Col, Image} from 'react-bootstrap';
+import {
+  Form,
+  Button,
+  Stack,
+  Row,
+  Container,
+  Col,
+  Image,
+  InputGroup,
+} from 'react-bootstrap';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
@@ -18,14 +27,20 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  deleteUser,
 } from 'firebase/auth';
 import {useRouter} from 'next/navigation';
 import {CircularProgress} from '@mui/material';
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
+import AppModal from '@/shared/components/AppModal';
 export default function Login() {
   const router = useRouter();
   const [user, setUser] = useState(false);
   const [emailOrUsernameToVerify, setUsernameOrEmailToVerify] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
   const LoginSchema = Yup.object().shape({
@@ -99,8 +114,17 @@ export default function Login() {
     signInWithPopup(firebaseAuth, provider)
       .then(async (result) => {
         const user = result.user;
-        await dispatch(signInUser(user));
-        router.push('/dashboard');
+        const {
+          metadata: {creationTime, lastSignInTime},
+        } = user;
+        if (creationTime == lastSignInTime) {
+          deleteUser(user).then(() => {
+            handleOpenModal();
+          });
+        } else {
+          await dispatch(signInUser(user));
+          router.push('/dashboard');
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -150,6 +174,7 @@ export default function Login() {
                           onKeyDown={(e) => {
                             if (e.key == 'Enter') {
                               checkIfUserExists();
+                              e.preventDefault();
                             }
                           }}
                         />
@@ -163,14 +188,33 @@ export default function Login() {
                           controlId="formpassword"
                         >
                           <Form.Label>Password</Form.Label>
-                          <Form.Control
-                            className="form-control"
-                            placeholder="Enter your password"
-                            name="password"
-                            {...register('password')}
-                            type="password"
-                            required
-                          />
+                          <InputGroup>
+                            <Form.Control
+                              className="form-control"
+                              placeholder="Enter your password"
+                              name="password"
+                              {...register('password')}
+                              type={!showPassword ? 'password' : 'text'}
+                              required
+                            />
+                            <div
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="input-icon"
+                              style={{
+                                position: 'absolute',
+                                right: '10px',
+                                top: '10px',
+                                zIndex: 9999,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              <i
+                                class={`fa ${
+                                  showPassword ? 'fa-eye' : 'fa-eye-slash'
+                                }`}
+                              />
+                            </div>
+                          </InputGroup>
                           <FormFieldError error={errors?.password?.message} />
                         </Form.Group>
                       )}
@@ -203,7 +247,10 @@ export default function Login() {
                             )}
                           </Button>
                         ) : (
-                          <Button className="login100-form-btn btn-primary">
+                          <Button
+                            onClick={() => setUser(true)}
+                            className="login100-form-btn btn-primary"
+                          >
                             Next
                           </Button>
                         )}
@@ -233,6 +280,16 @@ export default function Login() {
               </Row>
             </Stack>
             {/* // <!-- CONTAINER CLOSED --> */}
+            <AppModal
+              handleOpen={handleOpenModal}
+              handleClose={handleCloseModal}
+              open={openModal}
+              title={'Not a member'}
+              description={
+                'You are not registered yet with this email, click below to be redirected to the sign up page.'
+              }
+              path={'/'}
+            />
           </Stack>
         </Stack>
       </Authenticationlayout>

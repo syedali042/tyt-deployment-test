@@ -100,6 +100,7 @@ export const createUser = (user) => async (dispatch) => {
   try {
     const response = await axios.post('/users', user);
     dispatch(actions.setCurrentUser(response.data.body));
+    localStorage.setItem('user', JSON.stringify(response.data.body));
     dispatch(actions.stopLoading());
   } catch (error) {
     console.log(error);

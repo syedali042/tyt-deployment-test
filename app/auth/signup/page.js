@@ -1,5 +1,14 @@
 'use client';
-import {Form, Button, Stack, Row, Container, Col, Image} from 'react-bootstrap';
+import {
+  Form,
+  Button,
+  Stack,
+  Row,
+  Container,
+  Col,
+  Image,
+  InputGroup,
+} from 'react-bootstrap';
 import {useRouter} from 'next/navigation';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
@@ -21,18 +30,26 @@ import {
 } from 'firebase/auth';
 import {CircularProgress} from '@mui/material';
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
+import AppModal from '@/shared/components/AppModal';
 
 export default function SignUp() {
   const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
   const isRequestLoading = useSelector(getIsUserRequestLoading);
+
   const [isUsernameAndPassword, setIsUserNamePassword] = useState(false);
   const [isUsernameVerified, setIsUsernameVerified] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const SignUpSchema = Yup.object().shape({
     username: Yup.string().min(3).max(40).required('Username is required'),
     email: Yup.string().email().required('Email is required'),
     password: Yup.string()
+      .min(6)
       .required('Enter your password')
       .matches(
         /[a-z]+/,
@@ -95,7 +112,6 @@ export default function SignUp() {
     const {username, email, password} = data;
     await createUserWithEmailAndPassword(firebaseAuth, email, password)
       .then(async (user) => {
-        console.log(user);
         const {displayName, photoURL, uid, email} = user.user;
         const username = values?.username;
         const createUserObj = {
@@ -123,7 +139,7 @@ export default function SignUp() {
       if (currentUser.username) setIsUsernameVerified(true);
       else setError('username', {message: 'Username already taken'});
     } catch (error) {
-      setError('username', {message: 'Username already taken'});
+      setError('username', {message: error.message || error});
     }
   };
 
@@ -147,8 +163,15 @@ export default function SignUp() {
           displayName,
           loginType: 'google',
         };
-        await dispatch(createUser(createUserObj));
-        router.push('/dashboard');
+        const {
+          metadata: {creationTime, lastSignInTime},
+        } = user;
+        if (creationTime == lastSignInTime) {
+          await dispatch(createUser(createUserObj));
+          router.push('/dashboard');
+        } else {
+          handleOpenModal();
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -208,6 +231,7 @@ export default function SignUp() {
                             onKeyDown={(e) => {
                               if (e.key == 'Enter') {
                                 verifyUsernameAvailability();
+                                e.preventDefault();
                               }
                             }}
                           />
@@ -333,14 +357,34 @@ export default function SignUp() {
                           controlId="formpassword"
                         >
                           <Form.Label>Password</Form.Label>
-                          <Form.Control
-                            className="form-control"
-                            placeholder="Enter your password"
-                            name="password"
-                            {...register('password')}
-                            type="password"
-                            required
-                          />
+                          <InputGroup>
+                            <Form.Control
+                              className="form-control"
+                              placeholder="Enter your password"
+                              name="password"
+                              {...register('password')}
+                              type={!showPassword ? 'password' : 'text'}
+                              required
+                            />
+                            <div
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="input-icon"
+                              style={{
+                                position: 'absolute',
+                                right: '10px',
+                                top: '10px',
+                                zIndex: 9999,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              <i
+                                class={`fa ${
+                                  showPassword ? 'fa-eye' : 'fa-eye-slash'
+                                }`}
+                              />
+                            </div>
+                          </InputGroup>
+
                           <FormFieldError error={errors?.password?.message} />
                         </Form.Group>
                         <Form.Group
@@ -348,14 +392,33 @@ export default function SignUp() {
                           controlId="formpassword"
                         >
                           <Form.Label>Confirm Password</Form.Label>
-                          <Form.Control
-                            className="form-control"
-                            placeholder="Enter your password again"
-                            name="confirmPassword"
-                            {...register('confirmPassword')}
-                            type="password"
-                            required
-                          />
+                          <InputGroup>
+                            <Form.Control
+                              className="form-control"
+                              placeholder="Enter your password again"
+                              name="confirmPassword"
+                              {...register('confirmPassword')}
+                              type={!showPassword ? 'password' : 'text'}
+                              required
+                            />
+                            <div
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="input-icon"
+                              style={{
+                                position: 'absolute',
+                                right: '10px',
+                                top: '10px',
+                                zIndex: 9999,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              <i
+                                class={`fa ${
+                                  showPassword ? 'fa-eye' : 'fa-eye-slash'
+                                }`}
+                              />
+                            </div>
+                          </InputGroup>
                           <FormFieldError
                             error={errors?.confirmPassword?.message}
                           />
@@ -418,6 +481,16 @@ export default function SignUp() {
               </Row>
             </Stack>
             {/* // <!-- CONTAINER CLOSED --> */}
+            <AppModal
+              handleOpen={handleOpenModal}
+              handleClose={handleCloseModal}
+              open={openModal}
+              title={'Already a member'}
+              description={
+                'You are already registered with this email, click below to be redirected to the login page.'
+              }
+              path={'/auth/login'}
+            />
           </Stack>
         </Stack>
       </Authenticationlayout>
