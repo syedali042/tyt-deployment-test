@@ -32,7 +32,7 @@ export default function GetStarted() {
     register,
     handleSubmit,
     setError,
-    formState: {errors, isSubmitting, isSubmitted},
+    formState: {errors, isSubmitting, isSubmitSuccessful},
   } = methods;
 
   const onSubmit = async (data) => {
@@ -79,71 +79,73 @@ export default function GetStarted() {
                 />
               </Stack>
               <FormProvider methods={methods}>
-                <h1 className="text-center mt-5">
-                  {' '}
-                  Set Up Account & Start Getting Your Tips
-                </h1>
-                <Row
-                  className="mx-auto mb-5"
-                  style={{width: '30vh', borderBottom: '1px solid #555'}}
-                ></Row>
-                <Stack className="custom-input">
-                  <Row className="get-started-input-row justify-content-center mx-auto">
-                    <Col
-                      className="default-input-url"
-                      style={{transform: 'translateY(12%)'}}
-                    >
-                      <h1 className="defualt-input-url-text">
-                        tipyourteacher.co
-                      </h1>
-                      <h1 className="defualt-input-url-slash">/</h1>
-                    </Col>
-                    <Col
-                      className="get-started-default-input-container"
-                      style={{transform: 'translateY(-5%) translateX(-14%)'}}
-                    >
-                      <input
-                        name={'username'}
-                        {...register('username')}
-                        placeholder="yourname"
-                        className="get-started-default-input"
-                      />
-                    </Col>
-                    <Col className="get-started-default-input-button-container">
-                      <Button
-                        disabled={isSubmitting}
-                        type="submit"
-                        className="get-started-default-input-button btn-primary"
-                        onClick={handleSubmit(onSubmit)}
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <h1 className="text-center mt-5">
+                    {' '}
+                    Set Up Account & Start Getting Your Tips
+                  </h1>
+                  <Row
+                    className="mx-auto mb-5"
+                    style={{width: '30vh', borderBottom: '1px solid #555'}}
+                  ></Row>
+                  <Stack className="custom-input">
+                    <Row className="get-started-input-row justify-content-center mx-auto">
+                      <Col
+                        className="default-input-url"
+                        style={{transform: 'translateY(12%)'}}
                       >
-                        {isSubmitted ? (
-                          <>Please wait...</>
-                        ) : (
-                          <>
-                            <span
-                              style={{
-                                display: isSubmitting ? 'none' : 'inline',
-                              }}
-                            >
-                              Get started
-                            </span>
-                            <CircularProgress
-                              style={{
-                                display: isSubmitting ? 'inline' : 'none',
-                              }}
-                              size={'20px'}
-                              color="inherit"
-                            />
-                          </>
-                        )}
-                      </Button>
-                    </Col>
-                    <br />
-                  </Row>
-                  <Stack className="field-error-container mx-auto">
-                    <FormFieldError error={errors?.username?.message} />
+                        <h1 className="defualt-input-url-text">
+                          tipyourteacher.co
+                        </h1>
+                        <h1 className="defualt-input-url-slash">/</h1>
+                      </Col>
+                      <Col
+                        className="get-started-default-input-container"
+                        style={{transform: 'translateY(-5%) translateX(-14%)'}}
+                      >
+                        <input
+                          name={'username'}
+                          {...register('username')}
+                          placeholder="yourname"
+                          className="get-started-default-input"
+                        />
+                      </Col>
+                      <Col className="get-started-default-input-button-container">
+                        <Button
+                          disabled={isSubmitting || isSubmitSuccessful}
+                          type="submit"
+                          className="get-started-default-input-button btn-primary"
+                          // onClick={handleSubmit(onSubmit)}
+                        >
+                          {isSubmitSuccessful ? (
+                            <>Please wait...</>
+                          ) : (
+                            <>
+                              <span
+                                style={{
+                                  display: isSubmitting ? 'none' : 'inline',
+                                }}
+                              >
+                                Get started
+                              </span>
+                              <CircularProgress
+                                style={{
+                                  display: isSubmitting ? 'inline' : 'none',
+                                }}
+                                size={'20px'}
+                                color="inherit"
+                              />
+                            </>
+                          )}
+                        </Button>
+                      </Col>
+                      <br />
+                    </Row>
+                    <Stack className="field-error-container mx-auto">
+                      <FormFieldError error={errors?.username?.message} />
+                    </Stack>
                   </Stack>
-                </Stack>
+                </form>
               </FormProvider>
             </Stack>
           </Container>
