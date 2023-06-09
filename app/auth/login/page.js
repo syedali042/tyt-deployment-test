@@ -20,6 +20,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import {useRouter} from 'next/navigation';
+import {CircularProgress} from '@mui/material';
 export default function Login() {
   const router = useRouter();
   const [user, setUser] = useState(false);
@@ -28,7 +29,7 @@ export default function Login() {
   const currentUser = useSelector(getCurrentUser);
   const LoginSchema = Yup.object().shape({
     usernameOrEmail: Yup.string()
-      .min(6)
+      .min(3)
       .max(40)
       .required('Username Or Email is required'),
     password: Yup.string().required('Password is required'),
@@ -47,21 +48,26 @@ export default function Login() {
     handleSubmit,
     watch,
     setError,
-    formState: {errors},
+    formState: {errors, isSubmitSuccessful, isSubmitting},
   } = methods;
   const values = watch();
 
   const onSubmit = async (data) => {
-    const {usernameOrEmail, password} = data;
-    await signInWithEmailAndPassword(firebaseAuth, usernameOrEmail, password)
-      .then(async (user) => {
-        await dispatch(signInUser(user.user));
-        router.push('/dashboard');
-      })
-      .catch((error) => {
-        setError('usernameOrEmail', {message: 'Credentials Not Matched'});
-        setError('password', {message: 'Credentials Not Matched'});
-      });
+    if (user) {
+      const {usernameOrEmail, password} = data;
+      await signInWithEmailAndPassword(firebaseAuth, usernameOrEmail, password)
+        .then(async (user) => {
+          await dispatch(signInUser(user.user));
+          router.push('/dashboard');
+        })
+        .catch((error) => {
+          setError('usernameOrEmail', {message: 'Credentials Not Matched'});
+          setError('password', {message: 'Credentials Not Matched'});
+        });
+      setUser(true);
+    } else {
+      checkIfUserExists();
+    }
   };
 
   const checkIfUserExists = async () => {
@@ -118,81 +124,108 @@ export default function Login() {
               </Col>
               <FormProvider
                 methods={methods}
-                onSubmit={handleSubmit(onSubmit)}
                 className="login100-form validate-form"
               >
-                <h1 className="text-center mt-5"> Login</h1>
-                <Row
-                  className="mx-auto mb-5"
-                  style={{width: '4vh', borderBottom: '1px solid #555'}}
-                ></Row>
-                <Stack>
-                  <Form.Group
-                    className="text-start form-group"
-                    controlId="formEmail"
-                  >
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                      className="form-control"
-                      placeholder="Enter your email"
-                      name="usernameOrEmail"
-                      {...register('usernameOrEmail')}
-                      type="text"
-                      required
-                    />
-                    <FormFieldError error={errors?.usernameOrEmail?.message} />
-                  </Form.Group>
-                  {user && (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <h1 className="text-center mt-5"> Login</h1>
+                  <Row
+                    className="mx-auto mb-5"
+                    style={{width: '4vh', borderBottom: '1px solid #555'}}
+                  ></Row>
+                  <Stack>
                     <Form.Group
                       className="text-start form-group"
-                      controlId="formpassword"
+                      controlId="formEmail"
                     >
-                      <Form.Label>Password</Form.Label>
+                      <Form.Label>Email</Form.Label>
                       <Form.Control
                         className="form-control"
-                        placeholder="Enter your password"
-                        name="password"
-                        {...register('password')}
-                        type="password"
+                        placeholder="Enter your email"
+                        name="usernameOrEmail"
+                        {...register('usernameOrEmail')}
+                        type="text"
                         required
+                        onKeyDown={(e) => {
+                          if (e.key == 'Enter') {
+                            checkIfUserExists();
+                          }
+                        }}
                       />
-                      <FormFieldError error={errors?.password?.message} />
+                      <FormFieldError
+                        error={errors?.usernameOrEmail?.message}
+                      />
                     </Form.Group>
-                  )}
-                  <Stack className="container-login100-form-btn">
-                    <Button
-                      onClick={() => {
-                        if (user) {
-                          onSubmit(values);
-                        } else {
-                          checkIfUserExists();
-                        }
-                      }}
-                      type="submit"
-                      className="login100-form-btn btn-primary"
-                    >
-                      {user ? 'Login' : 'Next'}
-                    </Button>
-                  </Stack>
+                    {user && (
+                      <Form.Group
+                        className="text-start form-group"
+                        controlId="formpassword"
+                      >
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                          className="form-control"
+                          placeholder="Enter your password"
+                          name="password"
+                          {...register('password')}
+                          type="password"
+                          required
+                        />
+                        <FormFieldError error={errors?.password?.message} />
+                      </Form.Group>
+                    )}
+                    <Stack className="container-login100-form-btn">
+                      {user ? (
+                        <Button
+                          disabled={isSubmitting || isSubmitSuccessful}
+                          type="submit"
+                          className="login100-form-btn btn-primary"
+                        >
+                          {isSubmitSuccessful ? (
+                            <>Please wait, heading to dashboard</>
+                          ) : (
+                            <>
+                              <span
+                                style={{
+                                  display: isSubmitting ? 'none' : 'inline',
+                                }}
+                              >
+                                Login
+                              </span>
+                              <CircularProgress
+                                style={{
+                                  display: isSubmitting ? 'inline' : 'none',
+                                }}
+                                size={'20px'}
+                                color="inherit"
+                              />
+                            </>
+                          )}
+                        </Button>
+                      ) : (
+                        <Button className="login100-form-btn btn-primary">
+                          Next
+                        </Button>
+                      )}
+                    </Stack>
 
-                  <Stack className="text-center pt-3">
-                    <p className="text-dark mb-0">
-                      Not a member? <Link href={`/auth/signup`}>Sign Up</Link>
-                    </p>
-                  </Stack>
-                  <Row className="text-center pt-3"></Row>
-                  <label className="login-social-icon">
-                    <span>Login with Social</span>
-                  </label>
-                  <Stack className="d-flex justify-content-center">
-                    <Stack
-                      onClick={() => signUpWithGoogle()}
-                      className="social-login me-4 text-center"
-                    >
-                      <i className="fa fa-google"></i>
+                    <Stack className="text-center pt-3">
+                      <p className="text-dark mb-0">
+                        Not a member? <Link href={`/auth/signup`}>Sign Up</Link>
+                      </p>
+                    </Stack>
+                    <Row className="text-center pt-3"></Row>
+                    <label className="login-social-icon">
+                      <span>Login with Social</span>
+                    </label>
+                    <Stack className="d-flex justify-content-center">
+                      <Stack
+                        onClick={() => signUpWithGoogle()}
+                        className="social-login me-4 text-center"
+                      >
+                        <i className="fa fa-google"></i>
+                      </Stack>
                     </Stack>
                   </Stack>
-                </Stack>
+                </form>
               </FormProvider>
             </Row>
           </Stack>
