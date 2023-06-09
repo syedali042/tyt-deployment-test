@@ -20,6 +20,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import {CircularProgress} from '@mui/material';
+import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
 
 export default function SignUp() {
   const router = useRouter();
@@ -156,268 +157,270 @@ export default function SignUp() {
 
   return (
     <>
-      <Stack className="login-img">
-        <Stack className="page">
-          {/* <!-- CONTAINER OPEN --> */}
-          <Row className="col-login mx-auto mt-7"></Row>
-          <Stack className="container-login100">
-            <Row className="wrap-login100 p-6">
-              <Col className="text-center">
-                <Image
-                  src={'/assets/images/brand/logo-dark.png'}
-                  className="header-brand-img"
-                  alt="logo-dark"
-                  style={{width: '30vh'}}
-                />
-              </Col>
+      <Authenticationlayout>
+        <Stack className="login-img">
+          <Stack className="page">
+            {/* <!-- CONTAINER OPEN --> */}
+            <Row className="col-login mx-auto mt-7"></Row>
+            <Stack className="container-login100">
+              <Row className="wrap-login100 p-6">
+                <Col className="text-center">
+                  <Image
+                    src={'/assets/images/brand/logo-dark.png'}
+                    className="header-brand-img"
+                    alt="logo-dark"
+                    style={{width: '30vh'}}
+                  />
+                </Col>
 
-              <FormProvider
-                methods={methods}
-                className="login100-form validate-form"
-              >
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <h1 className="text-center mt-5"> Sign Up</h1>
-                  <Row
-                    className="mx-auto mb-5"
-                    style={{width: '4vh', borderBottom: '1px solid #555'}}
-                  ></Row>
-                  <Stack>
-                    <Form.Group
-                      className="text-start form-group"
-                      controlId="formEmail"
-                    >
-                      <Stack className={`d-flex align-items-center`}>
-                        <p
-                          style={{
-                            transform: 'translateY(35%)',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          tipyourteacher.co/
-                        </p>
-                        &nbsp;
-                        <Form.Control
-                          className="form-control"
-                          placeholder="Enter your username"
-                          name="username"
-                          {...register('username')}
-                          type="text"
-                          required
-                          onKeyDown={(e) => {
-                            if (e.key == 'Enter') {
-                              verifyUsernameAvailability();
-                            }
-                          }}
-                        />
-                        &nbsp;
-                        <Button
-                          style={{
-                            width: '30%',
-                            cursor: `${
-                              isUsernameVerified ? 'not-allowed' : 'pointer'
-                            }`,
-                          }}
-                          className="btn btn-sm"
-                          disabled={isUsernameVerified}
-                          onClick={() => verifyUsernameAvailability()}
-                        >
-                          <span
-                            style={{
-                              display: isRequestLoading ? 'none' : 'inline',
-                            }}
-                          >
-                            Verify
-                          </span>
-                          <Stack
-                            style={{
-                              transform: 'translateY(15%)',
-                              display: isRequestLoading ? 'inline' : 'none',
-                            }}
-                          >
-                            <CircularProgress size={'15px'} color="inherit" />
-                          </Stack>
-                        </Button>
-                      </Stack>
-                      <FormFieldError error={errors?.username?.message} />
-                      {isUsernameVerified && (
-                        <Stack
-                          className="text-success px-1"
-                          style={{fontSize: '0.8rem'}}
-                        >
-                          Username is available
-                        </Stack>
-                      )}
-                    </Form.Group>
-                  </Stack>
-                  {!isUsernameAndPassword && (
-                    <Stack className="d-flex justify-content-between">
-                      <Stack
-                        style={{
-                          width: '45%',
-                          fontSize: '16px',
-                          fontWeight: '500',
-                          cursor: 'pointer',
-                        }}
-                        className={`social-login text-center ${
-                          isUsernameAndPassword ? 'bg-dark text-white' : ''
-                        }`}
-                        onClick={() => {
-                          if (!isUsernameVerified) {
-                            if (values.username.length >= 3) {
-                              setError('username', {
-                                message:
-                                  'Please verify if username is available',
-                              });
-                            } else {
-                              setError('username', {
-                                message:
-                                  'Username must be atleast 3 characters',
-                              });
-                            }
-                          } else {
-                            setIsUserNamePassword(!isUsernameAndPassword);
-                          }
-                        }}
-                      >
-                        Email/Password
-                      </Stack>
-                      <Stack
-                        style={{
-                          width: '45%',
-                          fontSize: '16px',
-                          fontWeight: '500',
-                          cursor: 'pointer',
-                        }}
-                        className="social-login text-center"
-                        onClick={() => {
-                          if (!isUsernameVerified) {
-                            setError('username', {
-                              message: 'Please choose a username first',
-                            });
-                          } else {
-                            signUpWithGoogle();
-                          }
-                        }}
-                      >
-                        <Image
-                          style={{
-                            transform: 'translateY(-8%)',
-                          }}
-                          src="/assets/images/brand/google.svg"
-                        />
-                      </Stack>
-                    </Stack>
-                  )}
-                  {isUsernameAndPassword && (
+                <FormProvider
+                  methods={methods}
+                  className="login100-form validate-form"
+                >
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <h1 className="text-center mt-5"> Sign Up</h1>
+                    <Row
+                      className="mx-auto mb-5"
+                      style={{width: '4vh', borderBottom: '1px solid #555'}}
+                    ></Row>
                     <Stack>
-                      <Row style={{border: '1px solid #eee'}}></Row>
                       <Form.Group
                         className="text-start form-group"
                         controlId="formEmail"
                       >
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                          className="form-control"
-                          placeholder="Enter your email"
-                          name="email"
-                          {...register('email')}
-                          type="text"
-                          required
-                        />
-                        <FormFieldError error={errors?.email?.message} />
+                        <Stack className={`d-flex align-items-center`}>
+                          <p
+                            style={{
+                              transform: 'translateY(35%)',
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            tipyourteacher.co/
+                          </p>
+                          &nbsp;
+                          <Form.Control
+                            className="form-control"
+                            placeholder="Enter your username"
+                            name="username"
+                            {...register('username')}
+                            type="text"
+                            required
+                            onKeyDown={(e) => {
+                              if (e.key == 'Enter') {
+                                verifyUsernameAvailability();
+                              }
+                            }}
+                          />
+                          &nbsp;
+                          <Button
+                            style={{
+                              width: '30%',
+                              cursor: `${
+                                isUsernameVerified ? 'not-allowed' : 'pointer'
+                              }`,
+                            }}
+                            className="btn btn-sm"
+                            disabled={isUsernameVerified}
+                            onClick={() => verifyUsernameAvailability()}
+                          >
+                            <span
+                              style={{
+                                display: isRequestLoading ? 'none' : 'inline',
+                              }}
+                            >
+                              Verify
+                            </span>
+                            <Stack
+                              style={{
+                                transform: 'translateY(15%)',
+                                display: isRequestLoading ? 'inline' : 'none',
+                              }}
+                            >
+                              <CircularProgress size={'15px'} color="inherit" />
+                            </Stack>
+                          </Button>
+                        </Stack>
+                        <FormFieldError error={errors?.username?.message} />
+                        {isUsernameVerified && (
+                          <Stack
+                            className="text-success px-1"
+                            style={{fontSize: '0.8rem'}}
+                          >
+                            Username is available
+                          </Stack>
+                        )}
                       </Form.Group>
-                      <Form.Group
-                        className="text-start form-group"
-                        controlId="formpassword"
-                      >
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                          className="form-control"
-                          placeholder="Enter your password"
-                          name="password"
-                          {...register('password')}
-                          type="password"
-                          required
-                        />
-                        <FormFieldError error={errors?.password?.message} />
-                      </Form.Group>
-                      <Form.Group
-                        className="text-start form-group"
-                        controlId="formpassword"
-                      >
-                        <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control
-                          className="form-control"
-                          placeholder="Enter your password again"
-                          name="confirmPassword"
-                          {...register('confirmPassword')}
-                          type="password"
-                          required
-                        />
-                        <FormFieldError
-                          error={errors?.confirmPassword?.message}
-                        />
-                      </Form.Group>
-                      <Stack className="container-login100-form-btn">
-                        <Button
-                          type="submit"
-                          className="login100-form-btn btn-primary"
-                          disabled={
-                            !isUsernameVerified ||
-                            isSubmitting ||
-                            isSubmitSuccessful
-                          }
+                    </Stack>
+                    {!isUsernameAndPassword && (
+                      <Stack className="d-flex justify-content-between">
+                        <Stack
                           style={{
-                            cursor: `${
+                            width: '45%',
+                            fontSize: '16px',
+                            fontWeight: '500',
+                            cursor: 'pointer',
+                          }}
+                          className={`social-login text-center ${
+                            isUsernameAndPassword ? 'bg-dark text-white' : ''
+                          }`}
+                          onClick={() => {
+                            if (!isUsernameVerified) {
+                              if (values.username.length >= 3) {
+                                setError('username', {
+                                  message:
+                                    'Please verify if username is available',
+                                });
+                              } else {
+                                setError('username', {
+                                  message:
+                                    'Username must be atleast 3 characters',
+                                });
+                              }
+                            } else {
+                              setIsUserNamePassword(!isUsernameAndPassword);
+                            }
+                          }}
+                        >
+                          Email/Password
+                        </Stack>
+                        <Stack
+                          style={{
+                            width: '45%',
+                            fontSize: '16px',
+                            fontWeight: '500',
+                            cursor: 'pointer',
+                          }}
+                          className="social-login text-center"
+                          onClick={() => {
+                            if (!isUsernameVerified) {
+                              setError('username', {
+                                message: 'Please choose a username first',
+                              });
+                            } else {
+                              signUpWithGoogle();
+                            }
+                          }}
+                        >
+                          <Image
+                            style={{
+                              transform: 'translateY(-8%)',
+                            }}
+                            src="/assets/images/brand/google.svg"
+                          />
+                        </Stack>
+                      </Stack>
+                    )}
+                    {isUsernameAndPassword && (
+                      <Stack>
+                        <Row style={{border: '1px solid #eee'}}></Row>
+                        <Form.Group
+                          className="text-start form-group"
+                          controlId="formEmail"
+                        >
+                          <Form.Label>Email</Form.Label>
+                          <Form.Control
+                            className="form-control"
+                            placeholder="Enter your email"
+                            name="email"
+                            {...register('email')}
+                            type="text"
+                            required
+                          />
+                          <FormFieldError error={errors?.email?.message} />
+                        </Form.Group>
+                        <Form.Group
+                          className="text-start form-group"
+                          controlId="formpassword"
+                        >
+                          <Form.Label>Password</Form.Label>
+                          <Form.Control
+                            className="form-control"
+                            placeholder="Enter your password"
+                            name="password"
+                            {...register('password')}
+                            type="password"
+                            required
+                          />
+                          <FormFieldError error={errors?.password?.message} />
+                        </Form.Group>
+                        <Form.Group
+                          className="text-start form-group"
+                          controlId="formpassword"
+                        >
+                          <Form.Label>Confirm Password</Form.Label>
+                          <Form.Control
+                            className="form-control"
+                            placeholder="Enter your password again"
+                            name="confirmPassword"
+                            {...register('confirmPassword')}
+                            type="password"
+                            required
+                          />
+                          <FormFieldError
+                            error={errors?.confirmPassword?.message}
+                          />
+                        </Form.Group>
+                        <Stack className="container-login100-form-btn">
+                          <Button
+                            type="submit"
+                            className="login100-form-btn btn-primary"
+                            disabled={
                               !isUsernameVerified ||
                               isSubmitting ||
                               isSubmitSuccessful
-                                ? 'not-allowed'
-                                : 'pointer'
-                            }`,
-                          }}
-                        >
-                          {isSubmitSuccessful ? (
-                            <>Please wait, I&apos;m preparing dashboard</>
-                          ) : (
-                            <>
-                              <span
-                                style={{
-                                  display: isSubmitting ? 'none' : 'inline',
-                                }}
-                              >
-                                Sign Up
-                              </span>
-                              <CircularProgress
-                                style={{
-                                  display: isSubmitting ? 'inline' : 'none',
-                                }}
-                                size={'20px'}
-                                color="inherit"
-                              />
-                            </>
-                          )}
-                        </Button>
+                            }
+                            style={{
+                              cursor: `${
+                                !isUsernameVerified ||
+                                isSubmitting ||
+                                isSubmitSuccessful
+                                  ? 'not-allowed'
+                                  : 'pointer'
+                              }`,
+                            }}
+                          >
+                            {isSubmitSuccessful ? (
+                              <>Please wait, I&apos;m preparing dashboard</>
+                            ) : (
+                              <>
+                                <span
+                                  style={{
+                                    display: isSubmitting ? 'none' : 'inline',
+                                  }}
+                                >
+                                  Sign Up
+                                </span>
+                                <CircularProgress
+                                  style={{
+                                    display: isSubmitting ? 'inline' : 'none',
+                                  }}
+                                  size={'20px'}
+                                  color="inherit"
+                                />
+                              </>
+                            )}
+                          </Button>
+                        </Stack>
+                        <Row className="text-center pt-3"></Row>
+                        <center>
+                          <a
+                            href="#"
+                            className="cursor-pointer"
+                            onClick={() => setIsUserNamePassword(false)}
+                          >
+                            <u>Change Method</u>
+                          </a>
+                        </center>
                       </Stack>
-                      <Row className="text-center pt-3"></Row>
-                      <center>
-                        <a
-                          href="#"
-                          className="cursor-pointer"
-                          onClick={() => setIsUserNamePassword(false)}
-                        >
-                          <u>Change Method</u>
-                        </a>
-                      </center>
-                    </Stack>
-                  )}
-                </form>
-              </FormProvider>
-            </Row>
+                    )}
+                  </form>
+                </FormProvider>
+              </Row>
+            </Stack>
+            {/* // <!-- CONTAINER CLOSED --> */}
           </Stack>
-          {/* // <!-- CONTAINER CLOSED --> */}
         </Stack>
-      </Stack>
+      </Authenticationlayout>
     </>
   );
 }

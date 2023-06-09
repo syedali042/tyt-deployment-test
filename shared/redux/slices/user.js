@@ -74,7 +74,17 @@ export const checkUsernameAvailability =
       });
 
       if (response.data.statusCode === 200)
-        dispatch(actions.setCurrentUser({id: '', username, email: ''}));
+        dispatch(
+          actions.setCurrentUser({
+            id: '',
+            firebaseId: '',
+            username,
+            email: '',
+            photoURL: '',
+            displayName: '',
+            loginType: '',
+          })
+        );
       else throw 'Username Not Available';
 
       dispatch(actions.stopLoading());
@@ -112,6 +122,30 @@ export const signInUser = (user) => async (dispatch) => {
       }
     );
     dispatch(actions.setCurrentUser(response.data.body));
+    localStorage.setItem('user', JSON.stringify(response.data.body));
+    dispatch(actions.stopLoading());
+  } catch (error) {
+    dispatch(actions.stopLoading());
+    dispatch(actions.hasError(error));
+    throw error;
+  }
+};
+
+export const signOutUser = () => async (dispatch) => {
+  dispatch(actions.startLoading());
+  try {
+    dispatch(
+      actions.setCurrentUser({
+        id: '',
+        firebaseId: '',
+        username: '',
+        email: '',
+        photoURL: '',
+        displayName: '',
+        loginType: '',
+      })
+    );
+    localStorage.removeItem('user');
     dispatch(actions.stopLoading());
   } catch (error) {
     dispatch(actions.stopLoading());
