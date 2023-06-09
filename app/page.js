@@ -11,14 +11,14 @@ import {
   getCurrentUser,
 } from '@/shared/redux/slices/user';
 import {useDispatch, useSelector} from 'react-redux';
+import {CircularProgress} from '@mui/material';
 
 export default function GetStarted() {
   let router = useRouter();
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
-
   const GetStartedSchema = Yup.object().shape({
-    username: Yup.string().min(6).max(40).required('User Name is required'),
+    username: Yup.string().min(3).max(40).required('User Name is required'),
   });
 
   const methods = useForm({
@@ -32,7 +32,7 @@ export default function GetStarted() {
     register,
     handleSubmit,
     setError,
-    formState: {errors},
+    formState: {errors, isSubmitting, isSubmitted},
   } = methods;
 
   const onSubmit = async (data) => {
@@ -111,11 +111,31 @@ export default function GetStarted() {
                     </Col>
                     <Col className="get-started-default-input-button-container">
                       <Button
+                        disabled={isSubmitting}
                         type="submit"
                         className="get-started-default-input-button btn-primary"
                         onClick={handleSubmit(onSubmit)}
                       >
-                        Get started
+                        {isSubmitted ? (
+                          <>Please wait...</>
+                        ) : (
+                          <>
+                            <span
+                              style={{
+                                display: isSubmitting ? 'none' : 'inline',
+                              }}
+                            >
+                              Get started
+                            </span>
+                            <CircularProgress
+                              style={{
+                                display: isSubmitting ? 'inline' : 'none',
+                              }}
+                              size={'20px'}
+                              color="inherit"
+                            />
+                          </>
+                        )}
                       </Button>
                     </Col>
                     <br />
