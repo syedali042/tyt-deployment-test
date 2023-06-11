@@ -1,25 +1,24 @@
 'use client';
-import dynamic from 'next/dynamic';
-import React, {useEffect} from 'react';
-const Customswitcher = dynamic(() => import('../switcher/landing-switcher'), {
-  ssr: false,
-});
+import React, {useEffect, useState} from 'react';
 import SSRProvider from 'react-bootstrap/SSRProvider';
-
+import {useRouter} from 'next/navigation';
+import {usePathname} from 'next/navigation';
 const Authenticationlayout = ({children}) => {
+  const [renderUi, setRenderUi] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
   useEffect(() => {
-    document
-      .querySelector('body')
-      .classList.add('ltr', 'main-body', 'leftmenu', 'error-1');
-  });
+    const isDashboardIncludes = pathname.includes('/dashboard');
+    const userFromStorage = localStorage.getItem('user');
+    if (userFromStorage && !isDashboardIncludes) router.push('/dashboard');
+    else if (!userFromStorage && !isDashboardIncludes) setRenderUi(true);
+    else if (userFromStorage && isDashboardIncludes) setRenderUi(true);
+    else if (!userFromStorage && isDashboardIncludes)
+      router.push('/auth/login');
+  }, []);
   return (
     <>
-      <SSRProvider>
-        <div className="login-img">
-          <div className="page">{children}</div>
-        </div>
-        <Customswitcher />
-      </SSRProvider>
+      <SSRProvider>{renderUi && children}</SSRProvider>
     </>
   );
 };
