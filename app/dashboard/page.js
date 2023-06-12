@@ -31,7 +31,6 @@ const Dashboard = () => {
             style={{fontSize: '1.5rem'}}
             onClick={() => {
               dispatch(signOutUser());
-              router.push('/auth/login');
             }}
           >
             <i

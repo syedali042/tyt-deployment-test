@@ -147,6 +147,7 @@ export const signOutUser = () => async (dispatch) => {
       })
     );
     localStorage.removeItem('user');
+    window.location.href = '/auth/login';
     dispatch(actions.stopLoading());
   } catch (error) {
     dispatch(actions.stopLoading());
