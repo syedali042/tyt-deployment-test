@@ -28,6 +28,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   deleteUser,
+  getAdditionalUserInfo,
 } from 'firebase/auth';
 import {useRouter} from 'next/navigation';
 import {CircularProgress} from '@mui/material';
@@ -114,10 +115,11 @@ export default function Login() {
     signInWithPopup(firebaseAuth, provider)
       .then(async (result) => {
         const user = result.user;
-        const {
-          metadata: {creationTime, lastSignInTime},
-        } = user;
-        if (creationTime == lastSignInTime) {
+        const additionalInfo = getAdditionalUserInfo(result);
+
+        const {isNewUser} = additionalInfo;
+
+        if (isNewUser) {
           deleteUser(user).then(() => {
             handleOpenModal();
           });
@@ -259,7 +261,12 @@ export default function Login() {
                       <Stack className="text-center pt-3">
                         <p className="text-dark mb-0">
                           Not a member?{' '}
-                          <Link href={`/auth/signup`}>Sign Up</Link>
+                          <span
+                            style={{cursor: 'pointer'}}
+                            onClick={() => (window.location.href = '/')}
+                          >
+                            Sign Up
+                          </span>
                         </p>
                       </Stack>
                       <Row className="text-center pt-3"></Row>

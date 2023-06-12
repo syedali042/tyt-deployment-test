@@ -27,6 +27,7 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  getAdditionalUserInfo,
 } from 'firebase/auth';
 import {CircularProgress} from '@mui/material';
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
@@ -153,6 +154,9 @@ export default function SignUp() {
         // const credential = GoogleAuthProvider.credentialFromResult(result);
         // const token = credential.accessToken;
         const user = result.user;
+        const additionalInfo = getAdditionalUserInfo(result);
+        const {isNewUser} = additionalInfo;
+
         const {displayName, photoURL, uid, email} = user;
         const username = values?.username;
         const createUserObj = {
@@ -163,10 +167,8 @@ export default function SignUp() {
           displayName,
           loginType: 'google',
         };
-        const {
-          metadata: {creationTime, lastSignInTime},
-        } = user;
-        if (creationTime == lastSignInTime) {
+
+        if (isNewUser) {
           await dispatch(createUser(createUserObj));
           router.push('/dashboard');
         } else {
