@@ -1,18 +1,27 @@
 'use client';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Footer from '../footer/footer';
-import {Provider} from 'react-redux';
-import store from '../../redux/store';
-import dynamic from 'next/dynamic';
 import Rightside from '../rightside/rightside';
 import BacktoTop from '../backtotop/backtotop';
 import Header from '../header/header';
-// const Switcher = dynamic(() => import('../switcher/switcher'), {ssr: false});
-// const Sidebar = dynamic(() => import("../sidebar/sidebar"), { ssr: false });
 import Sidebar from '../sidebar/sidebar';
 import SSRProvider from 'react-bootstrap/SSRProvider';
+import {usePathname, useRouter} from 'next/navigation';
 
 const Contentlayout = ({children}) => {
+  const [renderUi, setRenderUi] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  useEffect(() => {
+    const isDashboardIncludes = pathname.includes('/dashboard');
+    const userFromStorage = localStorage.getItem('user');
+    if (userFromStorage && !isDashboardIncludes) router.push('/dashboard');
+    else if (!userFromStorage && !isDashboardIncludes) setRenderUi(true);
+    else if (userFromStorage && isDashboardIncludes) setRenderUi(true);
+    else if (!userFromStorage && isDashboardIncludes)
+      router.push('/auth/login');
+  }, []);
+
   useEffect(() => {
     document
       .querySelector('body')
@@ -33,8 +42,6 @@ const Contentlayout = ({children}) => {
   const remove = () => {
     document.querySelector('.sidebar-right').classList.remove('sidebar-open');
     document.querySelector('body').classList.remove('main-sidebar-show');
-    document.querySelector('.demo_changer').classList.remove('active');
-    document.querySelector('.demo_changer').style.right = '-270px';
     document.querySelectorAll('.slide-menu').forEach((res) => {
       if (
         res.classList.contains('open') &&
@@ -51,7 +58,7 @@ const Contentlayout = ({children}) => {
   return (
     <>
       {/* <Script src="//code.tidio.co/ejjaylsnuydywf5a0sqc1gvcus5orpml.js" /> */}
-      <Provider store={store}>
+      {renderUi && (
         <SSRProvider>
           <div className="horizontalMenucontainer">
             <div className="page">
@@ -81,7 +88,7 @@ const Contentlayout = ({children}) => {
             <BacktoTop />
           </div>
         </SSRProvider>
-      </Provider>
+      )}
     </>
   );
 };
