@@ -13,7 +13,7 @@ import {signInWithEmailAndPassword} from 'firebase/auth';
 import {useRouter} from 'next/navigation';
 import {CircularProgress} from '@mui/material';
 import {FormGroupInput} from '@/shared/components/bootstrap/FormGroupInput';
-import {SignUpSignInWithGoogle} from '../social/SignUpSignInWithGoogle';
+import {SignInWithGoogle} from './SignInWithGoogle';
 export const LoginForm = () => {
   const router = useRouter();
   const [showEmailPasswordForm, setShowEmailPasswordForm] = useState(false);
@@ -148,7 +148,7 @@ export const LoginForm = () => {
           <label className="login-social-icon">
             <span>Login with Social</span>
           </label>
-          <SignUpSignInWithGoogle type={'sign-in'} />
+          <SignInWithGoogle />
         </Stack>
       </form>
     </FormProvider>

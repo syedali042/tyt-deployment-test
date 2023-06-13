@@ -1,13 +1,18 @@
 import {Stack} from 'react-bootstrap';
 import {auth as firebaseAuth} from '@/shared/firebase';
-import {GoogleAuthProvider, signInWithPopup, deleteUser} from 'firebase/auth';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  deleteUser,
+  getAdditionalUserInfo,
+} from 'firebase/auth';
 import {useDispatch} from 'react-redux';
 import {signInUser} from '@/shared/redux/slices/user';
 import {useState} from 'react';
 import AppModal from '../../AppModal';
 import {useRouter} from 'next/navigation';
 
-export const SignUpSignInWithGoogle = ({type}) => {
+export const SignInWithGoogle = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
@@ -21,18 +26,17 @@ export const SignUpSignInWithGoogle = ({type}) => {
     signInWithPopup(firebaseAuth, provider)
       .then(async (result) => {
         const user = result.user;
-        const {
-          metadata: {creationTime, lastSignInTime},
-        } = user;
-        if (type === 'sign-in') {
-          if (creationTime == lastSignInTime) {
-            deleteUser(user).then(() => {
-              handleOpenModal();
-            });
-          } else {
-            await dispatch(signInUser(user));
-            router.push('/dashboard');
-          }
+        const additionalInfo = getAdditionalUserInfo(result);
+
+        const {isNewUser} = additionalInfo;
+
+        if (isNewUser) {
+          deleteUser(user).then(() => {
+            handleOpenModal();
+          });
+        } else {
+          await dispatch(signInUser(user));
+          router.push('/dashboard');
         }
       })
       .catch((error) => {
