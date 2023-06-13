@@ -141,7 +141,13 @@ export const LoginForm = () => {
 
           <Stack className="text-center pt-3">
             <p className="text-dark mb-0">
-              Not a member? <Link href={`/auth/signup`}>Sign Up</Link>
+              Not a member?{' '}
+              <span
+                style={{cursor: 'pointer'}}
+                onClick={() => (window.location.href = '/')}
+              >
+                Sign Up
+              </span>
             </p>
           </Stack>
           <Row className="text-center pt-3"></Row>
