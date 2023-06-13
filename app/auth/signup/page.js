@@ -3,7 +3,7 @@ import {Stack, Row, Col, Image} from 'react-bootstrap';
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
 import {SignUpForm} from '@/shared/components/auth/signup/SignUpForm';
 export default function SignUp() {
-  return (
+    return (
     <>
       <Authenticationlayout>
         <Stack className="login-img">
