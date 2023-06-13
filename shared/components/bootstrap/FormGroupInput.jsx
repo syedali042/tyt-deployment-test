@@ -23,11 +23,11 @@ export const FormGroupInput = ({
             placeholder={placeholder}
             name={name}
             {...register(name)}
-            type={!showPassword && name === 'password' ? 'password' : type}
+            type={!showPassword && type === 'password' ? 'password' : 'text'}
             required
             {...others}
           />
-          {name === 'password' && (
+          {type === 'password' && (
             <div
               onClick={() => setShowPassword(!showPassword)}
               className="input-icon"
