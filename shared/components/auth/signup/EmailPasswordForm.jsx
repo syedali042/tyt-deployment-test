@@ -1,5 +1,5 @@
-import {Stack, Row, Button} from 'react-bootstrap';
-import {CircularProgress} from '@mui/material';
+import {Stack, Row, Button, Alert} from 'react-bootstrap';
+import {CircularProgress, Typography} from '@mui/material';
 import {FormGroupInput} from '../../bootstrap/FormGroupInput';
 export const EmailPasswordForm = ({
   register,
@@ -72,6 +72,17 @@ export const EmailPasswordForm = ({
             </>
           )}
         </Button>
+        <Stack className="mt-2">
+          <Alert>
+            <Typography fontSize={12} fontWeight={600}>
+              Note:
+            </Typography>
+            <Typography fontSize={12}>
+              Password has to have at least 1 small character, 1 capital
+              character, a number and a special character
+            </Typography>
+          </Alert>
+        </Stack>
       </Stack>
     </Stack>
   );

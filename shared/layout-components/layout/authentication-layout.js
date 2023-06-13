@@ -8,12 +8,15 @@ const Authenticationlayout = ({children}) => {
   const router = useRouter();
   const pathname = usePathname();
   useEffect(() => {
-    const isDashboardIncludes = pathname.includes('/dashboard');
+    const isWelcomeOrDashboardIncludes =
+      pathname.includes('/welcome') || pathname.includes('/dashboard');
     const userFromStorage = localStorage.getItem('user');
-    if (userFromStorage && !isDashboardIncludes) router.push('/dashboard');
-    else if (!userFromStorage && !isDashboardIncludes) setRenderUi(true);
-    else if (userFromStorage && isDashboardIncludes) setRenderUi(true);
-    else if (!userFromStorage && isDashboardIncludes)
+    if (userFromStorage && !isWelcomeOrDashboardIncludes)
+      router.push('/welcome');
+    else if (!userFromStorage && !isWelcomeOrDashboardIncludes)
+      setRenderUi(true);
+    else if (userFromStorage && isWelcomeOrDashboardIncludes) setRenderUi(true);
+    else if (!userFromStorage && isWelcomeOrDashboardIncludes)
       router.push('/auth/login');
   }, []);
   return (

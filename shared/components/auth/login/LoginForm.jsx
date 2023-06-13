@@ -48,7 +48,7 @@ export const LoginForm = () => {
     await signInWithEmailAndPassword(firebaseAuth, usernameOrEmail, password)
       .then(async (user) => {
         await dispatch(signInUser(user.user));
-        router.push('/dashboard');
+        router.push('/welcome');
       })
       .catch((error) => {
         const errorString = error.toString();
@@ -150,11 +150,11 @@ export const LoginForm = () => {
               </span>
             </p>
           </Stack>
-          <Row className="text-center pt-3"></Row>
+          {/* <Row className="text-center pt-3"></Row>
           <label className="login-social-icon">
             <span>Login with Social</span>
           </label>
-          <SignInWithGoogle />
+          <SignInWithGoogle /> */}
         </Stack>
       </form>
     </FormProvider>

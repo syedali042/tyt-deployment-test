@@ -107,7 +107,7 @@ export const SignUpForm = () => {
         };
 
         await dispatch(createUser(createUserObj));
-        router.push('/dashboard');
+        router.push('/welcome');
       })
       .catch((error) => {
         setError('email', {message: 'Email Already Taken'});
@@ -132,7 +132,7 @@ export const SignUpForm = () => {
           value={values?.username}
         />
 
-        {!isUsernameAndPassword && (
+        {/* {!isUsernameAndPassword && (
           <SignUpOptions
             setError={setError}
             setIsUserNamePassword={setIsUserNamePassword}
@@ -140,28 +140,28 @@ export const SignUpForm = () => {
             values={values}
             isUsernameVerified={isUsernameVerified}
           />
-        )}
-        {isUsernameAndPassword && (
-          <>
-            <EmailPasswordForm
-              register={register}
-              errors={errors}
-              isUsernameVerified={isUsernameVerified}
-              isSubmitSuccessful={isSubmitSuccessful}
-              isSubmitting={isSubmitting}
-            />
-            <Row className="text-center pt-3"></Row>
-            <center>
-              <a
-                href="#"
-                className="cursor-pointer"
-                onClick={() => setIsUserNamePassword(false)}
-              >
-                <u>Change Method</u>
-              </a>
-            </center>
-          </>
-        )}
+        )} */}
+        {/* {isUsernameAndPassword && ( */}
+        {/* <> */}
+        <EmailPasswordForm
+          register={register}
+          errors={errors}
+          isUsernameVerified={isUsernameVerified}
+          isSubmitSuccessful={isSubmitSuccessful}
+          isSubmitting={isSubmitting}
+        />
+        {/* <Row className="text-center pt-3"></Row>
+        <center>
+          <a
+            href="#"
+            className="cursor-pointer"
+            onClick={() => setIsUserNamePassword(false)}
+          >
+            <u>Change Method</u>
+          </a>
+        </center> */}
+        {/* </> */}
+        {/* )} */}
       </form>
     </FormProvider>
   );
