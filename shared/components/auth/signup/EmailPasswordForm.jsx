@@ -1,5 +1,5 @@
-import {Stack, Row, Button} from 'react-bootstrap';
-import {CircularProgress} from '@mui/material';
+import {Stack, Row, Button, Alert} from 'react-bootstrap';
+import {CircularProgress, Typography} from '@mui/material';
 import {FormGroupInput} from '../../bootstrap/FormGroupInput';
 export const EmailPasswordForm = ({
   register,
@@ -29,6 +29,12 @@ export const EmailPasswordForm = ({
         placeholder={'Enter Your Password'}
         required
       />
+      {!errors?.password?.message && (
+        <Typography fontSize={12} px={0.5} mt={-1.5}>
+          Password has to have at least 1 small character, 1 capital character,
+          a number and a special character
+        </Typography>
+      )}
       <FormGroupInput
         label={'Confirm Password'}
         name={'confirmPassword'}

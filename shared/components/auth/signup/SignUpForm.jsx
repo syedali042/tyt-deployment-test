@@ -36,19 +36,19 @@ export const SignUpForm = () => {
       .required('Enter your password')
       .matches(
         /[a-z]+/,
-        'Password should have lowercases, uppercases, numbers & symbols'
+        'Password has to have at least 1 small character, 1 capital character, a number and a special character'
       )
       .matches(
         /[A-Z]+/,
-        'Password should have lowercases, uppercases, numbers & symbols'
+        'Password has to have at least 1 small character, 1 capital character, a number and a special character'
       )
       .matches(
         /[@$!%*#?&]+/,
-        'Password should have lowercases, uppercases, numbers & symbols'
+        'Password has to have at least 1 small character, 1 capital character, a number and a special character'
       )
       .matches(
         /\d+/,
-        'Password should have lowercases, uppercases, numbers & symbols'
+        'Password has to have at least 1 small character, 1 capital character, a number and a special character'
       ),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], "Passwords don't match")
@@ -107,7 +107,7 @@ export const SignUpForm = () => {
         };
 
         await dispatch(createUser(createUserObj));
-        router.push('/dashboard');
+        router.push('/welcome');
       })
       .catch((error) => {
         setError('email', {message: 'Email Already Taken'});
@@ -132,7 +132,7 @@ export const SignUpForm = () => {
           value={values?.username}
         />
 
-        {!isUsernameAndPassword && (
+        {/* {!isUsernameAndPassword && (
           <SignUpOptions
             setError={setError}
             setIsUserNamePassword={setIsUserNamePassword}
@@ -140,28 +140,28 @@ export const SignUpForm = () => {
             values={values}
             isUsernameVerified={isUsernameVerified}
           />
-        )}
-        {isUsernameAndPassword && (
-          <>
-            <EmailPasswordForm
-              register={register}
-              errors={errors}
-              isUsernameVerified={isUsernameVerified}
-              isSubmitSuccessful={isSubmitSuccessful}
-              isSubmitting={isSubmitting}
-            />
-            <Row className="text-center pt-3"></Row>
-            <center>
-              <a
-                href="#"
-                className="cursor-pointer"
-                onClick={() => setIsUserNamePassword(false)}
-              >
-                <u>Change Method</u>
-              </a>
-            </center>
-          </>
-        )}
+        )} */}
+        {/* {isUsernameAndPassword && ( */}
+        {/* <> */}
+        <EmailPasswordForm
+          register={register}
+          errors={errors}
+          isUsernameVerified={isUsernameVerified}
+          isSubmitSuccessful={isSubmitSuccessful}
+          isSubmitting={isSubmitting}
+        />
+        {/* <Row className="text-center pt-3"></Row>
+        <center>
+          <a
+            href="#"
+            className="cursor-pointer"
+            onClick={() => setIsUserNamePassword(false)}
+          >
+            <u>Change Method</u>
+          </a>
+        </center> */}
+        {/* </> */}
+        {/* )} */}
       </form>
     </FormProvider>
   );

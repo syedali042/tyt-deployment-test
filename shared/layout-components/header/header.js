@@ -184,14 +184,14 @@ const Header = ({localVaraiable}) => {
                             <i className="dropdown-icon fe fe-lock"></i>{' '}
                             Lockscreen
                           </Link>
-                          <Link
+                          <span
                             className="dropdown-item"
                             href={`/`}
                             onClick={() => dispatch(signOutUser())}
                           >
                             <i className="dropdown-icon fe fe-alert-circle"></i>{' '}
                             Sign out
-                          </Link>
+                          </span>
                         </Dropdown.Menu>
                       </Row>
                     </Dropdown>

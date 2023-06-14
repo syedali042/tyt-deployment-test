@@ -12,7 +12,7 @@ export const SignUpOptions = ({
     <Stack className="d-flex justify-content-between">
       <Stack
         style={{
-          width: '45%',
+          width: '100%',
           fontSize: '16px',
           fontWeight: '500',
           cursor: 'pointer',

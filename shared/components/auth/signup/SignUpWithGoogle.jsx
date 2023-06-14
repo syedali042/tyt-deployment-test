@@ -41,7 +41,7 @@ export const SignUpWithGoogle = ({isUsernameVerified, setError, username}) => {
 
         if (isNewUser) {
           await dispatch(createUser(createUserObj));
-          router.push('/dashboard');
+          router.push('/welcome');
         } else {
           handleOpenModal();
         }
