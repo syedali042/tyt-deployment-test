@@ -36,19 +36,19 @@ export const SignUpForm = () => {
       .required('Enter your password')
       .matches(
         /[a-z]+/,
-        'Password should have lowercases, uppercases, numbers & symbols'
+        'Password has to have at least 1 small character, 1 capital character, a number and a special character'
       )
       .matches(
         /[A-Z]+/,
-        'Password should have lowercases, uppercases, numbers & symbols'
+        'Password has to have at least 1 small character, 1 capital character, a number and a special character'
       )
       .matches(
         /[@$!%*#?&]+/,
-        'Password should have lowercases, uppercases, numbers & symbols'
+        'Password has to have at least 1 small character, 1 capital character, a number and a special character'
       )
       .matches(
         /\d+/,
-        'Password should have lowercases, uppercases, numbers & symbols'
+        'Password has to have at least 1 small character, 1 capital character, a number and a special character'
       ),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], "Passwords don't match")

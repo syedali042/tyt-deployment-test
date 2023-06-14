@@ -29,6 +29,12 @@ export const EmailPasswordForm = ({
         placeholder={'Enter Your Password'}
         required
       />
+      {!errors?.password?.message && (
+        <Typography fontSize={12} px={0.5} mt={-1.5}>
+          Password has to have at least 1 small character, 1 capital character,
+          a number and a special character
+        </Typography>
+      )}
       <FormGroupInput
         label={'Confirm Password'}
         name={'confirmPassword'}
@@ -72,17 +78,6 @@ export const EmailPasswordForm = ({
             </>
           )}
         </Button>
-        <Stack className="mt-2">
-          <Alert>
-            <Typography fontSize={12} fontWeight={600}>
-              Note:
-            </Typography>
-            <Typography fontSize={12}>
-              Password has to have at least 1 small character, 1 capital
-              character, a number and a special character
-            </Typography>
-          </Alert>
-        </Stack>
       </Stack>
     </Stack>
   );
