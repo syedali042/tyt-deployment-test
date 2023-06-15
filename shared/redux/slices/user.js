@@ -100,7 +100,11 @@ export const checkUsernameAvailability =
 export const createUser = (user) => async (dispatch) => {
   dispatch(actions.startLoading());
   try {
-    const response = await axios.post('/users', user);
+    const response = await axios.post('/users', user, {
+      headers: {
+        [tokenVariable]: user.accessToken,
+      },
+    });
     dispatch(actions.setCurrentUser(response.data.body));
     localStorage.setItem('user', JSON.stringify(response.data.body));
     dispatch(actions.stopLoading());

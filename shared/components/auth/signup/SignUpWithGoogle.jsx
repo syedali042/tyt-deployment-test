@@ -29,13 +29,14 @@ export const SignUpWithGoogle = ({isUsernameVerified, setError, username}) => {
         const user = result.user;
         const additionalInfo = getAdditionalUserInfo(result);
         const {isNewUser} = additionalInfo;
-        const {displayName, photoURL, uid, email} = user;
+        const {displayName, photoURL, uid, email, accessToken} = user;
         const createUserObj = {
           firebaseId: uid,
           email,
           username,
           photoURL,
           displayName,
+          accessToken,
           loginType: 'google',
         };
 

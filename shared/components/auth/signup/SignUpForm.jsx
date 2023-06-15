@@ -95,7 +95,7 @@ export const SignUpForm = () => {
     const {username, email, password} = data;
     await createUserWithEmailAndPassword(firebaseAuth, email, password)
       .then(async (user) => {
-        const {displayName, photoURL, uid, email} = user.user;
+        const {displayName, photoURL, uid, email, accessToken} = user.user;
         const username = values?.username;
         const createUserObj = {
           firebaseId: uid,
@@ -103,6 +103,7 @@ export const SignUpForm = () => {
           username,
           photoURL,
           displayName,
+          accessToken,
           loginType: 'email',
         };
 
