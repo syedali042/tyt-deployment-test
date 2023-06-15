@@ -144,7 +144,7 @@ export const LoginForm = () => {
               Not a member?{' '}
               <span
                 style={{cursor: 'pointer'}}
-                onClick={() => (window.location.href = '/')}
+                onClick={() => router.push('/')}
               >
                 Sign Up
               </span>
