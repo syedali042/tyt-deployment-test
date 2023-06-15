@@ -13,7 +13,13 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {CircularProgress} from '@mui/material';
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
+import {useMediaQuery} from '@mui/material';
+import {useTheme} from '@mui/material';
 export default function GetStarted() {
+  const theme = useTheme();
+  const isSmallDevice = useMediaQuery(theme.breakpoints.only('xs'), {
+    noSsr: true,
+  });
   let router = useRouter();
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
@@ -103,7 +109,9 @@ export default function GetStarted() {
                         <Col
                           className="get-started-default-input-container"
                           style={{
-                            transform: 'translateY(-5%) translateX(-14%)',
+                            transform: `translateY(${
+                              isSmallDevice ? '-8%' : '-5%'
+                            }) translateX(-14%)`,
                           }}
                         >
                           <input
@@ -113,12 +121,17 @@ export default function GetStarted() {
                             className="get-started-default-input"
                           />
                         </Col>
-                        <Col className="get-started-default-input-button-container">
+                        <Col
+                          className={`${
+                            isSmallDevice
+                              ? 'd-none'
+                              : 'get-started-default-input-button-container'
+                          }`}
+                        >
                           <Button
                             disabled={isSubmitting || isSubmitSuccessful}
                             type="submit"
                             className="get-started-default-input-button btn-primary"
-                            // onClick={handleSubmit(onSubmit)}
                           >
                             {isSubmitSuccessful ? (
                               <>Please wait...</>
@@ -144,6 +157,28 @@ export default function GetStarted() {
                         </Col>
                         <br />
                       </Row>
+                      <br />
+                      <Button
+                        disabled={isSubmitting || isSubmitSuccessful}
+                        type="submit"
+                        className={`btn-primary w-100 ${
+                          !isSmallDevice && 'd-none'
+                        }`}
+                      >
+                        {isSubmitSuccessful || isSubmitting ? (
+                          <>Please wait...</>
+                        ) : (
+                          <>
+                            <span
+                              style={{
+                                display: isSubmitting ? 'none' : 'inline',
+                              }}
+                            >
+                              Get started
+                            </span>
+                          </>
+                        )}
+                      </Button>
                       <Stack className="field-error-container mx-auto">
                         <FormFieldError error={errors?.username?.message} />
                       </Stack>
