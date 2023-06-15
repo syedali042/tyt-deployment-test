@@ -53,10 +53,7 @@ export default function AppModal({
             gap={2}
             mt={2}
           >
-            <Button
-              color="primary"
-              onClick={() => (window.location.href = path)}
-            >
+            <Button color="primary" onClick={() => router.push(path)}>
               Ok
             </Button>
             <Button color={'error'} onClick={() => handleClose()}>

@@ -20,8 +20,9 @@ const Welcome = () => {
           <Stack
             className="d-flex align-items-center font-weight-bold text-white"
             style={{fontSize: '1.5rem'}}
-            onClick={() => {
-              dispatch(signOutUser());
+            onClick={async () => {
+              await dispatch(signOutUser());
+              router.push('/auth/login');
             }}
           >
             <i

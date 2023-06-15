@@ -135,19 +135,24 @@ export const signInUser = (user) => async (dispatch) => {
 export const signOutUser = () => async (dispatch) => {
   dispatch(actions.startLoading());
   try {
-    dispatch(
-      actions.setCurrentUser({
-        id: '',
-        firebaseId: '',
-        username: '',
-        email: '',
-        photoURL: '',
-        displayName: '',
-        loginType: '',
+    await signOut(firebaseAuth)
+      .then(() => {
+        dispatch(
+          actions.setCurrentUser({
+            id: '',
+            firebaseId: '',
+            username: '',
+            email: '',
+            photoURL: '',
+            displayName: '',
+            loginType: '',
+          })
+        );
+        localStorage.removeItem('user');
       })
-    );
-    localStorage.removeItem('user');
-    window.location.href = '/auth/login';
+      .catch((error) => {
+        dispatch(actions.hasError(error));
+      });
     dispatch(actions.stopLoading());
   } catch (error) {
     dispatch(actions.stopLoading());
