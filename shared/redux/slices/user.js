@@ -3,6 +3,8 @@ import jwt_decode from 'jwt-decode';
 
 import axios from '../axios';
 import {tokenVariable} from '@/shared/config';
+import {auth as firebaseAuth} from '@/shared/firebase';
+import {signOut} from 'firebase/auth';
 
 // ----------------------------------------------------------------------
 const initialState = {
