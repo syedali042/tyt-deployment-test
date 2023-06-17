@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import {useRouter} from 'next/navigation';
 import {usePathname} from 'next/navigation';
-import {ThemeProvider, StyledEngineProvider, createTheme} from '@mui/material';
 
 const Authenticationlayout = ({children}) => {
   const [renderUi, setRenderUi] = useState(false);
@@ -22,34 +21,7 @@ const Authenticationlayout = ({children}) => {
       router.push('/auth/login');
   }, []);
 
-  const breakpointValues = {
-    xs: 0,
-    sm: 576,
-    md: 768,
-    lg: 992,
-    xl: 1200,
-  };
-
-  const theme = createTheme({
-    breakpoints: {
-      values: breakpointValues,
-    },
-    components: {
-      MuiUseMediaQuery: {
-        defaultProps: {
-          noSsr: true,
-        },
-      },
-    },
-  });
-
-  return (
-    <ThemeProvider theme={theme}>
-      <StyledEngineProvider injectFirst>
-        <SSRProvider>{renderUi && children}</SSRProvider>
-      </StyledEngineProvider>
-    </ThemeProvider>
-  );
+  return <SSRProvider>{renderUi && children}</SSRProvider>;
 };
 
 export default Authenticationlayout;

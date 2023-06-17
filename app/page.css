@@ -125,23 +125,24 @@
   -moz-appearance: none;
   -ms-appearance: none;
   appearance: none;
-  font-size: 19px;
+  font-size: 25px;
   -webkit-padding-start: 0px;
   padding-inline-start: 0px;
   -webkit-padding-end: 0px;
   padding-inline-end: 0px;
   height: auto;
   padding-left: 0px;
-  padding-top: 4px;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.9);
+  transform: translateX(-7%);
 }
 
 @media screen and (min-width: 48em) {
   .get-started-default-input {
-    font-size: 25px;
+    font-size: 25px !important;
     padding-left: 0.5px;
     padding-top: 0px;
+    transform: translateX(5%);
   }
 }
 

@@ -13,13 +13,8 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {CircularProgress} from '@mui/material';
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
-import {useMediaQuery} from '@mui/material';
-import {useTheme} from '@mui/material';
+
 export default function GetStarted() {
-  const theme = useTheme();
-  const isSmallDevice = useMediaQuery(theme.breakpoints.only('xs'), {
-    noSsr: true,
-  });
   let router = useRouter();
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
@@ -96,24 +91,22 @@ export default function GetStarted() {
                       style={{width: '30vh', borderBottom: '1px solid #555'}}
                     ></Row>
                     <Stack className="custom-input">
-                      <Row className="get-started-input-row justify-content-center mx-auto">
-                        <Col
-                          className="default-input-url"
-                          style={{transform: 'translateY(12%)'}}
-                        >
-                          <h1 className="defualt-input-url-text">
-                            tipyourteacher.co
-                          </h1>
-                          <h1 className="defualt-input-url-slash">/</h1>
+                      <Row
+                        className="mx-auto border align-items-center gx-0"
+                        style={{background: '#fff', maxWidth: '630px'}}
+                      >
+                        <Col xs={7} md={4} style={{paddingRight: 0}}>
+                          <h3
+                            className="get-started-tip-text font-weight-bold"
+                            style={{
+                              transform: 'translateY(27%)',
+                              fontWeight: 500,
+                            }}
+                          >
+                            tipyourteacher.co/
+                          </h3>
                         </Col>
-                        <Col
-                          className="get-started-default-input-container"
-                          style={{
-                            transform: `translateY(${
-                              isSmallDevice ? '-8%' : '-5%'
-                            }) translateX(-14%)`,
-                          }}
-                        >
+                        <Col xs={5} md={5} style={{paddingLeft: 0}}>
                           <input
                             name={'username'}
                             {...register('username')}
@@ -121,64 +114,21 @@ export default function GetStarted() {
                             className="get-started-default-input"
                           />
                         </Col>
-                        <Col
-                          className={`${
-                            isSmallDevice
-                              ? 'd-none'
-                              : 'get-started-default-input-button-container'
-                          }`}
-                        >
-                          <Button
-                            disabled={isSubmitting || isSubmitSuccessful}
-                            type="submit"
-                            className="get-started-default-input-button btn-primary"
-                          >
-                            {isSubmitSuccessful ? (
-                              <>Please wait...</>
-                            ) : (
-                              <>
-                                <span
-                                  style={{
-                                    display: isSubmitting ? 'none' : 'inline',
-                                  }}
-                                >
-                                  Get started
-                                </span>
-                                <CircularProgress
-                                  style={{
-                                    display: isSubmitting ? 'inline' : 'none',
-                                  }}
-                                  size={'20px'}
-                                  color="inherit"
-                                />
-                              </>
-                            )}
-                          </Button>
+                        <Col className="d-none d-md-block" md={3}>
+                          <SubmitButton
+                            isSubmitSuccessful={isSubmitSuccessful}
+                            isSubmitting={isSubmitting}
+                          />
                         </Col>
-                        <br />
                       </Row>
-                      <br />
-                      <Button
-                        disabled={isSubmitting || isSubmitSuccessful}
-                        type="submit"
-                        className={`btn-primary w-100 ${
-                          !isSmallDevice && 'd-none'
-                        }`}
-                      >
-                        {isSubmitSuccessful || isSubmitting ? (
-                          <>Please wait...</>
-                        ) : (
-                          <>
-                            <span
-                              style={{
-                                display: isSubmitting ? 'none' : 'inline',
-                              }}
-                            >
-                              Get started
-                            </span>
-                          </>
-                        )}
-                      </Button>
+                      <Row>
+                        <Col xs={12} className="d-md-none mt-2">
+                          <SubmitButton
+                            isSubmitSuccessful={isSubmitSuccessful}
+                            isSubmitting={isSubmitting}
+                          />
+                        </Col>
+                      </Row>
                       <Stack className="field-error-container mx-auto">
                         <FormFieldError error={errors?.username?.message} />
                       </Stack>
@@ -194,3 +144,34 @@ export default function GetStarted() {
     </>
   );
 }
+
+const SubmitButton = ({isSubmitting, isSubmitSuccessful}) => {
+  return (
+    <Button
+      disabled={isSubmitting || isSubmitSuccessful}
+      type="submit"
+      className="w-100 p-2 btn-primary d-flex justify-content-center"
+    >
+      {isSubmitSuccessful ? (
+        <>Please wait...</>
+      ) : (
+        <>
+          <span
+            style={{
+              display: isSubmitting ? 'none' : 'inline',
+            }}
+          >
+            Get started
+          </span>
+          <CircularProgress
+            style={{
+              display: isSubmitting ? 'inline' : 'none',
+            }}
+            size={25}
+            color="inherit"
+          />
+        </>
+      )}
+    </Button>
+  );
+};
