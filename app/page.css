@@ -125,7 +125,7 @@
   -moz-appearance: none;
   -ms-appearance: none;
   appearance: none;
-  font-size: 25px;
+  font-size: 22px;
   -webkit-padding-start: 0px;
   padding-inline-start: 0px;
   -webkit-padding-end: 0px;
@@ -134,7 +134,11 @@
   padding-left: 0px;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.9);
-  transform: translateX(-7%);
+  transform: translateX(-3%);
+}
+
+.get-started-tip-text {
+  font-size: 22px !important;
 }
 
 @media screen and (min-width: 48em) {
@@ -142,7 +146,11 @@
     font-size: 25px !important;
     padding-left: 0.5px;
     padding-top: 0px;
-    transform: translateX(5%);
+    transform: translateX(9%) translateY(-3%);
+  }
+
+  .get-started-tip-text {
+    font-size: 25px !important;
   }
 }
 
