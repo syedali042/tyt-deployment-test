@@ -1,24 +1,16 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Link from 'next/link';
 import {
   FormControl,
   Nav,
-  Modal,
   Row,
-  Col,
   Dropdown,
-  Badge,
   Navbar,
   InputGroup,
 } from 'react-bootstrap';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import {MENUITEMS} from '../sidebar/sidemenu';
-import {connect} from 'react-redux';
-import {shopingData} from '../../data/data-ecommerce/datashoppingcart';
-import {AddToCart} from '../../redux/action';
-import {useRouter} from 'next/navigation';
-import {Stack} from 'immutable';
+import {useDispatch} from 'react-redux';
+import {signOutUser} from '@/shared/redux/slices/user';
 
 //leftsidemenu
 const SideMenuIcon = () => {
@@ -60,117 +52,8 @@ const Fullscreen = (vale) => {
   }
 };
 
-// SwitcherMenu
-
-const SidSwitcherIcon = () => {
-  //leftsidemenu
-  document.querySelector('.demo_changer').classList.toggle('active');
-  let Rightside = document.querySelector('.demo_changer');
-  Rightside.style.right = '0px';
-};
-
-const RightSideBar = () => {
-  //rightsidebar
-  document.querySelector('.sidebar-right').classList.toggle('sidebar-open');
-  //swichermainright
-};
-
 const Header = ({localVaraiable}) => {
-  let {basePath} = useRouter();
-
-  // For CountrySelector Modal
-  const [show, setShow] = useState(false);
-  const [show1, setShow1] = useState(false);
-  const [show2, setShow2] = useState(false);
-  const [InputValue, setInputValue] = useState('');
-  const [searchval, setsearchval] = useState('Type something');
-  const [searchcolor, setsearchcolor] = useState('text-dark');
-  const [NavData, setNavData] = useState([]);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  // let navigate = useNavigate();
-  let myfunction = (inputvalue) => {
-    document.querySelector('.search-result').classList.remove('d-none');
-    // console.log('ok');
-
-    let i = [];
-    let allElement2 = [];
-
-    MENUITEMS.map((mainlevel) => {
-      if (mainlevel.Items) {
-        mainlevel.Items.map((sublevel) => {
-          // console.log("sublevel --- ", sublevel)
-          if (sublevel.children) {
-            sublevel.children.map((sublevel1) => {
-              // console.log("sublevel1 --- ", sublevel1)
-              i.push(sublevel1);
-              if (sublevel1.children) {
-                sublevel1.children.map((sublevel2) => {
-                  // console.log("sublevel2 --- ", sublevel2)
-                  i.push(sublevel2);
-                  return sublevel2;
-                });
-              }
-              return sublevel1;
-            });
-          }
-          return sublevel;
-        });
-      }
-      return mainlevel;
-    });
-    for (let allElement of i) {
-      if (allElement.title.toLowerCase().includes(inputvalue.toLowerCase())) {
-        if (
-          allElement.title.toLowerCase().startsWith(inputvalue.toLowerCase())
-        ) {
-          setShow2(true);
-          allElement2.push(allElement);
-        }
-      }
-    }
-    if (!allElement2.length || inputvalue === '') {
-      if (inputvalue === '') {
-        setShow2(false);
-        setsearchval('Type something');
-        setsearchcolor('text-dark');
-      }
-      if (!allElement2.length) {
-        setShow2(false);
-        setsearchcolor('text-danger');
-        setsearchval('There is no component with this name');
-      }
-    }
-    setNavData(allElement2);
-  };
-
-  // let location = useLocation();
-
-  const [FiltershopingData, sethopingData] = useState([]);
-  const [Price, setPrice] = useState(0);
-
-  useEffect(() => {
-    document.querySelector('.main-content')?.addEventListener('click', () => {
-      document.querySelector('.search-result')?.classList.add('d-none');
-    });
-    if (localVaraiable == undefined) {
-      sethopingData(shopingData);
-      shopingData.filter((ele) => {
-        setPrice(Number(ele.newprice) + Price);
-      });
-    } else if (localVaraiable.length == 0) {
-      sethopingData(shopingData);
-      shopingData.filter((ele) => {
-        setPrice(Number(ele.newprice) + Price);
-      });
-    } else {
-      sethopingData(localVaraiable);
-      localVaraiable.filter((ele) => {
-        setPrice(Number(ele.newprice) + Price);
-      });
-    }
-  }, [Price, localVaraiable]);
+  const dispatch = useDispatch();
 
   return (
     <div>
@@ -294,23 +177,21 @@ const Header = ({localVaraiable}) => {
                             </div>
                           </div>
                           <div className="dropdown-divider m-0"></div>
-                          <Link
-                            className="dropdown-item"
-                            href={`/components/pages/profile/`}
-                          >
+                          <Link className="dropdown-item" href={`/dashboard`}>
                             <i className="dropdown-icon fe fe-user"></i> Profile
                           </Link>
-                          <Link
-                            className="dropdown-item"
-                            href={`/components/authentication/lockscreen/`}
-                          >
+                          <Link className="dropdown-item" href={`/dashboard`}>
                             <i className="dropdown-icon fe fe-lock"></i>{' '}
                             Lockscreen
                           </Link>
-                          <Link className="dropdown-item" href={`/`}>
+                          <span
+                            className="dropdown-item"
+                            href={`/`}
+                            onClick={() => dispatch(signOutUser())}
+                          >
                             <i className="dropdown-icon fe fe-alert-circle"></i>{' '}
                             Sign out
-                          </Link>
+                          </span>
                         </Dropdown.Menu>
                       </Row>
                     </Dropdown>
@@ -327,4 +208,4 @@ const Header = ({localVaraiable}) => {
 const mapStateToProps = (state) => ({
   localVaraiable: state,
 });
-export default connect(mapStateToProps, {AddToCart})(Header);
+export default Header;

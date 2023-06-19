@@ -3,6 +3,8 @@ import jwt_decode from 'jwt-decode';
 
 import axios from '../axios';
 import {tokenVariable} from '@/shared/config';
+import {auth as firebaseAuth} from '@/shared/firebase';
+import {signOut} from 'firebase/auth';
 
 // ----------------------------------------------------------------------
 const initialState = {
@@ -98,7 +100,11 @@ export const checkUsernameAvailability =
 export const createUser = (user) => async (dispatch) => {
   dispatch(actions.startLoading());
   try {
-    const response = await axios.post('/users', user);
+    const response = await axios.post('/users', user, {
+      headers: {
+        [tokenVariable]: user.accessToken,
+      },
+    });
     dispatch(actions.setCurrentUser(response.data.body));
     localStorage.setItem('user', JSON.stringify(response.data.body));
     dispatch(actions.stopLoading());
@@ -135,19 +141,24 @@ export const signInUser = (user) => async (dispatch) => {
 export const signOutUser = () => async (dispatch) => {
   dispatch(actions.startLoading());
   try {
-    dispatch(
-      actions.setCurrentUser({
-        id: '',
-        firebaseId: '',
-        username: '',
-        email: '',
-        photoURL: '',
-        displayName: '',
-        loginType: '',
+    await signOut(firebaseAuth)
+      .then(() => {
+        dispatch(
+          actions.setCurrentUser({
+            id: '',
+            firebaseId: '',
+            username: '',
+            email: '',
+            photoURL: '',
+            displayName: '',
+            loginType: '',
+          })
+        );
+        localStorage.removeItem('user');
       })
-    );
-    localStorage.removeItem('user');
-    window.location.href = '/auth/login';
+      .catch((error) => {
+        dispatch(actions.hasError(error));
+      });
     dispatch(actions.stopLoading());
   } catch (error) {
     dispatch(actions.stopLoading());

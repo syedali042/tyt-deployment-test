@@ -3,24 +3,25 @@ import React, {useEffect, useState} from 'react';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import {useRouter} from 'next/navigation';
 import {usePathname} from 'next/navigation';
+
 const Authenticationlayout = ({children}) => {
   const [renderUi, setRenderUi] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   useEffect(() => {
-    const isDashboardIncludes = pathname.includes('/dashboard');
+    const isWelcomeOrDashboardIncludes =
+      pathname.includes('/welcome') || pathname.includes('/dashboard');
     const userFromStorage = localStorage.getItem('user');
-    if (userFromStorage && !isDashboardIncludes) router.push('/dashboard');
-    else if (!userFromStorage && !isDashboardIncludes) setRenderUi(true);
-    else if (userFromStorage && isDashboardIncludes) setRenderUi(true);
-    else if (!userFromStorage && isDashboardIncludes)
+    if (userFromStorage && !isWelcomeOrDashboardIncludes)
+      router.push('/welcome');
+    else if (!userFromStorage && !isWelcomeOrDashboardIncludes)
+      setRenderUi(true);
+    else if (userFromStorage && isWelcomeOrDashboardIncludes) setRenderUi(true);
+    else if (!userFromStorage && isWelcomeOrDashboardIncludes)
       router.push('/auth/login');
   }, []);
-  return (
-    <>
-      <SSRProvider>{renderUi && children}</SSRProvider>
-    </>
-  );
+
+  return <SSRProvider>{renderUi && children}</SSRProvider>;
 };
 
 export default Authenticationlayout;

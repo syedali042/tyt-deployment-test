@@ -117,7 +117,6 @@
 
 .get-started-default-input {
   width: 100%;
-  min-width: 100px;
   outline: 2px solid transparent;
   outline-offset: 2px;
   position: relative;
@@ -125,23 +124,32 @@
   -moz-appearance: none;
   -ms-appearance: none;
   appearance: none;
-  font-size: 19px;
+  font-size: 18px;
   -webkit-padding-start: 0px;
   padding-inline-start: 0px;
   -webkit-padding-end: 0px;
   padding-inline-end: 0px;
   height: auto;
   padding-left: 0px;
-  padding-top: 4px;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.9);
+  transform: translateY(5%);
+}
+
+.get-started-tip-text {
+  font-size: 18px !important;
 }
 
 @media screen and (min-width: 48em) {
   .get-started-default-input {
-    font-size: 25px;
+    font-size: 25px !important;
     padding-left: 0.5px;
     padding-top: 0px;
+    transform: translateY(7%);
+  }
+
+  .get-started-tip-text {
+    font-size: 25px !important;
   }
 }
 
@@ -205,5 +213,5 @@
 
 .field-error-container {
   max-width: 600px;
-  min-width: 370px;
+  /* min-width: 370px; */
 }
