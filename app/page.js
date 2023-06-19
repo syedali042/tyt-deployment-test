@@ -80,22 +80,29 @@ export default function GetStarted() {
                     style={{width: '200px'}}
                   />
                 </Stack>
-                <FormProvider methods={methods}>
+                <FormProvider
+                  methods={methods}
+                  className="login100-form validate-form"
+                >
                   <form onSubmit={handleSubmit(onSubmit)}>
-                    <h1 className="text-center mt-5">
+                    <h1 className="d-none d-md-block text-center mt-5">
                       {' '}
                       Set Up Account & Start Getting Your Tips
                     </h1>
+                    <h3 className="d-md-none text-center mt-5">
+                      {' '}
+                      Set Up Account & Start Getting Your Tips
+                    </h3>
                     <Row
                       className="mx-auto mb-5"
                       style={{width: '30vh', borderBottom: '1px solid #555'}}
                     ></Row>
-                    <Stack className="custom-input">
-                      <Row
-                        className="mx-auto border align-items-center gx-0"
-                        style={{background: '#fff', maxWidth: '630px'}}
-                      >
-                        <Col xs={7} md={4} style={{paddingRight: 0}}>
+                    <Row
+                      className="mx-auto border gx-0 d-flex align-items-center justify-content-between"
+                      style={{background: '#fff', maxWidth: '630px'}}
+                    >
+                      <Col className="d-flex" xs={12} md={9}>
+                        <Stack>
                           <h3
                             className="get-started-tip-text font-weight-bold"
                             style={{
@@ -105,33 +112,35 @@ export default function GetStarted() {
                           >
                             tipyourteacher.co/
                           </h3>
-                        </Col>
-                        <Col xs={5} md={5} style={{paddingLeft: 0}}>
+                        </Stack>
+                        <Stack>
                           <input
                             name={'username'}
                             {...register('username')}
                             placeholder="yourname"
                             className="get-started-default-input"
                           />
-                        </Col>
-                        <Col className="d-none d-md-block" md={3}>
-                          <SubmitButton
-                            isSubmitSuccessful={isSubmitSuccessful}
-                            isSubmitting={isSubmitting}
-                          />
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col xs={12} className="d-md-none mt-2">
-                          <SubmitButton
-                            isSubmitSuccessful={isSubmitSuccessful}
-                            isSubmitting={isSubmitting}
-                          />
-                        </Col>
-                      </Row>
-                      <Stack className="field-error-container mx-auto">
+                        </Stack>
+                      </Col>
+                      <Col className="d-none d-md-block" md={3}>
+                        <SubmitButton
+                          isSubmitSuccessful={isSubmitSuccessful}
+                          isSubmitting={isSubmitting}
+                        />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs={12} className="d-md-none mt-2">
+                        <SubmitButton
+                          isSubmitSuccessful={isSubmitSuccessful}
+                          isSubmitting={isSubmitting}
+                        />
+                      </Col>
+                    </Row>
+                    <Stack>
+                      <center>
                         <FormFieldError error={errors?.username?.message} />
-                      </Stack>
+                      </center>
                     </Stack>
                   </form>
                 </FormProvider>

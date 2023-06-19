@@ -117,7 +117,6 @@
 
 .get-started-default-input {
   width: 100%;
-  min-width: 100px;
   outline: 2px solid transparent;
   outline-offset: 2px;
   position: relative;
@@ -125,7 +124,7 @@
   -moz-appearance: none;
   -ms-appearance: none;
   appearance: none;
-  font-size: 22px;
+  font-size: 18px;
   -webkit-padding-start: 0px;
   padding-inline-start: 0px;
   -webkit-padding-end: 0px;
@@ -134,11 +133,11 @@
   padding-left: 0px;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.9);
-  transform: translateX(-3%);
+  transform: translateY(5%);
 }
 
 .get-started-tip-text {
-  font-size: 22px !important;
+  font-size: 18px !important;
 }
 
 @media screen and (min-width: 48em) {
@@ -146,7 +145,7 @@
     font-size: 25px !important;
     padding-left: 0.5px;
     padding-top: 0px;
-    transform: translateX(9%) translateY(-3%);
+    transform: translateY(7%);
   }
 
   .get-started-tip-text {
@@ -214,5 +213,5 @@
 
 .field-error-container {
   max-width: 600px;
-  min-width: 370px;
+  /* min-width: 370px; */
 }
