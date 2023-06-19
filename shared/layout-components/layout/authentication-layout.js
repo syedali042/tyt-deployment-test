@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import {useRouter} from 'next/navigation';
 import {usePathname} from 'next/navigation';
+
 const Authenticationlayout = ({children}) => {
   const [renderUi, setRenderUi] = useState(false);
   const router = useRouter();
@@ -19,11 +20,8 @@ const Authenticationlayout = ({children}) => {
     else if (!userFromStorage && isWelcomeOrDashboardIncludes)
       router.push('/auth/login');
   }, []);
-  return (
-    <>
-      <SSRProvider>{renderUi && children}</SSRProvider>
-    </>
-  );
+
+  return <SSRProvider>{renderUi && children}</SSRProvider>;
 };
 
 export default Authenticationlayout;
