@@ -1,5 +1,11 @@
 import '@/styles/globals.scss';
 import {Providers} from '@/shared/redux/provider';
+export const metadata = {
+  viewport: {
+    width: 'device-width',
+    height: 'device-height',
+  },
+};
 export default function RootLayout({children}) {
   return (
     <html lang="en">
