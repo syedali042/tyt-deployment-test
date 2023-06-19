@@ -48,7 +48,7 @@ const Welcome = () => {
             >
               Success!
             </h3>
-            <h4 className={'text-justify'}>
+            <h4>
               You are now a part of Tip Your Teacher! <br />
               <br />
               We look forward to helping those you serve show their appreciation
