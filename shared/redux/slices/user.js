@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import jwt_decode from 'jwt-decode';
 
 import axios from '../axios';
-import {tokenVariable} from '@/shared/config';
+import {tokenVariable, welcomeEmailWebhookUrl} from '@/shared/config';
 import {auth as firebaseAuth} from '@/shared/firebase';
 import {signOut} from 'firebase/auth';
 
@@ -105,8 +105,17 @@ export const createUser = (user) => async (dispatch) => {
         [tokenVariable]: user.accessToken,
       },
     });
+
     dispatch(actions.setCurrentUser(response.data.body));
     localStorage.setItem('user', JSON.stringify(response.data.body));
+
+    const {username, email, displayName} = response.data.body;
+    const sendWelcomeEmail = await axios.post(welcomeEmailWebhookUrl, {
+      displayName,
+      username,
+      email,
+    });
+
     dispatch(actions.stopLoading());
   } catch (error) {
     console.log(error);
