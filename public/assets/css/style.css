@@ -130,7 +130,7 @@ License        :   Licensed under ThemeForest License
   --gray: #6c757d;
   --gray-dark: #343a40;
   --primary: #6c5ffc;
-  --secondary: #6c757d;
+  --secondary: #2D476B;
   --success: #28a745;
   --info: #17a2b8;
   --warning: #ffc107;
@@ -1765,13 +1765,13 @@ fieldset:disabled a.btn {
 
 .btn-secondary {
   color: #fff;
-  background: #05c3fb !important;
+  background: rgba(45,71,109,1) !important;
 }
 
 .btn-secondary:hover {
   color: #fff;
-  background-color: #76c9ef;
-  border-color: #76c9ef;
+  background-color: rgba(45,71,109, 0.7);
+  border-color: rgba(45,71,109,1);
   opacity: 0.7;
 }
 

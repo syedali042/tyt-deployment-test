@@ -46,8 +46,9 @@ export const EmailPasswordForm = ({
       />
       <Stack className="container-login100-form-btn">
         <Button
+          variant={'secondary'}
           type="submit"
-          className="login100-form-btn btn-primary"
+          className="login100-form-btn"
           disabled={!isUsernameVerified || isSubmitting || isSubmitSuccessful}
           style={{
             cursor: `${

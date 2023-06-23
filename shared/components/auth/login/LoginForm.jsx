@@ -104,9 +104,10 @@ export const LoginForm = () => {
           <Stack className="container-login100-form-btn">
             {showEmailPasswordForm ? (
               <Button
+                variant={'secondary'}
                 disabled={isSubmitting || isSubmitSuccessful}
                 type="submit"
-                className="login100-form-btn btn-primary"
+                className="login100-form-btn"
               >
                 {isSubmitSuccessful ? (
                   <>Please wait, heading to dashboard</>
@@ -131,8 +132,9 @@ export const LoginForm = () => {
               </Button>
             ) : (
               <Button
+                variant={'secondary'}
                 onClick={() => setShowEmailPasswordForm(true)}
-                className="login100-form-btn btn-primary"
+                className="login100-form-btn"
               >
                 Next
               </Button>
