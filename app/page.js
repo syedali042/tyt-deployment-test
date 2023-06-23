@@ -157,9 +157,10 @@ export default function GetStarted() {
 const SubmitButton = ({isSubmitting, isSubmitSuccessful}) => {
   return (
     <Button
+      variant="secondary"
       disabled={isSubmitting || isSubmitSuccessful}
       type="submit"
-      className="w-100 p-2 btn-primary d-flex justify-content-center"
+      className="w-100 p-2 d-flex justify-content-center"
     >
       {isSubmitSuccessful ? (
         <>Please wait...</>
