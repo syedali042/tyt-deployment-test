@@ -247,33 +247,37 @@ const Sidebar = () => {
         <PerfectScrollbar
           options={{suppressScrollX: true, useBothWheelAxes: false}}
         >
-          <div className="side-header">
-            <Link
-              className="header-brand1"
-              href={`/components/dashboard/dashboard/`}
-            >
+          <div
+            className="side-header"
+            style={{
+              textAlign: 'left',
+              display: 'block !important',
+              padding: '0px 20px !important',
+            }}
+          >
+            <Link className="header-brand1" href={`/`}>
               <img
                 src={`/assets/images/brand/logo-white.png`}
-                className="header-brand-img desktop-logo"
+                className="desktop-logo"
                 alt="logo1"
-                style={{width: '200px'}}
+                style={{width: '150px'}}
               />
-              <img
+              {/* <img
                 src={`/assets/images/brand/icon-white.png`}
                 className="header-brand-img toggle-logo"
                 alt="logo-2"
-              />
-              <img
+              /> */}
+              {/* <img
                 src={`/assets/images/brand/icon-dark.png`}
                 className="header-brand-img light-logo"
                 alt="logo-3"
-                style={{width: '200px'}}
-              />
+                style={{width: '150px'}}
+              /> */}
               <img
                 src={`/assets/images/brand/logo-dark.png`}
-                className="header-brand-img light-logo1"
+                className="light-logo1"
                 alt="logo-4"
-                style={{width: '200px'}}
+                style={{width: '150px'}}
               />
             </Link>
           </div>
