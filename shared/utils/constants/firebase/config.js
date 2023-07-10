@@ -1,13 +1,4 @@
 export const config = {
-  local: {
-    apiKey: 'AIzaSyB-qbmHUSEpDEufsTQtCHvgKhDAa1vec14',
-    authDomain: 'tipyourteacher-development.firebaseapp.com',
-    projectId: 'tipyourteacher-development',
-    storageBucket: 'tipyourteacher-development.appspot.com',
-    messagingSenderId: '55362616899',
-    appId: '1:55362616899:web:9039b3643e5b88c30c5ef6',
-    measurementId: 'G-KDEHDB4W0Q',
-  },
   development: {
     apiKey: 'AIzaSyB-qbmHUSEpDEufsTQtCHvgKhDAa1vec14',
     authDomain: 'tipyourteacher-development.firebaseapp.com',
@@ -23,8 +14,8 @@ export const config = {
     projectId: 'tipyourteacher-development',
     storageBucket: 'tipyourteacher-development.appspot.com',
     messagingSenderId: '55362616899',
-    appId: '1:55362616899:web:5f9de8e111c322ef0c5ef6',
-    measurementId: 'G-1K52ZECLXW',
+    appId: '1:55362616899:web:9039b3643e5b88c30c5ef6',
+    measurementId: 'G-KDEHDB4W0Q',
   },
   live: {
     apiKey: 'AIzaSyB-qbmHUSEpDEufsTQtCHvgKhDAa1vec14',
@@ -32,8 +23,8 @@ export const config = {
     projectId: 'tipyourteacher-development',
     storageBucket: 'tipyourteacher-development.appspot.com',
     messagingSenderId: '55362616899',
-    appId: '1:55362616899:web:d7c2f27903b1aef70c5ef6',
-    measurementId: 'G-6302SRSHMC',
+    appId: '1:55362616899:web:9039b3643e5b88c30c5ef6',
+    measurementId: 'G-KDEHDB4W0Q',
   },
   production: {
     apiKey: 'AIzaSyAhMUY7iVr-FFz5WEsNoOmFEof4DCNSFbM',
