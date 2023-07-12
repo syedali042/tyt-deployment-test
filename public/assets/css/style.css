@@ -88,9 +88,9 @@ License        :   Licensed under ThemeForest License
 /* ######## FONT ######## */
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 
-/* ######## BOOTSTRAP ######## */
+/* ######### BOOTSTRAP ######### */
 :root {
-  --primary-rgb: 191, 77, 77;
+  --primary-rgb: 45, 71, 107;
   --primary-bg-color: rgb(var(--primary-rgb));
   --primary-bg-hover: rgb(var(--primary-rgb), 0.9);
   --primary-bg-border: rgb(var(--primary-rgb));
@@ -29366,11 +29366,7 @@ a.text-primary:focus {
 
 .login-img::before {
   content: '';
-  background: linear-gradient(
-    to right,
-    var(--primary06) 0%,
-    var(--primary02) 100%
-  );
+  background: var(--primary-bg-color);
   height: 100%;
   width: 100%;
   position: absolute;
