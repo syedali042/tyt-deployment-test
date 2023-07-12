@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import {Stack} from 'react-bootstrap';
+import {Col, Row, Stack} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 import {getCurrentUser, signOutUser} from '@/shared/redux/slices/user';
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
@@ -36,29 +36,36 @@ const Welcome = () => {
           </Stack>
         </Stack>
         <Stack className={'page'}>
-          <Stack
-            className={'bg-white p-5 mx-auto w-50'}
-            style={{borderRadius: '10px'}}
-          >
-            <h3
-              style={{
-                fontWeight: 600,
-              }}
-              className="text-primary"
-            >
-              Success!
-            </h3>
-            <h4>
-              You are now a part of Tip Your Teacher! <br />
-              <br />
-              We look forward to helping those you serve show their appreciation
-              for all you do in the noblest of professions. <br />
-              <br />
-              We have added you to our list to be a part of our intitial launch.
-              Look for an email from us with additional information on your next
-              steps!
-            </h4>
-          </Stack>
+          <Row style={{margin: 0}}>
+            <Col md={3} sm={2} xs={1}></Col>
+            <Col md={6} sm={8} xs={10}>
+              <Stack
+                className={'bg-white p-5 mx-auto'}
+                style={{borderRadius: '10px'}}
+              >
+                <h3
+                  style={{
+                    fontWeight: 600,
+                  }}
+                  className="text-primary"
+                >
+                  Success!
+                </h3>
+                <h4>
+                  You are now a part of Tip Your Teacher! <br />
+                  <br />
+                  We look forward to helping those you serve show their
+                  appreciation for all you do in the noblest of professions.{' '}
+                  <br />
+                  <br />
+                  We have added you to our list to be a part of our intitial
+                  launch. Look for an email from us with additional information
+                  on your next steps!
+                </h4>
+              </Stack>
+            </Col>
+            <Col md={3} sm={2} xs={1}></Col>
+          </Row>
         </Stack>
       </Stack>
     </Authenticationlayout>
