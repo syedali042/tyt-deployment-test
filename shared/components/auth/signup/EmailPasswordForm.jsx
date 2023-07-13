@@ -13,6 +13,7 @@ export const EmailPasswordForm = ({
       <Row style={{border: '1px solid #eee'}}></Row>
       <FormGroupInput
         label={'Email'}
+        labelColor={'#fff'}
         name={'email'}
         type={'email'}
         register={register}
@@ -22,6 +23,7 @@ export const EmailPasswordForm = ({
       />
       <FormGroupInput
         label={'Password'}
+        labelColor={'#fff'}
         name={'password'}
         type={'password'}
         register={register}
@@ -30,13 +32,14 @@ export const EmailPasswordForm = ({
         required
       />
       {!errors?.password?.message && (
-        <Typography fontSize={12} px={0.5} mt={-1.5}>
+        <Typography color={'#FFFFCC'} fontSize={12} px={0.5} mt={-1.5}>
           Password has to have at least 1 small character, 1 capital character,
           a number and a special character
         </Typography>
       )}
       <FormGroupInput
         label={'Confirm Password'}
+        labelColor={'#fff'}
         name={'confirmPassword'}
         type={'password'}
         register={register}

@@ -1,4 +1,5 @@
 'use client';
+import '../page.css';
 import React from 'react';
 import {Col, Row, Stack} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
@@ -40,18 +41,18 @@ const Welcome = () => {
             <Col md={3} sm={2} xs={1}></Col>
             <Col md={6} sm={8} xs={10}>
               <Stack
-                className={'bg-white p-5 mx-auto'}
+                className={'bg-light-blue p-5 mx-auto'}
                 style={{borderRadius: '10px'}}
               >
                 <h3
                   style={{
                     fontWeight: 600,
                   }}
-                  className="text-primary"
+                  className="text-white"
                 >
                   Success!
                 </h3>
-                <h4>
+                <h4 className="text-white">
                   You are now a part of Tip Your Teacher! <br />
                   <br />
                   We look forward to helping those you serve show their
