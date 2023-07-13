@@ -29,7 +29,7 @@ export const UsernameVerifier = ({
     <Stack>
       <Form.Group className="text-start form-group" controlId="formEmail">
         <Row style={{alignItems: 'center'}}>
-          <Col md={10}>
+          <Col md={9} style={{padding: '0 !important'}}>
             <Stack style={{display: 'flex', alignItems: 'center'}}>
               <p
                 className="text-white"
@@ -42,7 +42,7 @@ export const UsernameVerifier = ({
               </p>
               <Form.Control
                 className="form-control"
-                placeholder="Enter your username"
+                placeholder="Username"
                 name="username"
                 {...register('username')}
                 type="text"
@@ -56,7 +56,7 @@ export const UsernameVerifier = ({
               />
             </Stack>
           </Col>
-          <Col style={{padding: '0 !important'}} md={2}>
+          <Col style={{padding: '0 !important'}} md={3}>
             &nbsp;
             <button
               style={{
