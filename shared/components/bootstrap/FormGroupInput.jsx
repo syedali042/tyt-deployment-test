@@ -10,13 +10,18 @@ export const FormGroupInput = ({
   register,
   error,
   placeholder,
+  labelColor,
   ...others
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   return (
     <>
       <Form.Group className="text-start form-group" controlId="formpassword">
-        <Form.Label>{label}</Form.Label>
+        {label && (
+          <Form.Label style={{color: labelColor || 'inherit'}}>
+            {label}
+          </Form.Label>
+        )}
         <InputGroup>
           <Form.Control
             className="form-control"
@@ -24,7 +29,6 @@ export const FormGroupInput = ({
             name={name}
             {...register(name)}
             type={!showPassword && type === 'password' ? 'password' : 'text'}
-            required
             {...others}
           />
           {type === 'password' && (
