@@ -30,6 +30,8 @@
     "@popperjs/core": "^2.11.7",
     "@redux-devtools/extension": "^3.2.5",
     "@reduxjs/toolkit": "^1.9.5",
+    "@stripe/react-stripe-js": "^2.1.1",
+    "@stripe/stripe-js": "^1.54.1",
     "@uiw/react-color": "^1.2.2",
     "apexcharts": "^3.40.0",
     "autoprefixer": "^10.4.14",
