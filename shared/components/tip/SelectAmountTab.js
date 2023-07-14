@@ -3,7 +3,7 @@ import {Form, InputGroup} from 'react-bootstrap';
 import {Stack, Row, Col, Button} from 'react-bootstrap';
 import {useDispatch} from 'react-redux';
 
-import {suggestedAmounts} from '@/shared/utils/tipUtils';
+import {suggestedAmounts} from '@/shared/constants';
 
 const SelectAmountTab = ({tabSettings}) => {
   const dispatch = useDispatch();

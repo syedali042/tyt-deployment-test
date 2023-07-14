@@ -1,5 +1,5 @@
 import {Stack} from 'react-bootstrap';
-import {SEND_TIP_TABS, SEND_TIP_TABS_ARR} from '@/shared/utils/tipUtils';
+import {SEND_TIP_TABS, SEND_TIP_TABS_ARR} from '@/shared/constants';
 
 const StepsHeader = ({tabSettings, setTabSettings}) => {
   const activateTab = async ({tab}) => {
