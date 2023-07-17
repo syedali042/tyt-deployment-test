@@ -73,10 +73,10 @@ export default function GetStarted() {
             {/* <!-- CONTAINER OPEN --> */}
             <Row className="col-login mx-auto mt-7"></Row>
             <Container className="container">
-              <Stack className="wrap bg-white p-6">
+              <Stack className="wrap bg-light-blue p-6">
                 <Stack className="d-flex justify-content-center">
                   <Image
-                    src={'/assets/images/brand/logo-dark.png'}
+                    src={'/assets/images/brand/logo-white.png'}
                     style={{width: '200px'}}
                   />
                 </Stack>
@@ -85,32 +85,36 @@ export default function GetStarted() {
                   className="login100-form validate-form"
                 >
                   <form onSubmit={handleSubmit(onSubmit)}>
-                    <h1 className="d-none d-md-block text-center mt-5">
+                    <h1 className="d-none d-md-block text-white text-center mt-5">
                       {' '}
                       Set Up Account & Start Getting Your Tips
                     </h1>
-                    <h3 className="d-md-none text-center mt-5">
+                    <h3 className="d-md-none text-white text-center mt-5">
                       {' '}
                       Set Up Account & Start Getting Your Tips
                     </h3>
                     <Row
                       className="mx-auto mb-5"
-                      style={{width: '30vh', borderBottom: '1px solid #555'}}
+                      style={{width: '10%', borderBottom: '1px solid #fff'}}
                     ></Row>
                     <Row
                       className="mx-auto border gx-0 d-flex align-items-center justify-content-between"
-                      style={{background: '#fff', maxWidth: '630px'}}
+                      style={{
+                        background: '#fff',
+                        maxWidth: '630px',
+                        borderRadius: '10px',
+                      }}
                     >
                       <Col className="d-flex" xs={12} md={9}>
                         <Stack>
                           <h3
                             className="get-started-tip-text font-weight-bold"
                             style={{
-                              transform: 'translateY(27%)',
+                              transform: 'translateY(25%)',
                               fontWeight: 500,
                             }}
                           >
-                            tipyourteacher.co/
+                            tipyourteacher.co/t/
                           </h3>
                         </Stack>
                         <Stack>

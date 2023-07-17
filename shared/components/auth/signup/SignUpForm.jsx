@@ -118,10 +118,10 @@ export const SignUpForm = () => {
   return (
     <FormProvider methods={methods} className="login100-form validate-form">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="text-center mt-5"> Sign Up</h1>
+        <h1 className="text-center text-white mt-5"> Sign Up</h1>
         <Row
           className="mx-auto mb-5"
-          style={{width: '4vh', borderBottom: '1px solid #555'}}
+          style={{width: '10%', borderBottom: '1px solid #fff'}}
         ></Row>
         <UsernameVerifier
           register={register}

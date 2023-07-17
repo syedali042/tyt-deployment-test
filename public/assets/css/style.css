@@ -88,9 +88,9 @@ License        :   Licensed under ThemeForest License
 /* ######## FONT ######## */
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 
-/* ######## BOOTSTRAP ######## */
+/* ######### BOOTSTRAP ######### */
 :root {
-  --primary-rgb: 191, 77, 77;
+  --primary-rgb: 45, 71, 107;
   --primary-bg-color: rgb(var(--primary-rgb));
   --primary-bg-hover: rgb(var(--primary-rgb), 0.9);
   --primary-bg-border: rgb(var(--primary-rgb));
@@ -130,7 +130,7 @@ License        :   Licensed under ThemeForest License
   --gray: #6c757d;
   --gray-dark: #343a40;
   --primary: #6c5ffc;
-  --secondary: #2D476B;
+  --secondary: #BF4D4D;
   --success: #28a745;
   --info: #17a2b8;
   --warning: #ffc107;
@@ -1765,13 +1765,13 @@ fieldset:disabled a.btn {
 
 .btn-secondary {
   color: #fff;
-  background: rgba(45,71,109,1) !important;
+  background: #BF4D4D !important;
 }
 
 .btn-secondary:hover {
   color: #fff;
-  background-color: rgba(45,71,109, 0.7);
-  border-color: rgba(45,71,109,1);
+  background-color: rgba(191, 77, 77, 0.7);
+  border-color: rgba(191, 77, 77, 1);
   opacity: 0.7;
 }
 
@@ -17585,7 +17585,8 @@ table.table-bordered.dataTable thead tr:first-child td {
 }
 
 .wrap-login100 {
-  background: #fff;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
   overflow: hidden;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -29366,11 +29367,7 @@ a.text-primary:focus {
 
 .login-img::before {
   content: '';
-  background: linear-gradient(
-    to right,
-    var(--primary06) 0%,
-    var(--primary02) 100%
-  );
+  background: var(--primary-bg-color);
   height: 100%;
   width: 100%;
   position: absolute;
@@ -60808,7 +60805,8 @@ h6 {
   margin-block-end: 0.66em;
 }
 
-h1, .h1{
+h1,
+.h1 {
   margin-block-end: 0.66em;
   font-family: inherit;
   font-weight: 400;
@@ -60832,7 +60830,7 @@ p,
   font-family: inherit;
   font-weight: 400;
   line-height: 1.1;
-  color: #2D476B;
+  color: #2d476b;
 }
 
 h1,

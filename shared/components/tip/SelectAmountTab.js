@@ -75,6 +75,7 @@ const SelectAmountTab = ({tabSettings}) => {
       <Row>
         <Col md={{span: 2, offset: 5}}>
           <Button
+            variant="secondary"
             style={{
               width: '100%',
               padding: '10px',

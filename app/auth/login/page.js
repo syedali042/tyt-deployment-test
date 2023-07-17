@@ -14,10 +14,10 @@ export default function Login() {
               <Row className="wrap-login100 p-6">
                 <Col className="text-center">
                   <Image
-                    src={'/assets/images/brand/logo-dark.png'}
+                    src={'/assets/images/brand/logo-white.png'}
                     className="header-brand-img"
                     alt=""
-                    style={{width: '30vh'}}
+                    style={{width: '50%'}}
                   />
                 </Col>
                 <LoginForm />
