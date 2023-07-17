@@ -95,7 +95,7 @@ export default function GetStarted() {
                     </h3>
                     <Row
                       className="mx-auto mb-5"
-                      style={{width: '30vh', borderBottom: '1px solid #fff'}}
+                      style={{width: '10%', borderBottom: '1px solid #fff'}}
                     ></Row>
                     <Row
                       className="mx-auto border gx-0 d-flex align-items-center justify-content-between"

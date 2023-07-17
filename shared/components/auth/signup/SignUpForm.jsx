@@ -121,7 +121,7 @@ export const SignUpForm = () => {
         <h1 className="text-center text-white mt-5"> Sign Up</h1>
         <Row
           className="mx-auto mb-5"
-          style={{width: '4vh', borderBottom: '1px solid #fff'}}
+          style={{width: '10%', borderBottom: '1px solid #fff'}}
         ></Row>
         <UsernameVerifier
           register={register}

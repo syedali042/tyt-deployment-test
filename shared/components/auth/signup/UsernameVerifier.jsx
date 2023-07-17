@@ -1,3 +1,4 @@
+import './UsernameVerifier.css';
 import {checkUsernameAvailability} from '@/shared/redux/slices/user';
 import {useDispatch} from 'react-redux';
 import {Stack, Form, Button, Row, Col} from 'react-bootstrap';
@@ -28,41 +29,52 @@ export const UsernameVerifier = ({
   return (
     <Stack>
       <Form.Group className="text-start form-group" controlId="formEmail">
-        <Row style={{alignItems: 'center'}}>
-          <Col md={9} style={{padding: '0 !important'}}>
-            <Stack style={{display: 'flex', alignItems: 'center'}}>
-              <p
-                className="text-white"
-                style={{
-                  transform: 'translateY(35%)',
-                  fontWeight: 'bold',
-                }}
-              >
-                tipyourteacher.co/t/&nbsp;
-              </p>
-              <Form.Control
-                className="form-control"
-                placeholder="Username"
-                name="username"
-                {...register('username')}
-                type="text"
-                required
-                onKeyDown={(e) => {
-                  if (e.key == 'Enter') {
-                    verifyUsernameAvailability();
-                    e.preventDefault();
-                  }
-                }}
-              />
-            </Stack>
+        <Row
+          style={{
+            alignItems: 'center',
+            padding: '12px',
+          }}
+        >
+          <Col
+            md={{span: 9}}
+            className="d-flex p-2"
+            style={{
+              padding: '10px !important',
+              background: '#fff',
+              borderRadius: '10px',
+            }}
+          >
+            <h3
+              className="get-started-tip-text font-weight-bold"
+              style={{
+                transform: 'translateY(25%)',
+                fontWeight: 500,
+              }}
+            >
+              tipyourteacher.co/t/
+            </h3>
+            <input
+              name={'username'}
+              placeholder="yourname"
+              className="get-started-default-input"
+              {...register('username')}
+              type="text"
+              required
+              onKeyDown={(e) => {
+                if (e.key == 'Enter') {
+                  verifyUsernameAvailability();
+                  e.preventDefault();
+                }
+              }}
+            />
           </Col>
-          <Col style={{padding: '0 !important'}} md={3}>
+          <Col md={3}>
             &nbsp;
             <button
               style={{
                 width: '100%',
                 cursor: `${isUsernameVerified ? 'not-allowed' : 'pointer'}`,
-                transform: 'translateY(-30%)',
+                transform: 'translateY(-35%)',
               }}
               className="btn btn-sm btn-secondary"
               disabled={isUsernameVerified}
@@ -86,7 +98,6 @@ export const UsernameVerifier = ({
             </button>
           </Col>
         </Row>
-        <Stack className={`d-flex align-items-center`}>&nbsp; &nbsp;</Stack>
         <FormFieldError error={error} />
         {isUsernameVerified && (
           <Stack className="text-success px-1" style={{fontSize: '0.8rem'}}>

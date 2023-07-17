@@ -9,7 +9,7 @@ export default function SignUp() {
         <Stack className="login-img">
           <Stack className="page">
             {/* <!-- CONTAINER OPEN --> */}
-            <Row className="col-login mx-auto mt-7"></Row>
+            {/* <Row className="col-login mx-auto mt-7"></Row> */}
             <Stack className="container-login100">
               <Row className="wrap-login100 p-6">
                 <Col className="text-center">
@@ -17,7 +17,7 @@ export default function SignUp() {
                     src={'/assets/images/brand/logo-white.png'}
                     className="header-brand-img"
                     alt="logo-dark"
-                    style={{width: '30vh'}}
+                    style={{width: '50%'}}
                   />
                 </Col>
                 <SignUpForm />

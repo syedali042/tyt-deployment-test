@@ -38,33 +38,15 @@
   padding-left: 0px;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.9);
-  transform: translateY(8%);
+  transform: translateY(0%);
 }
 
 .get-started-tip-text {
   font-size: 14px !important;
 }
 
-@media screen and (min-width: 48em) {
-  .get-started-default-input {
-    font-size: 25px !important;
-    padding-left: 0.5px;
-    padding-top: 0px;
-    transform: translateY(7%);
-  }
-
-  .get-started-tip-text {
-    font-size: 25px !important;
-  }
-}
-
 @media screen and (max-width: 270px) {
   .get-started-tip-text {
     display: none !important;
   }
-}
-
-.field-error-container {
-  max-width: 600px;
-  /* min-width: 370px; */
 }

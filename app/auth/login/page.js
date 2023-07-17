@@ -17,7 +17,7 @@ export default function Login() {
                     src={'/assets/images/brand/logo-white.png'}
                     className="header-brand-img"
                     alt=""
-                    style={{width: '30vh'}}
+                    style={{width: '50%'}}
                   />
                 </Col>
                 <LoginForm />
