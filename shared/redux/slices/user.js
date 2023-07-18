@@ -11,7 +11,7 @@ const initialState = {
   isLoading: false,
   error: null,
   currentUser: {
-    id: '',
+    userInternalId: '',
     firebaseId: '',
     username: '',
     email: '',
@@ -78,7 +78,7 @@ export const checkUsernameAvailability =
       if (response.data.statusCode === 200)
         dispatch(
           actions.setCurrentUser({
-            id: '',
+            userInternalId: '',
             firebaseId: '',
             username,
             email: '',
@@ -145,7 +145,7 @@ export const signOutUser = () => async (dispatch) => {
       .then(() => {
         dispatch(
           actions.setCurrentUser({
-            id: '',
+            userInternalId: '',
             firebaseId: '',
             username: '',
             email: '',
