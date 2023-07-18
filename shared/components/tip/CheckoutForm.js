@@ -128,6 +128,7 @@ export default function CheckoutForm({notes}) {
         <Row className="pt-3">
           <Col md={{span: 12}}>
             <Button
+              variant="secondary"
               style={{
                 width: '100%',
                 padding: '10px',
