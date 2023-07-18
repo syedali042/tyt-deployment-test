@@ -1,11 +1,22 @@
 'use client';
 import '../../../app/tip/page.css';
+// React
+import {useState} from 'react';
+//Bootstrap
 import {Stack, Row, Col, Card, Form, InputGroup, Badge} from 'react-bootstrap';
-
+import {Typography} from '@mui/material';
+// Stripe
 import {loadStripe} from '@stripe/stripe-js';
 import {Elements} from '@stripe/react-stripe-js';
+// Component
 import CheckoutForm from './CheckoutForm';
-import {useState} from 'react';
+// Redux
+import {useSelector} from 'react-redux';
+import {
+  getClientSecret,
+  getCurrentTeacher,
+  getTipAmount,
+} from '@/shared/redux/slices/tip';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -13,13 +24,16 @@ const stripePromise = loadStripe(
 
 const CheckoutTab = ({tabSettings}) => {
   const [notes, setNotes] = useState('');
+  const currentTeacher = useSelector(getCurrentTeacher);
+  const amount = useSelector(getTipAmount);
 
   const appearance = {
     theme: 'stripe',
     labels: 'floating',
   };
-  const clientSecret =
-    'pi_3NTjR6I5pCbhF7Be18mBc295_secret_8gHlARVoM6z1jUT1YDDSaVu7o';
+
+  const clientSecret = useSelector(getClientSecret);
+
   const options = {
     clientSecret: clientSecret,
     appearance,
@@ -37,23 +51,37 @@ const CheckoutTab = ({tabSettings}) => {
                 </Card.Header>
                 <Card.Body>
                   <Row>
-                    <Col md={5} className="py-1">
-                      <strong>Teacher&apos;s Name</strong>
-                    </Col>
-                    <Col md={7} className="text-md-end py-1">
-                      Syed Ali
-                    </Col>
+                    {currentTeacher?.displayName && (
+                      <>
+                        <Col md={5} className="py-1">
+                          <strong>Teacher&apos;s Name</strong>
+                        </Col>
+                        <Col md={7} className="text-md-end py-1">
+                          Syed Ali
+                        </Col>
+                      </>
+                    )}
                     <Col md={5} className="py-1">
                       <strong>Teacher&apos;s Email</strong>
                     </Col>
                     <Col md={7} className="text-md-end py-1">
-                      syed.ali@desolint.com
+                      <Typography
+                        style={{transform: 'translateY(10%)'}}
+                        fontSize={12}
+                      >
+                        {currentTeacher?.email}
+                      </Typography>
                     </Col>
                     <Col md={5} className="py-1">
                       <strong>Amount to tip</strong>
                     </Col>
                     <Col md={7} className="text-md-end py-1">
-                      $980
+                      <Typography
+                        style={{transform: 'translateY(10%)'}}
+                        fontSize={12}
+                      >
+                        ${amount}
+                      </Typography>
                     </Col>
                   </Row>
                 </Card.Body>
@@ -64,7 +92,9 @@ const CheckoutTab = ({tabSettings}) => {
                   >
                     <InputGroup>
                       <Form.Control
-                        placeholder="Write your note to Syed Ali || the teacher..."
+                        placeholder={`Write your note to ${
+                          currentTeacher?.displayName || 'the teacher'
+                        }...`}
                         rows={3}
                         name="Note"
                         as={'textarea'}
@@ -89,7 +119,7 @@ const CheckoutTab = ({tabSettings}) => {
               <>
                 <div>
                   <Elements options={options} stripe={stripePromise}>
-                    <CheckoutForm />
+                    <CheckoutForm notes={notes} />
                   </Elements>
                 </div>
               </>

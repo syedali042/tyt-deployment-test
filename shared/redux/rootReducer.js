@@ -3,6 +3,7 @@ import {persistReducer} from 'redux-persist';
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 // slices
 import userReducer from './slices/user';
+import tipReducer from './slices/tip';
 import {clearStore} from './util';
 
 // ----------------------------------------------------------------------
@@ -38,9 +39,18 @@ const userPersistConfig = {
   // whitelist: [],
 };
 
+const tipPersistConfig = {
+  key: 'tip',
+  storage,
+  keyPrefix: 'redux-',
+  // whitelist: [],
+};
+
 const appReducer = combineReducers({
   user: userReducer,
+  tip: tipReducer,
   // user: persistReducer(userPersistConfig, userReducer),
+  // tip: persistReducer(tipPersistConfig, tipReducer),
 });
 
 const rootReducer = (state, action) => {

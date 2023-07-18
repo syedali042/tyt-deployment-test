@@ -19,3 +19,13 @@ export const SEND_TIP_TABS_ARR = Object.keys(SEND_TIP_TABS).map((key) => [
 ]);
 
 export const suggestedAmounts = ['10', '50', '100', 'Other'];
+
+export const toastSettings = {
+  position: 'top-right',
+  autoClose: 4000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  draggable: true,
+  progress: undefined,
+  theme: 'colored',
+};

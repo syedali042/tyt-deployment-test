@@ -33,10 +33,20 @@ export default function GetStarted() {
                 <StepsHeader
                   tabSettings={tabSettings}
                   setTabSettings={setTabSettings}
+                  toast={toast}
                 />
-                <FindTeacherTab tabSettings={tabSettings} />
-                <SelectAmountTab tabSettings={tabSettings} />
-                <CheckoutTab tabSettings={tabSettings} />
+                <FindTeacherTab
+                  tabSettings={tabSettings}
+                  setTabSettings={setTabSettings}
+                />
+                <SelectAmountTab
+                  tabSettings={tabSettings}
+                  setTabSettings={setTabSettings}
+                />
+                <CheckoutTab
+                  tabSettings={tabSettings}
+                  setTabSettings={setTabSettings}
+                />
               </Stack>
             </Container>
           </Stack>

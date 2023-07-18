@@ -1,17 +1,111 @@
 'use client';
-import {Form, InputGroup} from 'react-bootstrap';
-import {Stack, Row, Col, Button} from 'react-bootstrap';
-import {useDispatch} from 'react-redux';
-
+// Bootstrap
+import {
+  Form,
+  InputGroup,
+  Stack,
+  Row,
+  Col,
+  Button,
+  Alert,
+} from 'react-bootstrap';
+// Redux
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getTipAmount,
+  setTipAmount,
+  initializeTipProcess,
+  getIsPaymentRequestLoading,
+  getCurrentTeacher,
+  getClientSecret,
+  getPaymentIntentId,
+  updateCheckoutProcess,
+} from '@/shared/redux/slices/tip';
+// Constants
 import {suggestedAmounts} from '@/shared/constants';
+// Icons
+import {CircularProgress} from '@mui/material';
+import {ThumbUpAltOutlined, Info as InfoIcon} from '@mui/icons-material';
+import {useState} from 'react';
 
-const SelectAmountTab = ({tabSettings}) => {
+const SelectAmountTab = ({tabSettings, setTabSettings}) => {
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const amount = useSelector(getTipAmount);
+  const currentTeacher = useSelector(getCurrentTeacher);
+  const clientSecret = useSelector(getClientSecret);
+  const paymentIntentId = useSelector(getPaymentIntentId);
+
+  const handleAmountChange = (value) => dispatch(setTipAmount({amount: value}));
+
+  const handleInputKeyPressEvent = async (event) => {
+    if (event.key == 'Enter') {
+      await initializeCheckout();
+      event.preventDefault();
+    }
+  };
+
+  const initializeCheckout = async () => {
+    setIsLoading(true);
+    try {
+      if (clientSecret || paymentIntentId) {
+        await dispatch(
+          updateCheckoutProcess({paymentIntentId, data: {amount: amount * 100}})
+        );
+      } else {
+        await dispatch(initializeTipProcess());
+        setTabSettings({
+          active: 'checkout-tab',
+          steps: ['find-teacher-tab', 'select-amount-tab', 'checkout-tab'],
+        });
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Stack
       className={`${tabSettings.active !== 'select-amount-tab' && 'd-none'}`}
     >
+      <Row>
+        <Col md={{span: 8, offset: 2}}>
+          <Alert className="my-2" variant={'danger'} style={{color: '#fff'}}>
+            {currentTeacher?.verified ? (
+              <Stack className="d-flex align-items-center justify-content-center">
+                <Stack style={{width: 'auto'}}>
+                  <ThumbUpAltOutlined
+                    style={{transform: 'translateY(15%) scale(1.7)'}}
+                  />
+                </Stack>
+                &nbsp;&nbsp;&nbsp;
+                <Stack>
+                  Thank you for considering tipping{' '}
+                  <b>
+                    {currentTeacher?.displayName || currentTeacher?.username}
+                  </b>
+                  . We'll notify them as soon as the payment is completed.
+                </Stack>
+              </Stack>
+            ) : (
+              <Stack className="d-flex align-items-center justify-content-center">
+                <Stack style={{width: 'auto'}}>
+                  <InfoIcon style={{transform: 'translateY(15%) scale(1.7)'}} />
+                </Stack>
+                &nbsp;&nbsp;&nbsp;
+                <Stack>
+                  Thanks for considering tipping this teacher. The owner of{' '}
+                  <b>{currentTeacher?.email}</b> is not part of our platform
+                  yet, however, we'll invite to join and collect your tip as
+                  soon as the payment is completed.
+                </Stack>
+              </Stack>
+            )}
+          </Alert>
+        </Col>
+      </Row>
       <Row>
         <Col md={{span: 12, offset: 0}} lg={{span: 3, offset: 2}}>
           <Form.Label style={{color: '#fff'}}>
@@ -28,10 +122,13 @@ const SelectAmountTab = ({tabSettings}) => {
                 placeholder={'Amount'}
                 type={'number'}
                 id="tip-amount"
+                value={amount}
+                onChange={(event) => handleAmountChange(event.target.value)}
                 style={{
                   padding: '15px',
                   fontSize: '16px',
                 }}
+                onKeyDown={handleInputKeyPressEvent}
                 min={1}
               />
             </InputGroup>
@@ -45,8 +142,10 @@ const SelectAmountTab = ({tabSettings}) => {
                 sm={3}
                 onClick={() => {
                   if (amount == 'Other') {
+                    handleAmountChange(0);
                     document.querySelector('#tip-amount').focus();
                   } else {
+                    handleAmountChange(amount);
                     document.querySelector('#tip-amount').focus();
                   }
                 }}
@@ -76,13 +175,22 @@ const SelectAmountTab = ({tabSettings}) => {
         <Col md={{span: 2, offset: 5}}>
           <Button
             variant="secondary"
+            onClick={() => initializeCheckout()}
             style={{
               width: '100%',
               padding: '10px',
               fontSize: '16px',
             }}
           >
-            Continue
+            {isLoading ? (
+              <CircularProgress
+                sx={{transaform: 'translateY(10%)'}}
+                size={'20px'}
+                color="inherit"
+              />
+            ) : (
+              'Continue'
+            )}
           </Button>
         </Col>
       </Row>

@@ -1,10 +1,89 @@
+// Bootstrap
 import {Stack} from 'react-bootstrap';
-import {SEND_TIP_TABS, SEND_TIP_TABS_ARR} from '@/shared/constants';
+// Constants
+import {
+  SEND_TIP_TABS,
+  SEND_TIP_TABS_ARR,
+  toastSettings,
+} from '@/shared/constants';
+// Redux
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getCurrentTeacher,
+  getTipAmount,
+  getClientSecret,
+  getTeacherUsernameOrEmail,
+  initializeTipProcess,
+} from '@/shared/redux/slices/tip';
+import {commonValidationsForTabs} from '@/shared/utils/tipUtils';
 
-const StepsHeader = ({tabSettings, setTabSettings}) => {
+const StepsHeader = ({tabSettings, setTabSettings, toast}) => {
+  const dispatch = useDispatch();
+
+  const currentTeacher = useSelector(getCurrentTeacher);
+
+  const amount = useSelector(getTipAmount);
+
+  const clientSecret = useSelector(getClientSecret);
+
+  const teacherUsernameOrEmail = useSelector(getTeacherUsernameOrEmail);
+
+  const validateTabShifting = async (tab) => {
+    if (tab == SEND_TIP_TABS.findTeacherTab.name) {
+      return {success: true};
+    }
+
+    if (tab == SEND_TIP_TABS.selectAmountTab.name) {
+      const {success, error} = commonValidationsForTabs({
+        currentTeacher,
+        teacherUsernameOrEmail,
+      });
+
+      if (!success) {
+        return {success: false, error};
+      } else {
+        return {success: true};
+      }
+    }
+
+    if (tab == SEND_TIP_TABS.checkoutTab.name) {
+      const {success, error} = commonValidationsForTabs({
+        currentTeacher,
+        teacherUsernameOrEmail,
+      });
+
+      if (!success) {
+        return {success: false, error};
+      }
+
+      if (amount < 1) {
+        return {
+          success: false,
+          error: 'Amount must be greater than 0',
+        };
+      }
+
+      if (!clientSecret || clientSecret == '') {
+        await dispatch(initializeTipProcess());
+        return {
+          success: true,
+        };
+      }
+
+      return {success: true};
+    }
+  };
+
   const activateTab = async ({tab}) => {
     const {active: activeTab, steps} = tabSettings;
     if (activeTab == tab) {
+      return;
+    }
+
+    const {success, error} = await validateTabShifting(tab);
+
+    if (!success) {
+      toast.error(error, toastSettings);
       return;
     }
 
