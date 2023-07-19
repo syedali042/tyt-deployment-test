@@ -9,6 +9,7 @@ import {Button, Col, Row, Alert, Stack} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getPaymentIntentId,
+  getTipNotes,
   updateCheckoutProcess,
 } from '@/shared/redux/slices/tip';
 import {useState, useEffect} from 'react';
@@ -16,14 +17,15 @@ import {CircularProgress} from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import TipMessage from './TipMessage';
 
-export default function CheckoutForm({notes}) {
+export default function CheckoutForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [email, setEmail] = useState('');
+  const [tipperEmail, setTipperEmail] = useState('');
   const stripe = useStripe();
   const elements = useElements();
   const dispatch = useDispatch();
   const paymentIntentId = useSelector(getPaymentIntentId);
+  const notes = useSelector(getTipNotes);
 
   useEffect(() => {
     if (!stripe) {
@@ -62,7 +64,7 @@ export default function CheckoutForm({notes}) {
     dispatch(
       updateCheckoutProcess({
         paymentIntentId,
-        data: {metadata: {email, notes}},
+        data: {metadata: {email: tipperEmail, notes}},
       })
     );
 
@@ -94,7 +96,7 @@ export default function CheckoutForm({notes}) {
       <form onSubmit={handleSubmit} id="payment-form" className="">
         <LinkAuthenticationElement
           id="link-authentication-element"
-          onChange={(e) => setEmail(e.value.email)}
+          onChange={(e) => setTipperEmail(e.value.email)}
           className="w-100 text-white pb-3"
         />
         <PaymentElement

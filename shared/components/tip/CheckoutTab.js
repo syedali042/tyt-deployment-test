@@ -11,11 +11,12 @@ import {Elements} from '@stripe/react-stripe-js';
 // Component
 import CheckoutForm from './CheckoutForm';
 // Redux
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   getClientSecret,
   getCurrentTeacher,
   getTipAmount,
+  setTipNotes,
 } from '@/shared/redux/slices/tip';
 
 const stripePromise = loadStripe(
@@ -26,6 +27,7 @@ const CheckoutTab = ({tabSettings}) => {
   const [notes, setNotes] = useState('');
   const currentTeacher = useSelector(getCurrentTeacher);
   const amount = useSelector(getTipAmount);
+  const dispatch = useDispatch();
 
   const appearance = {
     theme: 'stripe',
@@ -57,7 +59,7 @@ const CheckoutTab = ({tabSettings}) => {
                           <strong>Teacher&apos;s Name</strong>
                         </Col>
                         <Col md={7} className="text-md-end py-1">
-                          Syed Ali
+                          {currentTeacher?.displayName}
                         </Col>
                       </>
                     )}
@@ -99,7 +101,7 @@ const CheckoutTab = ({tabSettings}) => {
                         name="Note"
                         as={'textarea'}
                         value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
+                        onChange={(e) => dispatch(setTipNotes(e.target.value))}
                         className="form-control"
                         style={{
                           padding: '15px',
@@ -119,7 +121,7 @@ const CheckoutTab = ({tabSettings}) => {
               <>
                 <div>
                   <Elements options={options} stripe={stripePromise}>
-                    <CheckoutForm notes={notes} />
+                    <CheckoutForm />
                   </Elements>
                 </div>
               </>
