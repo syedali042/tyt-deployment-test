@@ -29,9 +29,7 @@ const StepsHeader = ({tabSettings, setTabSettings, toast}) => {
   const teacherUsernameOrEmail = useSelector(getTeacherUsernameOrEmail);
 
   const validateTabShifting = async (tab) => {
-    if (tab == SEND_TIP_TABS.findTeacherTab.name) {
-      return {success: true};
-    }
+    if (tab == SEND_TIP_TABS.findTeacherTab.name) return {success: true};
 
     if (tab == SEND_TIP_TABS.selectAmountTab.name) {
       const {success, error} = commonValidationsForTabs({
@@ -52,16 +50,13 @@ const StepsHeader = ({tabSettings, setTabSettings, toast}) => {
         teacherUsernameOrEmail,
       });
 
-      if (!success) {
-        return {success: false, error};
-      }
+      if (!success) return {success: false, error};
 
-      if (amount < 1) {
+      if (amount < 1)
         return {
           success: false,
           error: 'Amount must be greater than 0',
         };
-      }
 
       if (!clientSecret || clientSecret == '') {
         await dispatch(initializeTipProcess());
@@ -76,16 +71,11 @@ const StepsHeader = ({tabSettings, setTabSettings, toast}) => {
 
   const activateTab = async ({tab}) => {
     const {active: activeTab, steps} = tabSettings;
-    if (activeTab == tab) {
-      return;
-    }
+    if (activeTab == tab) return;
 
     const {success, error} = await validateTabShifting(tab);
 
-    if (!success) {
-      toast.error(error, toastSettings);
-      return;
-    }
+    if (!success) return toast.error(error, toastSettings);
 
     setTabSettings({
       active: tab,
