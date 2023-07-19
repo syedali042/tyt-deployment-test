@@ -27,6 +27,7 @@ import {suggestedAmounts} from '@/shared/constants';
 import {CircularProgress} from '@mui/material';
 import {ThumbUpAltOutlined, Info as InfoIcon} from '@mui/icons-material';
 import {useState} from 'react';
+import TipError from './TipError';
 
 const SelectAmountTab = ({tabSettings, setTabSettings}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -70,42 +71,36 @@ const SelectAmountTab = ({tabSettings, setTabSettings}) => {
     <Stack
       className={`${tabSettings.active !== 'select-amount-tab' && 'd-none'}`}
     >
-      <Row>
-        <Col md={{span: 8, offset: 2}}>
-          <Alert className="my-2" variant={'danger'} style={{color: '#fff'}}>
-            {currentTeacher?.verified ? (
-              <Stack className="d-flex align-items-center justify-content-center">
-                <Stack style={{width: 'auto'}}>
-                  <ThumbUpAltOutlined
-                    style={{transform: 'translateY(15%) scale(1.7)'}}
-                  />
-                </Stack>
-                &nbsp;&nbsp;&nbsp;
-                <Stack>
-                  Thank you for considering tipping{' '}
-                  <b>
-                    {currentTeacher?.displayName || currentTeacher?.username}
-                  </b>
-                  . We'll notify them as soon as the payment is completed.
-                </Stack>
-              </Stack>
-            ) : (
-              <Stack className="d-flex align-items-center justify-content-center">
-                <Stack style={{width: 'auto'}}>
-                  <InfoIcon style={{transform: 'translateY(15%) scale(1.7)'}} />
-                </Stack>
-                &nbsp;&nbsp;&nbsp;
-                <Stack>
-                  Thanks for considering tipping this teacher. The owner of{' '}
-                  <b>{currentTeacher?.email}</b> is not part of our platform
-                  yet, however, we'll invite to join and collect your tip as
-                  soon as the payment is completed.
-                </Stack>
-              </Stack>
-            )}
-          </Alert>
-        </Col>
-      </Row>
+      {currentTeacher?.verified ? (
+        <TipError
+          icon={<ThumbUpAltOutlined />}
+          error={
+            <div>
+              Thank you for considering tipping{' '}
+              <b>{currentTeacher?.displayName || currentTeacher?.username}</b>.
+              We'll notify them as soon as the payment is completed.
+            </div>
+          }
+          onClick={() => {
+            return;
+          }}
+        />
+      ) : (
+        <TipError
+          icon={<InfoIcon />}
+          error={
+            <div>
+              Thanks for considering tipping this teacher. The owner of{' '}
+              <b>{currentTeacher?.email}</b> is not part of our platform yet,
+              however, we'll invite to join and collect your tip as soon as the
+              payment is completed.
+            </div>
+          }
+          onClick={() => {
+            return;
+          }}
+        />
+      )}
       <Row>
         <Col md={{span: 12, offset: 0}} lg={{span: 3, offset: 2}}>
           <Form.Label style={{color: '#fff'}}>

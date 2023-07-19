@@ -16,12 +16,13 @@ import {
 import {CircularProgress} from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import {useState} from 'react';
+import TipError from './TipError';
 
 const FindTeacherTab = ({tabSettings, setTabSettings}) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const errors = useSelector(getErrors);
+  const error = useSelector(getErrors);
 
   const teacherUsernameOrEmail = useSelector(getTeacherUsernameOrEmail);
 
@@ -46,7 +47,7 @@ const FindTeacherTab = ({tabSettings, setTabSettings}) => {
       setIsLoading(false);
     } catch (err) {
       console.log(err);
-      setIsLoading(true);
+      setIsLoading(false);
     }
   };
 
@@ -54,27 +55,11 @@ const FindTeacherTab = ({tabSettings, setTabSettings}) => {
     <Stack
       className={`${tabSettings.active !== 'find-teacher-tab' && 'd-none'}`}
     >
-      <Row>
-        <Col md={{span: 8, offset: 2}}>
-          {errors && (
-            <Alert className="my-2" variant={'danger'} style={{color: '#fff'}}>
-              <Stack className="d-flex align-items-center justify-content-center">
-                <Stack style={{width: 'auto'}}>
-                  <CancelIcon
-                    onClick={() => dispatch(setTipErrors({errors: null}))}
-                    style={{
-                      transform: 'translateY(15%) scale(1.7)',
-                      cursor: 'pointer',
-                    }}
-                  />
-                </Stack>
-                &nbsp;&nbsp;&nbsp;
-                <Stack>{errors.message}</Stack>
-              </Stack>
-            </Alert>
-          )}
-        </Col>
-      </Row>
+      <TipError
+        error={error}
+        onClick={() => dispatch(setTipErrors({error: null}))}
+        icon={<CancelIcon />}
+      />
       <Row>
         <Col md={{span: 6, offset: 3}}>
           <FormGroupInput
