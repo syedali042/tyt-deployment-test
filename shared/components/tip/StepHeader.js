@@ -14,11 +14,15 @@ import {
   getClientSecret,
   getTeacherUsernameOrEmail,
   initializeTipProcess,
+  getStepsSettings,
+  setStepsSettings,
 } from '@/shared/redux/slices/tip';
 import {commonValidationsForTabs} from '@/shared/utils/tipUtils';
 
-const StepsHeader = ({tabSettings, setTabSettings, toast}) => {
+const StepsHeader = ({toast}) => {
   const dispatch = useDispatch();
+
+  const stepsSettings = useSelector(getStepsSettings);
 
   const currentTeacher = useSelector(getCurrentTeacher);
 
@@ -69,23 +73,23 @@ const StepsHeader = ({tabSettings, setTabSettings, toast}) => {
     }
   };
 
-  const activateTab = async ({tab}) => {
-    const {active: activeTab, steps} = tabSettings;
-    if (activeTab == tab) return;
+  const activateTab = async ({step}) => {
+    if (stepsSettings?.activeStep == step) return;
 
-    const {success, error} = await validateTabShifting(tab);
+    const {success, error} = await validateTabShifting(step);
 
     if (!success) return toast.error(error, toastSettings);
-
-    setTabSettings({
-      active: tab,
-      steps:
-        tab == SEND_TIP_TABS.findTeacherTab.name
-          ? ['find-teacher-tab']
-          : tab == SEND_TIP_TABS.selectAmountTab.name
-          ? ['find-teacher-tab', 'select-amount-tab']
-          : ['find-teacher-tab', 'select-amount-tab', 'checkout-tab'],
-    });
+    await dispatch(
+      setStepsSettings({
+        activeStep: step,
+        completedSteps:
+          step == SEND_TIP_TABS.findTeacherTab.name
+            ? ['find-teacher-tab']
+            : step == SEND_TIP_TABS.selectAmountTab.name
+            ? ['find-teacher-tab', 'select-amount-tab']
+            : ['find-teacher-tab', 'select-amount-tab', 'checkout-tab'],
+      })
+    );
   };
   return (
     <Stack className="md-stepper-horizontal orange">
@@ -95,9 +99,9 @@ const StepsHeader = ({tabSettings, setTabSettings, toast}) => {
         return (
           <Stack
             className={`md-step ${
-              tabSettings.steps.includes(tabName) && 'active'
+              stepsSettings?.completedSteps?.includes(tabName) && 'active'
             }`}
-            onClick={() => activateTab({tab: tabName})}
+            onClick={() => activateTab({step: tabName})}
             style={{cursor: 'pointer'}}
           >
             <Stack className="md-step-circle">

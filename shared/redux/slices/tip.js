@@ -12,6 +12,10 @@ const initialState = {
   clientSecret: '',
   paymentIntentId: '',
   notes: '',
+  stepsSettings: {
+    activeStep: 'find-teacher-tab',
+    completedSteps: ['find-teacher-tab'],
+  },
 };
 
 const slice = createSlice({
@@ -49,6 +53,9 @@ const slice = createSlice({
     setTipNotes(state, action) {
       state.notes = action.payload;
     },
+    setStepsSettings(state, action) {
+      state.stepsSettings = action.payload;
+    },
   },
 });
 
@@ -83,6 +90,12 @@ export const verifyUserToTip = () => async (dispatch, getState) => {
       .then((response) => {
         const {body} = response.data;
         dispatch(actions.setCurrentTeacher({...body}));
+        dispatch(
+          actions.setStepsSettings({
+            activeStep: 'select-amount-tab',
+            completedSteps: ['find-teacher-tab', 'select-amount-tab'],
+          })
+        );
         dispatch(actions.stopLoading());
       })
       .catch((error) => {
@@ -94,7 +107,6 @@ export const verifyUserToTip = () => async (dispatch, getState) => {
             })
           );
           dispatch(actions.stopLoading());
-          throw error;
         } else {
           dispatch(
             actions.setCurrentTeacher({
@@ -102,12 +114,18 @@ export const verifyUserToTip = () => async (dispatch, getState) => {
               [type]: teacherUsernameOrEmail,
             })
           );
+          dispatch(
+            actions.setStepsSettings({
+              activeStep: 'select-amount-tab',
+              completedSteps: ['find-teacher-tab', 'select-amount-tab'],
+            })
+          );
           dispatch(actions.stopLoading());
         }
       });
   } catch (error) {
+    dispatch(actions.setError(error));
     dispatch(actions.stopLoading());
-    throw error;
   }
 };
 
@@ -145,11 +163,20 @@ export const initializeTipProcess = () => async (dispatch, getState) => {
 
     dispatch(actions.setClientSecret(clientSecret));
     dispatch(actions.setPaymentIntentId(paymentIntentId));
+    dispatch(
+      actions.setStepsSettings({
+        activeStep: 'checkout-tab',
+        completedSteps: [
+          'find-teacher-tab',
+          'select-amount-tab',
+          'checkout-tab',
+        ],
+      })
+    );
     dispatch(actions.stopLoading());
   } catch (error) {
     dispatch(actions.setError(error));
     dispatch(actions.stopLoading());
-    throw error;
   }
 };
 
@@ -166,11 +193,20 @@ export const updateCheckoutProcess =
       const {clientSecret, paymentIntentId: intentId} = response.data.body;
       dispatch(actions.setClientSecret(clientSecret));
       dispatch(actions.setPaymentIntentId(intentId));
+      dispatch(
+        actions.setStepsSettings({
+          activeStep: 'checkout-tab',
+          completedSteps: [
+            'find-teacher-tab',
+            'select-amount-tab',
+            'checkout-tab',
+          ],
+        })
+      );
       dispatch(actions.stopLoading());
     } catch (error) {
-      dispatch(actions.stopLoading());
       dispatch(actions.setError(error));
-      throw error;
+      dispatch(actions.stopLoading());
     }
   };
 
@@ -205,3 +241,11 @@ export const setTipNotes =
   (dispatch) => {
     dispatch(actions.setTipNotes(notes));
   };
+
+// Get Steps Settings
+export const getStepsSettings = (state) => state.tip.stepsSettings;
+
+// Set Steps Settings
+export const setStepsSettings = (settings) => (dispatch) => {
+  dispatch(actions.setStepsSettings(settings));
+};

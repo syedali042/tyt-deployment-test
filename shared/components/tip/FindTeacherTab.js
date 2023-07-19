@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   getErrors,
   getIsPaymentRequestLoading,
+  getStepsSettings,
   getTeacherUsernameOrEmail,
   setTeacherUsernameOrEmail,
   setTipErrors,
@@ -19,9 +20,11 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import {useState} from 'react';
 import TipMessage from './TipMessage';
 
-const FindTeacherTab = ({tabSettings, setTabSettings}) => {
+const FindTeacherTab = () => {
   const isLoading = useSelector(getIsPaymentRequestLoading);
   const dispatch = useDispatch();
+
+  const stepsSettings = useSelector(getStepsSettings);
 
   const error = useSelector(getErrors);
 
@@ -32,24 +35,22 @@ const FindTeacherTab = ({tabSettings, setTabSettings}) => {
 
   const handleInputKeyPressEvent = async (event) => {
     if (event.key == 'Enter') {
-      await verifyUser();
       event.preventDefault();
+      await verifyUser();
     }
   };
 
   const verifyUser = async () => {
     try {
       await dispatch(verifyUserToTip());
-      setTabSettings({
-        active: 'select-amount-tab',
-        steps: ['find-teacher-tab', 'select-amount-tab'],
-      });
     } catch (err) {}
   };
 
   return (
     <Stack
-      className={`${tabSettings.active !== 'find-teacher-tab' && 'd-none'}`}
+      className={`${
+        stepsSettings?.activeStep !== 'find-teacher-tab' && 'd-none'
+      }`}
     >
       <TipMessage
         message={error?.message}

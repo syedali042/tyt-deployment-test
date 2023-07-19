@@ -15,6 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   getClientSecret,
   getCurrentTeacher,
+  getStepsSettings,
   getTipAmount,
   setTipNotes,
 } from '@/shared/redux/slices/tip';
@@ -23,8 +24,9 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-const CheckoutTab = ({tabSettings}) => {
+const CheckoutTab = () => {
   const [notes, setNotes] = useState('');
+  const stepsSettings = useSelector(getStepsSettings);
   const currentTeacher = useSelector(getCurrentTeacher);
   const amount = useSelector(getTipAmount);
   const dispatch = useDispatch();
@@ -43,7 +45,11 @@ const CheckoutTab = ({tabSettings}) => {
 
   return (
     <>
-      <Stack className={`${tabSettings.active !== 'checkout-tab' && 'd-none'}`}>
+      <Stack
+        className={`${
+          stepsSettings?.activeStep !== 'checkout-tab' && 'd-none'
+        }`}
+      >
         <Row>
           <Col lg={{span: 4, offset: 1}}>
             <Row className="px-3">

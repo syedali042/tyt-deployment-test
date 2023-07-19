@@ -1,6 +1,6 @@
 'use client';
 import './page.css';
-import {Stack, Row, Container, Image, Alert, Col} from 'react-bootstrap';
+import {Stack, Row, Container, Image} from 'react-bootstrap';
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
 import StepsHeader from '@/shared/components/tip/StepHeader';
 import FindTeacherTab from '@/shared/components/tip/FindTeacherTab';
@@ -8,14 +8,8 @@ import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SelectAmountTab from '@/shared/components/tip/SelectAmountTab';
 import CheckoutTab from '@/shared/components/tip/CheckoutTab';
-import {useState} from 'react';
 
 export default function GetStarted() {
-  const [tabSettings, setTabSettings] = useState({
-    active: 'find-teacher-tab',
-    steps: ['find-teacher-tab'],
-  });
-
   return (
     <>
       <Authenticationlayout>
@@ -30,23 +24,10 @@ export default function GetStarted() {
                     style={{width: '220px'}}
                   />
                 </center>
-                <StepsHeader
-                  tabSettings={tabSettings}
-                  setTabSettings={setTabSettings}
-                  toast={toast}
-                />
-                <FindTeacherTab
-                  tabSettings={tabSettings}
-                  setTabSettings={setTabSettings}
-                />
-                <SelectAmountTab
-                  tabSettings={tabSettings}
-                  setTabSettings={setTabSettings}
-                />
-                <CheckoutTab
-                  tabSettings={tabSettings}
-                  setTabSettings={setTabSettings}
-                />
+                <StepsHeader toast={toast} />
+                <FindTeacherTab />
+                <SelectAmountTab />
+                <CheckoutTab />
               </Stack>
             </Container>
           </Stack>

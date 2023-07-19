@@ -20,6 +20,7 @@ import {
   getClientSecret,
   getPaymentIntentId,
   updateCheckoutProcess,
+  getStepsSettings,
 } from '@/shared/redux/slices/tip';
 // Constants
 import {TIP_MESSAGES, suggestedAmounts} from '@/shared/constants';
@@ -29,10 +30,11 @@ import {ThumbUpAltOutlined, Info as InfoIcon} from '@mui/icons-material';
 import {useState} from 'react';
 import TipMessage from './TipMessage';
 
-const SelectAmountTab = ({tabSettings, setTabSettings}) => {
+const SelectAmountTab = () => {
   const isLoading = useSelector(getIsPaymentRequestLoading);
   const dispatch = useDispatch();
   const amount = useSelector(getTipAmount);
+  const stepsSettings = useSelector(getStepsSettings);
   const currentTeacher = useSelector(getCurrentTeacher);
   const clientSecret = useSelector(getClientSecret);
   const paymentIntentId = useSelector(getPaymentIntentId);
@@ -54,17 +56,15 @@ const SelectAmountTab = ({tabSettings, setTabSettings}) => {
         );
       } else {
         await dispatch(initializeTipProcess());
-        setTabSettings({
-          active: 'checkout-tab',
-          steps: ['find-teacher-tab', 'select-amount-tab', 'checkout-tab'],
-        });
       }
     } catch (error) {}
   };
 
   return (
     <Stack
-      className={`${tabSettings.active !== 'select-amount-tab' && 'd-none'}`}
+      className={`${
+        stepsSettings?.activeStep !== 'select-amount-tab' && 'd-none'
+      }`}
     >
       {currentTeacher?.verified ? (
         <TipMessage
