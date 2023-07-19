@@ -64,7 +64,7 @@ const StepsHeader = ({toast}) => {
         };
 
       if (clientSecret == '') {
-        await dispatch(initializeOrUpdateTipProcess());
+        await dispatch(initializeOrUpdateTipProcess({data: {}}));
         return {
           success: true,
         };
