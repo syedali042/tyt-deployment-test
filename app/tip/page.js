@@ -8,8 +8,17 @@ import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SelectAmountTab from '@/shared/components/tip/SelectAmountTab';
 import CheckoutTab from '@/shared/components/tip/CheckoutTab';
+import {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import {resetTipState} from '@/shared/redux/slices/tip';
 
 export default function GetStarted() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    try {
+      dispatch(resetTipState());
+    } catch (error) {}
+  }, []);
   return (
     <>
       <Authenticationlayout>

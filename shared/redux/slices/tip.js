@@ -56,6 +56,9 @@ const slice = createSlice({
     setStepsSettings(state, action) {
       state.stepsSettings = action.payload;
     },
+    resetTipState(state, action) {
+      state = action.payload;
+    },
   },
 });
 
@@ -229,4 +232,23 @@ export const getStepsSettings = (state) => state.tip.stepsSettings;
 // Set Steps Settings
 export const setStepsSettings = (settings) => (dispatch) => {
   dispatch(actions.setStepsSettings(settings));
+};
+
+export const resetTipState = () => (dispatch) => {
+  dispatch(
+    actions.resetTipState({
+      isLoading: false,
+      error: null,
+      teacher: null,
+      teacherUsernameOrEmail: '',
+      amount: 0,
+      clientSecret: '',
+      paymentIntentId: '',
+      notes: '',
+      stepsSettings: {
+        activeStep: 'find-teacher-tab',
+        completedSteps: ['find-teacher-tab'],
+      },
+    })
+  );
 };
