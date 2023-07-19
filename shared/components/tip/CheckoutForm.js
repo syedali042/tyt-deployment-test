@@ -5,7 +5,7 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
-import {Button, Col, Row, Alert, Stack} from 'react-bootstrap';
+import {Button, Col, Row} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getIsPaymentRequestLoading,
@@ -13,7 +13,7 @@ import {
   getTipNotes,
   updateCheckoutProcess,
 } from '@/shared/redux/slices/tip';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {CircularProgress} from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import TipMessage from './TipMessage';
@@ -28,37 +28,6 @@ export default function CheckoutForm() {
   const paymentIntentId = useSelector(getPaymentIntentId);
   const notes = useSelector(getTipNotes);
 
-  useEffect(() => {
-    if (!stripe) {
-      return;
-    }
-
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      'payment_intent_client_secret'
-    );
-
-    if (!clientSecret) {
-      return;
-    }
-
-    stripe.retrievePaymentIntent(clientSecret).then(({paymentIntent}) => {
-      switch (paymentIntent.status) {
-        case 'succeeded':
-          setError('Payment succeeded!');
-          break;
-        case 'processing':
-          setError('Your payment is processing.');
-          break;
-        case 'requires_payment_method':
-          setError('Your payment was not successful, please try again.');
-          break;
-        default:
-          setError('Something went wrong.');
-          break;
-      }
-    });
-  }, [stripe]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -69,14 +38,10 @@ export default function CheckoutForm() {
       })
     );
 
-    if (!stripe || !elements) {
-      return;
-    }
-
     const {error} = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: window.location.origin,
+        return_url: `${window.location.origin}/thanks`,
       },
     });
 
