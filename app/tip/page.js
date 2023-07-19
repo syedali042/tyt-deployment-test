@@ -15,9 +15,7 @@ import {resetTipState} from '@/shared/redux/slices/tip';
 export default function GetStarted() {
   const dispatch = useDispatch();
   useEffect(() => {
-    try {
-      dispatch(resetTipState());
-    } catch (error) {}
+    dispatch(resetTipState());
   }, []);
   return (
     <>
