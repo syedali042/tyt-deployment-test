@@ -1,6 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 import axios from '../axios';
 import {validateEmail} from '@/shared/utils/tipUtils';
+import {TIP_MESSAGES} from '@/shared/constants';
 
 const initialState = {
   isLoading: false,
@@ -87,8 +88,7 @@ export const verifyUserToTip = () => async (dispatch, getState) => {
           dispatch(
             actions.setError({
               code: error.code,
-              message:
-                'There is no teacher with this user name in our records, you can try their email address and we will send them an invite to join and collect your generous tip.',
+              message: TIP_MESSAGES.nonExistedUsernameMessage(),
             })
           );
           dispatch(actions.stopLoading());

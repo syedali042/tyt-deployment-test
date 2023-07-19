@@ -22,7 +22,7 @@ import {
   updateCheckoutProcess,
 } from '@/shared/redux/slices/tip';
 // Constants
-import {suggestedAmounts} from '@/shared/constants';
+import {TIP_MESSAGES, suggestedAmounts} from '@/shared/constants';
 // Icons
 import {CircularProgress} from '@mui/material';
 import {ThumbUpAltOutlined, Info as InfoIcon} from '@mui/icons-material';
@@ -74,13 +74,10 @@ const SelectAmountTab = ({tabSettings, setTabSettings}) => {
       {currentTeacher?.verified ? (
         <TipMessage
           icon={<ThumbUpAltOutlined />}
-          error={
-            <div>
-              Thank you for considering tipping{' '}
-              <b>{currentTeacher?.displayName || currentTeacher?.username}</b>.
-              We'll notify them as soon as the payment is completed.
-            </div>
-          }
+          error={TIP_MESSAGES.verifiedTeacherMessage({
+            displayName: currentTeacher?.displayName,
+            username: currentTeacher?.username,
+          })}
           onClick={() => {
             return;
           }}
@@ -88,14 +85,9 @@ const SelectAmountTab = ({tabSettings, setTabSettings}) => {
       ) : (
         <TipMessage
           icon={<InfoIcon />}
-          error={
-            <div>
-              Thanks for considering tipping this teacher. The owner of{' '}
-              <b>{currentTeacher?.email}</b> is not part of our platform yet,
-              however, we'll invite to join and collect your tip as soon as the
-              payment is completed.
-            </div>
-          }
+          error={TIP_MESSAGES.nonExistedTeacherMessage({
+            email: currentTeacher?.email,
+          })}
           onClick={() => {
             return;
           }}
