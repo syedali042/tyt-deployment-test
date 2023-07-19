@@ -13,7 +13,7 @@ import {
   getTipAmount,
   getClientSecret,
   getTeacherUsernameOrEmail,
-  initializeTipProcess,
+  initializeOrUpdateTipProcess,
   getStepsSettings,
   setStepsSettings,
 } from '@/shared/redux/slices/tip';
@@ -62,8 +62,8 @@ const StepsHeader = ({toast}) => {
           error: 'Amount must be greater than 0',
         };
 
-      if (!clientSecret || clientSecret == '') {
-        await dispatch(initializeTipProcess());
+      if (clientSecret == '') {
+        await dispatch(initializeOrUpdateTipProcess());
         return {
           success: true,
         };

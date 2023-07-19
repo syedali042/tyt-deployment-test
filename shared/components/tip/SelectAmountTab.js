@@ -1,25 +1,15 @@
 'use client';
 // Bootstrap
-import {
-  Form,
-  InputGroup,
-  Stack,
-  Row,
-  Col,
-  Button,
-  Alert,
-} from 'react-bootstrap';
+import {Form, InputGroup, Stack, Row, Col, Button} from 'react-bootstrap';
 // Redux
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getTipAmount,
   setTipAmount,
-  initializeTipProcess,
+  initializeOrUpdateTipProcess,
   getIsPaymentRequestLoading,
   getCurrentTeacher,
   getClientSecret,
-  getPaymentIntentId,
-  updateCheckoutProcess,
   getStepsSettings,
 } from '@/shared/redux/slices/tip';
 // Constants
@@ -42,14 +32,13 @@ const SelectAmountTab = () => {
   const stepsSettings = useSelector(getStepsSettings);
   const currentTeacher = useSelector(getCurrentTeacher);
   const clientSecret = useSelector(getClientSecret);
-  const paymentIntentId = useSelector(getPaymentIntentId);
 
   const handleAmountChange = (value) => dispatch(setTipAmount({amount: value}));
 
   const handleInputKeyPressEvent = async (event) => {
     if (event.key == 'Enter') {
-      await initializeCheckout();
       event.preventDefault();
+      await initializeCheckout();
     }
   };
 
@@ -58,11 +47,9 @@ const SelectAmountTab = () => {
       if (amount < 1)
         return toast.error('Amount must be greater than 0', toastSettings);
       if (clientSecret !== '') {
-        await dispatch(
-          updateCheckoutProcess({paymentIntentId, data: {amount}})
-        );
+        await dispatch(initializeOrUpdateTipProcess({data: {amount}}));
       } else {
-        await dispatch(initializeTipProcess());
+        await dispatch(initializeOrUpdateTipProcess({data: {}}));
       }
     } catch (error) {}
   };

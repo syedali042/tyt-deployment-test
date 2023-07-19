@@ -11,7 +11,6 @@ import {
   getIsPaymentRequestLoading,
   getPaymentIntentId,
   getTipNotes,
-  updateCheckoutProcess,
 } from '@/shared/redux/slices/tip';
 import {useState} from 'react';
 import {CircularProgress} from '@mui/material';
@@ -25,15 +24,13 @@ export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
   const dispatch = useDispatch();
-  const paymentIntentId = useSelector(getPaymentIntentId);
   const notes = useSelector(getTipNotes);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch(
-      updateCheckoutProcess({
-        paymentIntentId,
+    await dispatch(
+      initializeOrUpdateTipProcess({
         data: {metadata: {email: tipperEmail, notes}},
       })
     );

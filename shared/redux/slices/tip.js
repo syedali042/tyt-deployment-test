@@ -140,59 +140,40 @@ export const setTipAmount =
 export const getTipAmount = (state) => state.tip.amount;
 
 // Initialize Tip Process
-export const initializeTipProcess = () => async (dispatch, getState) => {
-  dispatch(actions.startLoading());
-  dispatch(actions.setClientSecret(''));
-  dispatch(actions.setPaymentIntentId(''));
-  dispatch(actions.setError(null));
-  try {
-    const state = getState();
-    const {
-      amount,
-      teacher: {stripeAccountId, email},
-    } = state.tip;
-
-    const body = stripeAccountId ? {stripeAccountId, amount} : {email, amount};
-
-    const response = await axios.post(
-      `/payments/checkout-initialization`,
-      body
-    );
-
-    const {clientSecret, paymentIntentId} = response.data.body;
-
-    dispatch(actions.setClientSecret(clientSecret));
-    dispatch(actions.setPaymentIntentId(paymentIntentId));
-    dispatch(
-      actions.setStepsSettings({
-        activeStep: 'checkout-tab',
-        completedSteps: [
-          'find-teacher-tab',
-          'select-amount-tab',
-          'checkout-tab',
-        ],
-      })
-    );
-    dispatch(actions.stopLoading());
-  } catch (error) {
-    dispatch(actions.setError(error));
-    dispatch(actions.stopLoading());
-  }
-};
-
-// Update the existed payment intent if client secret is already there
-export const updateCheckoutProcess =
-  ({paymentIntentId, data}) =>
+export const initializeOrUpdateTipProcess =
+  ({data}) =>
   async (dispatch, getState) => {
     dispatch(actions.startLoading());
+    dispatch(actions.setClientSecret(''));
+    dispatch(actions.setPaymentIntentId(''));
+    dispatch(actions.setError(null));
     try {
-      const response = await axios.patch(
-        `/payments/checkout-updation/${paymentIntentId}`,
-        data
-      );
-      const {clientSecret, paymentIntentId: intentId} = response.data.body;
+      const state = getState();
+
+      const previousPaymentIntentId = state.tip.paymentIntentId;
+      let response;
+      if (previousPaymentIntentId == '') {
+        const {
+          amount,
+          teacher: {stripeAccountId, email},
+        } = state.tip;
+
+        const body = stripeAccountId
+          ? {stripeAccountId, amount}
+          : {email, amount};
+
+        response = await axios.post(`/payments/checkout-initialization`, body);
+      } else {
+        response = await axios.patch(
+          `/payments/checkout-updation/${previousPaymentIntentId}`,
+          data
+        );
+      }
+
+      const {clientSecret, paymentIntentId} = response.data.body;
+
       dispatch(actions.setClientSecret(clientSecret));
-      dispatch(actions.setPaymentIntentId(intentId));
+      dispatch(actions.setPaymentIntentId(paymentIntentId));
       dispatch(
         actions.setStepsSettings({
           activeStep: 'checkout-tab',
