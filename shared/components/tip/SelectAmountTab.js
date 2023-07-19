@@ -23,12 +23,17 @@ import {
   getStepsSettings,
 } from '@/shared/redux/slices/tip';
 // Constants
-import {TIP_MESSAGES, suggestedAmounts} from '@/shared/constants';
+import {
+  TIP_MESSAGES,
+  suggestedAmounts,
+  toastSettings,
+} from '@/shared/constants';
 // Icons
 import {CircularProgress} from '@mui/material';
 import {ThumbUpAltOutlined, Info as InfoIcon} from '@mui/icons-material';
 import {useState} from 'react';
 import TipMessage from './TipMessage';
+import {toast} from 'react-toastify';
 
 const SelectAmountTab = () => {
   const isLoading = useSelector(getIsPaymentRequestLoading);
@@ -50,6 +55,8 @@ const SelectAmountTab = () => {
 
   const initializeCheckout = async () => {
     try {
+      if (amount < 1)
+        return toast.error('Amount must be greater than 0', toastSettings);
       if (clientSecret !== '') {
         await dispatch(
           updateCheckoutProcess({paymentIntentId, data: {amount}})
