@@ -1,8 +1,9 @@
 'use client';
-// Components
-import {FormGroupInput} from '@/shared/components/bootstrap/FormGroupInput';
 // Bootstrap
 import {Stack, Row, Col, Button, Alert} from 'react-bootstrap';
+// Mui
+import {CircularProgress} from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
 // Redux
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -14,10 +15,8 @@ import {
   setTipErrors,
   verifyUserToTip,
 } from '@/shared/redux/slices/tip';
-// Icons
-import {CircularProgress} from '@mui/material';
-import CancelIcon from '@mui/icons-material/Cancel';
-import {useState} from 'react';
+// Components
+import {FormGroupInput} from '@/shared/components/bootstrap/FormGroupInput';
 import TipMessage from './TipMessage';
 
 const FindTeacherTab = () => {

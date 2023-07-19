@@ -1,15 +1,13 @@
 'use client';
-import '../../../app/tip/page.css';
 // React
 import {useState} from 'react';
-//Bootstrap
+// Bootstrap
 import {Stack, Row, Col, Card, Form, InputGroup, Badge} from 'react-bootstrap';
+// Mui
 import {Typography} from '@mui/material';
 // Stripe
 import {loadStripe} from '@stripe/stripe-js';
 import {Elements} from '@stripe/react-stripe-js';
-// Component
-import CheckoutForm from './CheckoutForm';
 // Redux
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -19,6 +17,10 @@ import {
   getTipAmount,
   setTipNotes,
 } from '@/shared/redux/slices/tip';
+// Component
+import CheckoutForm from './CheckoutForm';
+// Styles
+import '../../../app/tip/page.css';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY

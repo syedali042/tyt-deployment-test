@@ -1,6 +1,11 @@
 'use client';
-// Bootstrap
+// React Bootstrap
 import {Form, InputGroup, Stack, Row, Col, Button} from 'react-bootstrap';
+// Mui
+import {CircularProgress} from '@mui/material';
+import {ThumbUpAltOutlined, Info as InfoIcon} from '@mui/icons-material';
+// React Toast
+import {toast} from 'react-toastify';
 // Redux
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -12,18 +17,14 @@ import {
   getClientSecret,
   getStepsSettings,
 } from '@/shared/redux/slices/tip';
+// Components
+import TipMessage from './TipMessage';
 // Constants
 import {
   TIP_MESSAGES,
   suggestedAmounts,
   toastSettings,
 } from '@/shared/constants';
-// Icons
-import {CircularProgress} from '@mui/material';
-import {ThumbUpAltOutlined, Info as InfoIcon} from '@mui/icons-material';
-import {useState} from 'react';
-import TipMessage from './TipMessage';
-import {toast} from 'react-toastify';
 
 const SelectAmountTab = () => {
   const isLoading = useSelector(getIsPaymentRequestLoading);

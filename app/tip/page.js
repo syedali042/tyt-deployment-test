@@ -1,16 +1,21 @@
 'use client';
-import './page.css';
+// React
+import {useEffect} from 'react';
+// React Toast
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+// React Bootstrap
 import {Stack, Row, Container, Image} from 'react-bootstrap';
+//Redux
+import {useDispatch} from 'react-redux';
+import {resetTipState} from '@/shared/redux/slices/tip';
+// Components
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
 import StepsHeader from '@/shared/components/tip/StepHeader';
 import FindTeacherTab from '@/shared/components/tip/FindTeacherTab';
-import {ToastContainer, toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import SelectAmountTab from '@/shared/components/tip/SelectAmountTab';
 import CheckoutTab from '@/shared/components/tip/CheckoutTab';
-import {useEffect} from 'react';
-import {useDispatch} from 'react-redux';
-import {resetTipState} from '@/shared/redux/slices/tip';
+import './page.css';
 
 export default function GetStarted() {
   const dispatch = useDispatch();

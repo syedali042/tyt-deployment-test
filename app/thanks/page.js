@@ -1,7 +1,10 @@
 'use client';
+// Next
 import {useRouter} from 'next/navigation';
-import './page.css';
+// React Bootstrap
 import {Button, Col, Image, Row, Stack} from 'react-bootstrap';
+// Styles
+import './page.css';
 
 export default function ThanksPage() {
   const router = useRouter();

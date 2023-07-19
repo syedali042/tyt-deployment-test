@@ -1,20 +1,24 @@
-import React from 'react';
+// React
+import {useState} from 'react';
+// Stripe
 import {
   PaymentElement,
   LinkAuthenticationElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
+// React Bootstrap
 import {Button, Col, Row} from 'react-bootstrap';
+// MUI
+import {CircularProgress} from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
+// Redux
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getIsPaymentRequestLoading,
-  getPaymentIntentId,
   getTipNotes,
 } from '@/shared/redux/slices/tip';
-import {useState} from 'react';
-import {CircularProgress} from '@mui/material';
-import CancelIcon from '@mui/icons-material/Cancel';
+// Components
 import TipMessage from './TipMessage';
 
 export default function CheckoutForm() {

@@ -1,11 +1,5 @@
-// Bootstrap
+// React Bootstrap
 import {Stack} from 'react-bootstrap';
-// Constants
-import {
-  SEND_TIP_TABS,
-  SEND_TIP_TABS_ARR,
-  toastSettings,
-} from '@/shared/constants';
 // Redux
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -17,7 +11,14 @@ import {
   getStepsSettings,
   setStepsSettings,
 } from '@/shared/redux/slices/tip';
+// Utils
 import {commonValidationsForTabs} from '@/shared/utils/tipUtils';
+// Constants
+import {
+  SEND_TIP_TABS,
+  SEND_TIP_TABS_ARR,
+  toastSettings,
+} from '@/shared/constants';
 
 const StepsHeader = ({toast}) => {
   const dispatch = useDispatch();

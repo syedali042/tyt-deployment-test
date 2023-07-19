@@ -1,4 +1,6 @@
+// React Bootstrap
 import {Row, Col, Alert, Stack} from 'react-bootstrap';
+
 const TipMessage = ({icon, onClick, message}) => {
   return (
     <Row>
