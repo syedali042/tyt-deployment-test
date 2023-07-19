@@ -27,7 +27,7 @@ import {suggestedAmounts} from '@/shared/constants';
 import {CircularProgress} from '@mui/material';
 import {ThumbUpAltOutlined, Info as InfoIcon} from '@mui/icons-material';
 import {useState} from 'react';
-import TipError from './TipError';
+import TipMessage from './TipMessage';
 
 const SelectAmountTab = ({tabSettings, setTabSettings}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -72,7 +72,7 @@ const SelectAmountTab = ({tabSettings, setTabSettings}) => {
       className={`${tabSettings.active !== 'select-amount-tab' && 'd-none'}`}
     >
       {currentTeacher?.verified ? (
-        <TipError
+        <TipMessage
           icon={<ThumbUpAltOutlined />}
           error={
             <div>
@@ -86,7 +86,7 @@ const SelectAmountTab = ({tabSettings, setTabSettings}) => {
           }}
         />
       ) : (
-        <TipError
+        <TipMessage
           icon={<InfoIcon />}
           error={
             <div>

@@ -16,7 +16,7 @@ import {
 import {CircularProgress} from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import {useState} from 'react';
-import TipError from './TipError';
+import TipMessage from './TipMessage';
 
 const FindTeacherTab = ({tabSettings, setTabSettings}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +55,7 @@ const FindTeacherTab = ({tabSettings, setTabSettings}) => {
     <Stack
       className={`${tabSettings.active !== 'find-teacher-tab' && 'd-none'}`}
     >
-      <TipError
+      <TipMessage
         error={error}
         onClick={() => dispatch(setTipErrors({error: null}))}
         icon={<CancelIcon />}

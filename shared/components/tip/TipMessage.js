@@ -1,5 +1,5 @@
 import {Row, Col, Alert, Stack} from 'react-bootstrap';
-const TipError = ({icon, onClick, error}) => {
+const TipMessage = ({icon, onClick, error}) => {
   return (
     <Row>
       <Col md={{span: 8, offset: 2}}>
@@ -26,4 +26,4 @@ const TipError = ({icon, onClick, error}) => {
   );
 };
 
-export default TipError;
+export default TipMessage;
