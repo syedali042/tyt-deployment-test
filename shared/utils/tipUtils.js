@@ -40,21 +40,14 @@ export const commonValidationsForTabs = ({
     };
   }
 
-  const isEmail = validateEmail({email: teacherUsernameOrEmail});
-
-  if (currentTeacher == null) {
-    return {
-      success: false,
-      error: 'Please verify email address or username',
-    };
-  }
-
   if (!currentTeacher?.email && currentTeacher?.verified == false) {
     return {
       success: false,
       error: 'Please verify username or email again',
     };
   }
+
+  const isEmail = validateEmail({email: teacherUsernameOrEmail});
 
   if (isEmail && teacherUsernameOrEmail !== currentTeacher?.email) {
     return {
