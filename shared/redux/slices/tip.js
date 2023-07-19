@@ -11,6 +11,7 @@ const initialState = {
   amount: 0,
   clientSecret: '',
   paymentIntentId: '',
+  notes: '',
 };
 
 const slice = createSlice({
@@ -43,9 +44,11 @@ const slice = createSlice({
     setClientSecret(state, action) {
       state.clientSecret = action.payload;
     },
-
     setPaymentIntentId(state, action) {
       state.paymentIntentId = action.payload;
+    },
+    setTipNotes(state, action) {
+      state.notes = action.payload;
     },
   },
 });
@@ -192,4 +195,14 @@ export const setTipErrors =
   ({errors}) =>
   (dispatch) => {
     dispatch(actions.setError(errors));
+  };
+
+// Get Tip Notes
+export const getTipNotes = (state) => state.tip.notes;
+
+// Set Errors
+export const setTipNotes =
+  ({notes}) =>
+  (dispatch) => {
+    dispatch(actions.setTipNotes(notes));
   };
