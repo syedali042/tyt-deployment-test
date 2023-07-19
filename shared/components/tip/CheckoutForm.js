@@ -8,6 +8,7 @@ import {
 import {Button, Col, Row, Alert, Stack} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  getIsPaymentRequestLoading,
   getPaymentIntentId,
   getTipNotes,
   updateCheckoutProcess,
@@ -18,7 +19,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import TipMessage from './TipMessage';
 
 export default function CheckoutForm() {
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = useSelector(getIsPaymentRequestLoading);
   const [error, setError] = useState(null);
   const [tipperEmail, setTipperEmail] = useState('');
   const stripe = useStripe();
@@ -60,7 +61,7 @@ export default function CheckoutForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+
     dispatch(
       updateCheckoutProcess({
         paymentIntentId,
@@ -84,8 +85,6 @@ export default function CheckoutForm() {
     } else {
       setError('An unexpected error occurred.');
     }
-
-    setIsLoading(false);
   };
 
   const paymentElementOptions = {
@@ -93,6 +92,11 @@ export default function CheckoutForm() {
   };
   return (
     <>
+      <TipMessage
+        message={error}
+        onClick={() => setError(null)}
+        icon={<CancelIcon />}
+      />
       <form onSubmit={handleSubmit} id="payment-form" className="">
         <LinkAuthenticationElement
           id="link-authentication-element"
@@ -103,11 +107,6 @@ export default function CheckoutForm() {
           className="w-100 text-white "
           id="payment-element"
           options={paymentElementOptions}
-        />
-        <TipMessage
-          message={error}
-          onClick={() => setError(null)}
-          icon={<CancelIcon />}
         />
         <Row className="pt-3">
           <Col md={{span: 12}}>

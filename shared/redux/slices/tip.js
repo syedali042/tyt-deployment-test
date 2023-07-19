@@ -25,7 +25,6 @@ const slice = createSlice({
       state.isLoading = false;
     },
     setError(state, action) {
-      state.isLoading = false;
       state.error = action.payload;
     },
     setCurrentTeacher(state, action) {
@@ -149,7 +148,7 @@ export const initializeTipProcess = () => async (dispatch, getState) => {
     dispatch(actions.stopLoading());
   } catch (error) {
     dispatch(actions.setError(error));
-    dispatch(actions.startLoading());
+    dispatch(actions.stopLoading());
     throw error;
   }
 };
@@ -170,7 +169,7 @@ export const updateCheckoutProcess =
       dispatch(actions.stopLoading());
     } catch (error) {
       dispatch(actions.stopLoading());
-      dispatch(actions.hasError(error));
+      dispatch(actions.setError(error));
       throw error;
     }
   };

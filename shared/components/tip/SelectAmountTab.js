@@ -30,7 +30,7 @@ import {useState} from 'react';
 import TipMessage from './TipMessage';
 
 const SelectAmountTab = ({tabSettings, setTabSettings}) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = useSelector(getIsPaymentRequestLoading);
   const dispatch = useDispatch();
   const amount = useSelector(getTipAmount);
   const currentTeacher = useSelector(getCurrentTeacher);
@@ -47,11 +47,10 @@ const SelectAmountTab = ({tabSettings, setTabSettings}) => {
   };
 
   const initializeCheckout = async () => {
-    setIsLoading(true);
     try {
-      if (clientSecret || paymentIntentId) {
+      if (clientSecret !== '') {
         await dispatch(
-          updateCheckoutProcess({paymentIntentId, data: {amount: amount * 100}})
+          updateCheckoutProcess({paymentIntentId, data: {amount}})
         );
       } else {
         await dispatch(initializeTipProcess());
@@ -60,11 +59,7 @@ const SelectAmountTab = ({tabSettings, setTabSettings}) => {
           steps: ['find-teacher-tab', 'select-amount-tab', 'checkout-tab'],
         });
       }
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
+    } catch (error) {}
   };
 
   return (

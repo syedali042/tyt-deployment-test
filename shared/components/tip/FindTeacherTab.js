@@ -7,6 +7,7 @@ import {Stack, Row, Col, Button, Alert} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getErrors,
+  getIsPaymentRequestLoading,
   getTeacherUsernameOrEmail,
   setTeacherUsernameOrEmail,
   setTipErrors,
@@ -19,7 +20,7 @@ import {useState} from 'react';
 import TipMessage from './TipMessage';
 
 const FindTeacherTab = ({tabSettings, setTabSettings}) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = useSelector(getIsPaymentRequestLoading);
   const dispatch = useDispatch();
 
   const error = useSelector(getErrors);
@@ -37,18 +38,13 @@ const FindTeacherTab = ({tabSettings, setTabSettings}) => {
   };
 
   const verifyUser = async () => {
-    setIsLoading(true);
     try {
       await dispatch(verifyUserToTip());
       setTabSettings({
         active: 'select-amount-tab',
         steps: ['find-teacher-tab', 'select-amount-tab'],
       });
-      setIsLoading(false);
-    } catch (err) {
-      console.log(err);
-      setIsLoading(false);
-    }
+    } catch (err) {}
   };
 
   return (
