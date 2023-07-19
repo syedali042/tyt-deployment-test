@@ -33,7 +33,7 @@ export const commonValidationsForTabs = ({
   currentTeacher,
   teacherUsernameOrEmail,
 }) => {
-  if (teacherUsernameOrEmail == '' || teacherUsernameOrEmail == null) {
+  if (teacherUsernameOrEmail == '') {
     return {
       success: false,
       error: 'Please enter a valid email address or username',

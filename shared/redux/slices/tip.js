@@ -7,7 +7,7 @@ const initialState = {
   isLoading: false,
   error: null,
   teacher: null,
-  teacherUsernameOrEmail: null,
+  teacherUsernameOrEmail: '',
   amount: 0,
   clientSecret: '',
   paymentIntentId: '',
