@@ -74,7 +74,7 @@ const SelectAmountTab = ({tabSettings, setTabSettings}) => {
       {currentTeacher?.verified ? (
         <TipMessage
           icon={<ThumbUpAltOutlined />}
-          error={TIP_MESSAGES.verifiedTeacherMessage({
+          message={TIP_MESSAGES.verifiedTeacherMessage({
             displayName: currentTeacher?.displayName,
             username: currentTeacher?.username,
           })}
@@ -85,7 +85,7 @@ const SelectAmountTab = ({tabSettings, setTabSettings}) => {
       ) : (
         <TipMessage
           icon={<InfoIcon />}
-          error={TIP_MESSAGES.nonExistedTeacherMessage({
+          message={TIP_MESSAGES.nonExistedTeacherMessage({
             email: currentTeacher?.email,
           })}
           onClick={() => {

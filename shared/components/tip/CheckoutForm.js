@@ -14,6 +14,7 @@ import {
 import {useState, useEffect} from 'react';
 import {CircularProgress} from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
+import TipMessage from './TipMessage';
 
 export default function CheckoutForm({notes}) {
   const [isLoading, setIsLoading] = useState(false);
@@ -101,30 +102,11 @@ export default function CheckoutForm({notes}) {
           id="payment-element"
           options={paymentElementOptions}
         />
-        {error && (
-          <>
-            <br />
-            <Alert
-              variant={'danger'}
-              className="tip-error"
-              style={{color: '#fff'}}
-            >
-              <Stack className="d-flex align-items-center justify-content-center">
-                <Stack style={{width: 'auto'}}>
-                  <CancelIcon
-                    onClick={() => setError(null)}
-                    style={{
-                      transform: 'translateY(15%) scale(1.7)',
-                      cursor: 'pointer',
-                    }}
-                  />
-                </Stack>
-                &nbsp;&nbsp;&nbsp;
-                <Stack>{error}</Stack>
-              </Stack>
-            </Alert>
-          </>
-        )}
+        <TipMessage
+          message={error}
+          onClick={() => setError(null)}
+          icon={<CancelIcon />}
+        />
         <Row className="pt-3">
           <Col md={{span: 12}}>
             <Button

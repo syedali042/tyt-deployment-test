@@ -56,7 +56,7 @@ const FindTeacherTab = ({tabSettings, setTabSettings}) => {
       className={`${tabSettings.active !== 'find-teacher-tab' && 'd-none'}`}
     >
       <TipMessage
-        error={error}
+        message={error?.message}
         onClick={() => dispatch(setTipErrors({error: null}))}
         icon={<CancelIcon />}
       />

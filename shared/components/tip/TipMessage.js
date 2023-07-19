@@ -1,5 +1,5 @@
 import {Row, Col, Alert, Stack} from 'react-bootstrap';
-const TipMessage = ({icon, onClick, error}) => {
+const TipMessage = ({icon, onClick, message}) => {
   return (
     <Row>
       <Col md={{span: 8, offset: 2}}>
@@ -17,7 +17,7 @@ const TipMessage = ({icon, onClick, error}) => {
                 {icon}
               </Stack>
               &nbsp;&nbsp;&nbsp;
-              <Stack>{error.message || error}</Stack>
+              <Stack>{message}</Stack>
             </Stack>
           </Alert>
         )}
