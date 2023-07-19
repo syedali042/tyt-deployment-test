@@ -3,7 +3,7 @@ const TipMessage = ({icon, onClick, message}) => {
   return (
     <Row>
       <Col md={{span: 8, offset: 2}}>
-        {error && (
+        {message && (
           <Alert className="my-2" variant={'danger'} style={{color: '#fff'}}>
             <Stack className="d-flex align-items-center justify-content-center">
               <Stack
