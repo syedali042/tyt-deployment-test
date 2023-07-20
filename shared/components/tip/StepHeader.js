@@ -64,7 +64,9 @@ const StepsHeader = ({toast}) => {
         };
 
       if (clientSecret == '') {
-        await dispatch(initializeOrUpdateTipProcess({data: {}}));
+        await dispatch(
+          initializeOrUpdateTipProcess({action: 'initializeCheckout'})
+        );
         return {
           success: true,
         };

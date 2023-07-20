@@ -16,6 +16,7 @@ const initialState = {
     activeStep: 'find-teacher-tab',
     completedSteps: ['find-teacher-tab'],
   },
+  tipperEmail: '',
 };
 
 const slice = createSlice({
@@ -58,6 +59,9 @@ const slice = createSlice({
     },
     resetTipState(state, action) {
       state = action.payload;
+    },
+    setTipperEmail(state, action) {
+      state.tipperEmail = action.payload;
     },
   },
 });
@@ -144,29 +148,42 @@ export const getTipAmount = (state) => state.tip.amount;
 
 // Initialize Tip Process
 export const initializeOrUpdateTipProcess =
-  ({data}) =>
+  ({action}) =>
   async (dispatch, getState) => {
     dispatch(actions.startLoading());
-    dispatch(actions.setClientSecret(''));
-    dispatch(actions.setPaymentIntentId(''));
     dispatch(actions.setError(null));
     try {
       const state = getState();
-
-      const previousPaymentIntentId = state.tip.paymentIntentId;
       let response;
-      if (previousPaymentIntentId == '') {
-        const {
-          amount,
-          teacher: {stripeAccountId, email},
-        } = state.tip;
+      const {
+        teacher: {stripeAccountId, email},
+        amount,
+        paymentIntentId: previousPaymentIntentId,
+        tipperEmail,
+        notes,
+      } = state.tip;
+
+      if (action == 'initializeCheckout') {
+        dispatch(actions.setClientSecret(''));
+        dispatch(actions.setPaymentIntentId(''));
 
         const body = stripeAccountId
           ? {stripeAccountId, amount}
           : {email, amount};
 
         response = await axios.post(`/payments/checkout-initialization`, body);
-      } else {
+      }
+
+      if (action == 'updateAmount') {
+        const data = {amount};
+        response = await axios.patch(
+          `/payments/checkout-updation/${previousPaymentIntentId}`,
+          data
+        );
+      }
+
+      if (action == 'updateTipperEmailAndNotes') {
+        const data = {metadata: {email: tipperEmail, notes}};
         response = await axios.patch(
           `/payments/checkout-updation/${previousPaymentIntentId}`,
           data
@@ -187,6 +204,7 @@ export const initializeOrUpdateTipProcess =
           ],
         })
       );
+
       dispatch(actions.stopLoading());
     } catch (error) {
       dispatch(actions.setError(error));
@@ -251,4 +269,12 @@ export const resetTipState = () => (dispatch) => {
       },
     })
   );
+};
+
+// Get Steps Settings
+export const getTipperEmail = (state) => state.tip.tipperEmail;
+
+// Set Steps Settings
+export const setTipperEmail = (email) => (dispatch) => {
+  dispatch(actions.setTipperEmail(email));
 };

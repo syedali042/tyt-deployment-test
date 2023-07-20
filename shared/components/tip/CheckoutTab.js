@@ -15,6 +15,7 @@ import {
   getCurrentTeacher,
   getStepsSettings,
   getTipAmount,
+  getTipNotes,
   setTipNotes,
 } from '@/shared/redux/slices/tip';
 // Component
@@ -27,7 +28,7 @@ const stripePromise = loadStripe(
 );
 
 const CheckoutTab = () => {
-  const [notes, setNotes] = useState('');
+  const notes = useSelector(getTipNotes);
   const stepsSettings = useSelector(getStepsSettings);
   const currentTeacher = useSelector(getCurrentTeacher);
   const amount = useSelector(getTipAmount);
@@ -109,7 +110,9 @@ const CheckoutTab = () => {
                         name="Note"
                         as={'textarea'}
                         value={notes}
-                        onChange={(e) => dispatch(setTipNotes(e.target.value))}
+                        onChange={(e) =>
+                          dispatch(setTipNotes({notes: e.target.value}))
+                        }
                         className="form-control"
                         style={{
                           padding: '15px',

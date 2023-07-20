@@ -16,26 +16,25 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getIsPaymentRequestLoading,
-  getTipNotes,
+  setTipperEmail,
+  initializeOrUpdateTipProcess,
 } from '@/shared/redux/slices/tip';
 // Components
 import TipMessage from './TipMessage';
 
 export default function CheckoutForm() {
-  const isLoading = useSelector(getIsPaymentRequestLoading);
   const [error, setError] = useState(null);
-  const [tipperEmail, setTipperEmail] = useState('');
+  const isLoading = useSelector(getIsPaymentRequestLoading);
   const stripe = useStripe();
   const elements = useElements();
   const dispatch = useDispatch();
-  const notes = useSelector(getTipNotes);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     await dispatch(
       initializeOrUpdateTipProcess({
-        data: {metadata: {email: tipperEmail, notes}},
+        action: 'updateTipperEmailAndNotes',
       })
     );
 
@@ -66,7 +65,7 @@ export default function CheckoutForm() {
       <form onSubmit={handleSubmit} id="payment-form" className="">
         <LinkAuthenticationElement
           id="link-authentication-element"
-          onChange={(e) => setTipperEmail(e.value.email)}
+          onChange={(e) => dispatch(setTipperEmail(e.value.email))}
           className="w-100 text-white pb-3"
         />
         <PaymentElement

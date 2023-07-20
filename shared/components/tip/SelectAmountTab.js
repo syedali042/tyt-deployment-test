@@ -47,9 +47,11 @@ const SelectAmountTab = () => {
     if (amount < 1)
       return toast.error('Amount must be greater than 0', toastSettings);
     if (clientSecret !== '') {
-      await dispatch(initializeOrUpdateTipProcess({data: {amount}}));
+      await dispatch(initializeOrUpdateTipProcess({action: 'updateAmount'}));
     } else {
-      await dispatch(initializeOrUpdateTipProcess({data: {}}));
+      await dispatch(
+        initializeOrUpdateTipProcess({action: 'initializeCheckout'})
+      );
     }
   };
 
