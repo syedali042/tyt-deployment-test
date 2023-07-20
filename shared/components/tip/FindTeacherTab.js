@@ -32,18 +32,14 @@ const FindTeacherTab = () => {
   const handleChangeTeacherUsernameOrEmail = (value) =>
     dispatch(setTeacherUsernameOrEmail({usernameOrEmail: value}));
 
-  const handleInputKeyPressEvent = async (event) => {
+  const handleEnterKeyPressEvent = async (event) => {
     if (event.key == 'Enter') {
       event.preventDefault();
       await verifyUser();
     }
   };
 
-  const verifyUser = async () => {
-    try {
-      await dispatch(verifyUserToTip());
-    } catch (err) {}
-  };
+  const verifyUser = async () => await dispatch(verifyUserToTip());
 
   return (
     <Stack
@@ -67,7 +63,7 @@ const FindTeacherTab = () => {
             onChange={(event) =>
               handleChangeTeacherUsernameOrEmail(event.target.value)
             }
-            onKeyDown={handleInputKeyPressEvent}
+            onKeyDown={handleEnterKeyPressEvent}
             style={{
               padding: '15px',
               fontSize: '16px',

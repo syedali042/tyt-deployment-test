@@ -36,7 +36,7 @@ const SelectAmountTab = () => {
 
   const handleAmountChange = (value) => dispatch(setTipAmount({amount: value}));
 
-  const handleInputKeyPressEvent = async (event) => {
+  const handleEnterKeyPressEvent = async (event) => {
     if (event.key == 'Enter') {
       event.preventDefault();
       await initializeCheckout();
@@ -44,15 +44,13 @@ const SelectAmountTab = () => {
   };
 
   const initializeCheckout = async () => {
-    try {
-      if (amount < 1)
-        return toast.error('Amount must be greater than 0', toastSettings);
-      if (clientSecret !== '') {
-        await dispatch(initializeOrUpdateTipProcess({data: {amount}}));
-      } else {
-        await dispatch(initializeOrUpdateTipProcess({data: {}}));
-      }
-    } catch (error) {}
+    if (amount < 1)
+      return toast.error('Amount must be greater than 0', toastSettings);
+    if (clientSecret !== '') {
+      await dispatch(initializeOrUpdateTipProcess({data: {amount}}));
+    } else {
+      await dispatch(initializeOrUpdateTipProcess({data: {}}));
+    }
   };
 
   return (
@@ -105,7 +103,7 @@ const SelectAmountTab = () => {
                   padding: '15px',
                   fontSize: '16px',
                 }}
-                onKeyDown={handleInputKeyPressEvent}
+                onKeyDown={handleEnterKeyPressEvent}
                 min={1}
               />
             </InputGroup>
