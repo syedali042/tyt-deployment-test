@@ -22,6 +22,7 @@ import {
 import CheckoutForm from './CheckoutForm';
 // Styles
 import '../../../app/tip/page.css';
+import {SEND_TIP_TABS} from '@/shared/constants';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -50,7 +51,8 @@ const CheckoutTab = () => {
     <>
       <Stack
         className={`${
-          stepsSettings?.activeStep !== 'checkout-tab' && 'd-none'
+          stepsSettings?.activeStep !== SEND_TIP_TABS.checkoutTab.name &&
+          'd-none'
         }`}
       >
         <Row>

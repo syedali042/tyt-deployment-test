@@ -21,6 +21,7 @@ import {
 import TipMessage from './TipMessage';
 // Constants
 import {
+  SEND_TIP_TABS,
   TIP_MESSAGES,
   suggestedAmounts,
   toastSettings,
@@ -58,7 +59,8 @@ const SelectAmountTab = () => {
   return (
     <Stack
       className={`${
-        stepsSettings?.activeStep !== 'select-amount-tab' && 'd-none'
+        stepsSettings?.activeStep !== SEND_TIP_TABS.selectAmountTab.name &&
+        'd-none'
       }`}
     >
       {currentTeacher?.verified ? (

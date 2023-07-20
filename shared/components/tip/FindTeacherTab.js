@@ -18,6 +18,7 @@ import {
 // Components
 import {FormGroupInput} from '@/shared/components/bootstrap/FormGroupInput';
 import TipMessage from './TipMessage';
+import {SEND_TIP_TABS} from '@/shared/constants';
 
 const FindTeacherTab = () => {
   const isLoading = useSelector(getIsPaymentRequestLoading);
@@ -44,7 +45,8 @@ const FindTeacherTab = () => {
   return (
     <Stack
       className={`${
-        stepsSettings?.activeStep !== 'find-teacher-tab' && 'd-none'
+        stepsSettings?.activeStep !== SEND_TIP_TABS.findTeacherTab.name &&
+        'd-none'
       }`}
     >
       <TipMessage
