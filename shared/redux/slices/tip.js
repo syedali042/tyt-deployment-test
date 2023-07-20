@@ -43,7 +43,6 @@ const slice = createSlice({
     },
     setTipAmount(state, action) {
       state.amount = action.payload;
-      state.clientSecret = '';
     },
     setClientSecret(state, action) {
       state.clientSecret = action.payload;
@@ -163,37 +162,33 @@ export const initializeOrUpdateTipProcess =
         notes,
       } = state.tip;
 
-      if (action == 'initializeCheckout') {
-        dispatch(actions.setClientSecret(''));
-        dispatch(actions.setPaymentIntentId(''));
+      if (action !== 'noUpdate') {
+        if (action == 'initializeCheckout') {
+          dispatch(actions.setClientSecret(''));
+          dispatch(actions.setPaymentIntentId(''));
 
-        const body = stripeAccountId
-          ? {stripeAccountId, amount}
-          : {email, amount};
+          const body = stripeAccountId
+            ? {stripeAccountId, amount}
+            : {email, amount};
 
-        response = await axios.post(`/payments/checkout-initialization`, body);
+          response = await axios.post(
+            `/payments/checkout-initialization`,
+            body
+          );
+        } else if (action == 'updateAmountTipperEmailAndNotes') {
+          const body = {amount, metadata: {email: tipperEmail, notes}};
+          response = await axios.patch(
+            `/payments/checkout-updation/${previousPaymentIntentId}`,
+            body
+          );
+        }
+
+        const {clientSecret, paymentIntentId} = response.data.body;
+
+        dispatch(actions.setClientSecret(clientSecret));
+        dispatch(actions.setPaymentIntentId(paymentIntentId));
       }
 
-      if (action == 'updateAmount') {
-        const data = {amount};
-        response = await axios.patch(
-          `/payments/checkout-updation/${previousPaymentIntentId}`,
-          data
-        );
-      }
-
-      if (action == 'updateTipperEmailAndNotes') {
-        const data = {metadata: {email: tipperEmail, notes}};
-        response = await axios.patch(
-          `/payments/checkout-updation/${previousPaymentIntentId}`,
-          data
-        );
-      }
-
-      const {clientSecret, paymentIntentId} = response.data.body;
-
-      dispatch(actions.setClientSecret(clientSecret));
-      dispatch(actions.setPaymentIntentId(paymentIntentId));
       dispatch(
         actions.setStepsSettings({
           activeStep: 'checkout-tab',

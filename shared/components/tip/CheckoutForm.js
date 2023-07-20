@@ -18,6 +18,7 @@ import {
   getIsPaymentRequestLoading,
   setTipperEmail,
   initializeOrUpdateTipProcess,
+  getErrors,
 } from '@/shared/redux/slices/tip';
 // Components
 import TipMessage from './TipMessage';
@@ -28,16 +29,21 @@ export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
   const dispatch = useDispatch();
+  const tipErrors = useSelector(getErrors);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     await dispatch(
       initializeOrUpdateTipProcess({
-        action: 'updateTipperEmailAndNotes',
+        action: 'updateAmountTipperEmailAndNotes',
       })
     );
 
+    if (tipErrors !== null) {
+      setError(tipErrors.message);
+      return;
+    }
     const {error} = await stripe.confirmPayment({
       elements,
       confirmParams: {
