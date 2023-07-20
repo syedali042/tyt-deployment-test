@@ -12,7 +12,10 @@ import {
   setStepsSettings,
 } from '@/shared/redux/slices/tip';
 // Utils
-import {commonValidationsForTabs} from '@/shared/utils/tipUtils';
+import {
+  commonValidationsForTabs,
+  createStepsSettings,
+} from '@/shared/utils/tipUtils';
 // Constants
 import {
   SEND_TIP_TABS,
@@ -76,35 +79,27 @@ const StepsHeader = ({toast}) => {
     }
   };
 
-  const activateTab = async ({step}) => {
+  const activateTab = async ({step, key}) => {
     if (stepsSettings?.activeStep == step) return;
 
     const {success, error} = await validateTabShifting(step);
 
     if (!success) return toast.error(error, toastSettings);
-    await dispatch(
-      setStepsSettings({
-        activeStep: step,
-        completedSteps:
-          step == SEND_TIP_TABS.findTeacherTab.name
-            ? ['find-teacher-tab']
-            : step == SEND_TIP_TABS.selectAmountTab.name
-            ? ['find-teacher-tab', 'select-amount-tab']
-            : ['find-teacher-tab', 'select-amount-tab', 'checkout-tab'],
-      })
-    );
+
+    await dispatch(setStepsSettings(key));
   };
   return (
     <Stack className="md-stepper-horizontal orange">
       {SEND_TIP_TABS_ARR.map((tab, index) => {
         const tabLabel = tab[0];
         const tabName = tab[1];
+        const key = tab[2];
         return (
           <Stack
             className={`md-step ${
               stepsSettings?.completedSteps?.includes(tabName) && 'active'
             }`}
-            onClick={() => activateTab({step: tabName})}
+            onClick={() => activateTab({step: tabName, key})}
             style={{cursor: 'pointer'}}
           >
             <Stack className="md-step-circle">

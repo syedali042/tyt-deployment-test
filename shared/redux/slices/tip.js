@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import axios from '../axios';
-import {validateEmail} from '@/shared/utils/tipUtils';
+import {createStepsSettings, validateEmail} from '@/shared/utils/tipUtils';
 import {TIP_MESSAGES} from '@/shared/constants';
 
 const initialState = {
@@ -56,7 +56,7 @@ const slice = createSlice({
     setStepsSettings(state, action) {
       state.stepsSettings = action.payload;
     },
-    resetTipState(state, action) {
+    setTipState(state, action) {
       state = action.payload;
     },
     setTipperEmail(state, action) {
@@ -97,10 +97,7 @@ export const verifyUserToTip = () => async (dispatch, getState) => {
         const {body} = response.data;
         dispatch(actions.setCurrentTeacher({...body}));
         dispatch(
-          actions.setStepsSettings({
-            activeStep: 'select-amount-tab',
-            completedSteps: ['find-teacher-tab', 'select-amount-tab'],
-          })
+          actions.setStepsSettings(createStepsSettings('selectAmountTab'))
         );
         dispatch(actions.stopLoading());
       })
@@ -121,10 +118,7 @@ export const verifyUserToTip = () => async (dispatch, getState) => {
             })
           );
           dispatch(
-            actions.setStepsSettings({
-              activeStep: 'select-amount-tab',
-              completedSteps: ['find-teacher-tab', 'select-amount-tab'],
-            })
+            actions.setStepsSettings(createStepsSettings('selectAmountTab'))
           );
           dispatch(actions.stopLoading());
         }
@@ -188,18 +182,7 @@ export const initializeOrUpdateTipProcess =
         dispatch(actions.setClientSecret(clientSecret));
         dispatch(actions.setPaymentIntentId(paymentIntentId));
       }
-
-      dispatch(
-        actions.setStepsSettings({
-          activeStep: 'checkout-tab',
-          completedSteps: [
-            'find-teacher-tab',
-            'select-amount-tab',
-            'checkout-tab',
-          ],
-        })
-      );
-
+      dispatch(actions.setStepsSettings(createStepsSettings('checkoutTab')));
       dispatch(actions.stopLoading());
     } catch (error) {
       dispatch(actions.setError(error));
@@ -243,28 +226,13 @@ export const setTipNotes =
 export const getStepsSettings = (state) => state.tip.stepsSettings;
 
 // Set Steps Settings
-export const setStepsSettings = (settings) => (dispatch) => {
+export const setStepsSettings = (step) => (dispatch) => {
+  const settings = createStepsSettings(step);
   dispatch(actions.setStepsSettings(settings));
 };
 
-export const resetTipState = () => (dispatch) => {
-  dispatch(
-    actions.resetTipState({
-      isLoading: false,
-      error: null,
-      teacher: null,
-      teacherUsernameOrEmail: '',
-      amount: 0,
-      clientSecret: '',
-      paymentIntentId: '',
-      notes: '',
-      stepsSettings: {
-        activeStep: 'find-teacher-tab',
-        completedSteps: ['find-teacher-tab'],
-      },
-    })
-  );
-};
+export const resetTipState = () => (dispatch) =>
+  dispatch(actions.setTipState(initialState));
 
 // Get Steps Settings
 export const getTipperEmail = (state) => state.tip.tipperEmail;

@@ -16,6 +16,7 @@ export const SEND_TIP_TABS = {
 export const SEND_TIP_TABS_ARR = Object.keys(SEND_TIP_TABS).map((key) => [
   SEND_TIP_TABS[key]['label'],
   SEND_TIP_TABS[key]['name'],
+  key,
 ]);
 
 export const suggestedAmounts = ['10', '50', '100', 'Other'];

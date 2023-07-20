@@ -1,3 +1,5 @@
+import {SEND_TIP_TABS} from '../constants';
+
 export function validateEmail({email}) {
   //Check minimum valid length of an Email.
   if (email.length <= 2) {
@@ -65,5 +67,24 @@ export const commonValidationsForTabs = ({
 
   return {
     success: true,
+  };
+};
+
+export const createStepsSettings = (inputStep) => {
+  let completedStepsArr = [];
+  const stepsObjectKeysArr = Object.keys(SEND_TIP_TABS);
+  inputStep = SEND_TIP_TABS[inputStep];
+
+  for (let i = 0; i < stepsObjectKeysArr.length; i++) {
+    let key = stepsObjectKeysArr[i];
+    let step = SEND_TIP_TABS[key];
+    let stepName = step.name;
+    completedStepsArr.push(stepName);
+    if (inputStep.name == stepName) break;
+  }
+
+  return {
+    activeStep: inputStep.name,
+    completedSteps: completedStepsArr,
   };
 };
