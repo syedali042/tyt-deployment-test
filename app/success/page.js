@@ -6,7 +6,7 @@ import {Button, Col, Image, Row, Stack} from 'react-bootstrap';
 // Styles
 import './page.css';
 
-export default function ThanksPage() {
+export default function SuccessPage() {
   const router = useRouter();
   return (
     <Stack className="mainContainer">
