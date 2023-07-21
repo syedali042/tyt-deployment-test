@@ -10,17 +10,16 @@ import {usePathname, useRouter} from 'next/navigation';
 
 const Contentlayout = ({children}) => {
   const pathname = usePathname();
-  const isDashboardIncludes = pathname.includes('/dashboard');
-  const userFromStorage = localStorage.getItem('user');
-  const [renderUi, setRenderUi] = useState(
-    (() => {
-      return userFromStorage && isDashboardIncludes;
-    })()
-  );
+  const [renderUi, setRenderUi] = useState(false);
   const router = useRouter();
   useEffect(() => {
+    const isDashboardIncludes = pathname.includes('/dashboard');
+    const userFromStorage = localStorage.getItem('user');
+
+    if (userFromStorage && isDashboardIncludes) setRenderUi(true);
     // if user is logged in but not on dashboard, redirect it to dashboard
-    if (userFromStorage && !isDashboardIncludes) router.push('/dashboard/home');
+    else if (userFromStorage && !isDashboardIncludes)
+      router.push('/dashboard/home');
     // if user is not logged in but try to visit dashboard, redirect it to login page
     else if (!userFromStorage && isDashboardIncludes)
       router.push('/auth/login');
