@@ -1,3 +1,8 @@
+import AverageTipApexChart from './components/dashboard/widgets-charts/AverageTipApexChart';
+import TotalTippersApexChart from './components/dashboard/widgets-charts/TotalTippersApexChart';
+import TotalTipsAmountApexChart from './components/dashboard/widgets-charts/TotalTipsAmountApexChart';
+import TotalTipsApexChart from './components/dashboard/widgets-charts/TotalTipsApexChart';
+
 export const SEND_TIP_TABS = {
   findTeacherTab: {
     label: 'Find Teacher',
@@ -53,3 +58,30 @@ export const TIP_MESSAGES = {
     );
   },
 };
+
+export const DASHBOARD_WIDGETS = {
+  totalTippers: {
+    label: 'Total Tippers',
+    chart: <TotalTippersApexChart />,
+  },
+  totalTipsAmount: {
+    label: 'Total Tips Amount',
+    chart: <TotalTipsAmountApexChart />,
+  },
+  totalTips: {
+    label: 'Total Tips',
+    chart: <TotalTipsApexChart />,
+  },
+  averageTipAmount: {
+    label: 'Average Tip Amount',
+    chart: <AverageTipApexChart />,
+  },
+};
+
+export const DASHBOARD_WIDGETS_ARR = Object.keys(DASHBOARD_WIDGETS).map(
+  (key) => [
+    DASHBOARD_WIDGETS[key]['label'],
+    DASHBOARD_WIDGETS[key]['chart'],
+    key,
+  ]
+);
