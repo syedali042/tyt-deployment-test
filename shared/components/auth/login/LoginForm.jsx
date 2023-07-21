@@ -48,7 +48,7 @@ export const LoginForm = () => {
     await signInWithEmailAndPassword(firebaseAuth, usernameOrEmail, password)
       .then(async (user) => {
         await dispatch(signInUser(user.user));
-        router.push('/welcome');
+        router.push('/dashboard');
       })
       .catch((error) => {
         const errorString = error.toString();

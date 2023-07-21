@@ -13,7 +13,8 @@ const Contentlayout = ({children}) => {
   const router = useRouter();
   const pathname = usePathname();
   useEffect(() => {
-    const isDashboardIncludes = pathname.includes('/dashboard');
+    const isDashboardIncludes =
+      pathname.includes('/dashboard') || pathname.includes('/profile');
     const userFromStorage = localStorage.getItem('user');
     if (userFromStorage && !isDashboardIncludes) router.push('/dashboard');
     else if (!userFromStorage && !isDashboardIncludes) setRenderUi(true);

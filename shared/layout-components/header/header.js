@@ -70,13 +70,13 @@ const Header = ({localVaraiable}) => {
               <img
                 src={`/assets/images/brand/logo-white.png`}
                 className="header-brand-img desktop-logo"
-                style={{width:'140px', height:'65px'}}
+                style={{width: '140px', height: '65px'}}
                 alt="logo"
               />
               <img
                 src={`/assets/images/brand/logo-dark.png`}
                 className="header-brand-img light-logo1"
-                style={{width:'140px', height:'65px'}}
+                style={{width: '140px', height: '65px'}}
                 alt="logo"
               />
             </Link>

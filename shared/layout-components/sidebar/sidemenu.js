@@ -1,6 +1,6 @@
 export const MENUITEMS = [
   {
-    menutitle: 'MAIN',
+    menutitle: '',
     Items: [
       {
         path: `/dashboard`,
@@ -9,6 +9,14 @@ export const MENUITEMS = [
         active: false,
         selected: false,
         title: 'Dashboard',
+      },
+      {
+        path: `/profile`,
+        icon: 'fa fa-user',
+        type: 'link',
+        active: false,
+        selected: false,
+        title: 'Profile',
       },
     ],
   },

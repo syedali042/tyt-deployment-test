@@ -258,26 +258,15 @@ const Sidebar = () => {
             <Link className="header-brand1" href={`/`}>
               <img
                 src={`/assets/images/brand/logo-white.png`}
-                className="desktop-logo"
+                className="header-brand-img desktop-logo"
                 alt="logo1"
-                style={{width: '150px'}}
+                style={{width: '140px', marginTop: 5}}
               />
-              {/* <img
-                src={`/assets/images/brand/icon-white.png`}
-                className="header-brand-img toggle-logo"
-                alt="logo-2"
-              /> */}
-              {/* <img
-                src={`/assets/images/brand/icon-dark.png`}
-                className="header-brand-img light-logo"
-                alt="logo-3"
-                style={{width: '150px'}}
-              /> */}
               <img
                 src={`/assets/images/brand/logo-dark.png`}
-                className="light-logo1"
-                alt="logo-4"
-                style={{width: '150px'}}
+                className="header-brand-img light-logo1"
+                alt="logo1"
+                style={{width: '140px'}}
               />
             </Link>
           </div>
@@ -297,9 +286,7 @@ const Sidebar = () => {
             <ul className="side-menu" style={{marginLeft: '0px'}}>
               {menuitems.map((Item, i) => (
                 <Fragment key={i + Math.random() * 100}>
-                  <li className="sub-category">
-                    <h3>{Item.menutitle}</h3>
-                  </li>
+                  <li className="sub-category"></li>
                   {Item.Items.map((menuItem, i) => (
                     <li
                       className={`slide ${
@@ -342,7 +329,7 @@ const Sidebar = () => {
                               ) ? (
                               <i className="angle fe fe-chevron-down"></i>
                             ) : (
-                              <i className="angle fe fe-chevron-right"></i>
+                              <i className="angle fe fen-right"></i>
                             ))}
                         </Link>
                       ) : (
