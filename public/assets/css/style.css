@@ -53866,7 +53866,7 @@ body.transparent-mode *:hover::-webkit-scrollbar-thumb {
 
 .side-menu {
   margin-block-end: 0;
-  padding: 0 10px 0 10px;
+  /* padding: 0 10px 0 10px; */
 }
 
 .side-menu__item {
@@ -54160,7 +54160,7 @@ body.transparent-mode *:hover::-webkit-scrollbar-thumb {
 
   .sidebar-mini.sidenav-toggled.sidenav-toggled-open .side-menu {
     margin-block-start: 20px !important;
-    padding: 0 10px 0 10px !important;
+    /* padding: 0 10px 0 10px !important; */
   }
 
   .sidebar-mini.sidenav-toggled.sidenav-toggled-open .angle {
@@ -54242,11 +54242,6 @@ body.transparent-mode *:hover::-webkit-scrollbar-thumb {
   -o-transition: left 0.3s ease, width 450ms ease;
   transition: left 0.3s ease, width 450ms ease;
   height: 75px;
-}
-
-.side-header .header-brand-img.toggle-logo,
-.side-header .header-brand-img.light-logo {
-  height: 2.5rem;
 }
 
 .sidebar-mini.sidenav-toggled .app-sidebar__toggle {

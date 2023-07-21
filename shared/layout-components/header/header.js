@@ -9,8 +9,9 @@ import {
   Navbar,
   InputGroup,
 } from 'react-bootstrap';
-import {useDispatch} from 'react-redux';
-import {signOutUser} from '@/shared/redux/slices/user';
+import {useDispatch, useSelector} from 'react-redux';
+import {getCurrentUser, signOutUser} from '@/shared/redux/slices/user';
+import {useRouter} from 'next/navigation';
 
 //leftsidemenu
 const SideMenuIcon = () => {
@@ -53,7 +54,9 @@ const Fullscreen = (vale) => {
 };
 
 const Header = ({localVaraiable}) => {
+  const router = useRouter();
   const dispatch = useDispatch();
+  const currentUser = useSelector(getCurrentUser);
 
   return (
     <div>
@@ -153,11 +156,23 @@ const Header = ({localVaraiable}) => {
                         variant=""
                         className="nav-link leading-none d-flex no-caret"
                       >
-                        <img
-                          src={`/assets/images/users/21.jpg`}
-                          alt="profile-user"
-                          className="avatar  profile-user brround cover-image"
-                        />
+                        {currentUser?.photoURL ? (
+                          <img
+                            src={currentUser?.photoURL}
+                            alt="user"
+                            className="avatar  profile-user brround cover-image"
+                          />
+                        ) : (
+                          <div
+                            className="avatar  profile-user brround cover-image"
+                            style={{fontSize: 18}}
+                          >
+                            {currentUser?.displayName
+                              ?.charAt(0)
+                              .toUpperCase() ||
+                              currentUser?.username?.charAt(0).toUpperCase()}
+                          </div>
+                        )}
                       </Dropdown.Toggle>
                       <Row
                         style={{
@@ -170,23 +185,26 @@ const Header = ({localVaraiable}) => {
                           <div className="drop-heading">
                             <div className="text-center">
                               <h5 className="text-dark mb-0 fs-14 fw-semibold">
-                                Syed Ali
+                                {currentUser?.displayName ||
+                                  '@' + currentUser?.username}
                               </h5>
                               <small className="text-muted">User</small>
                             </div>
                           </div>
                           <div className="dropdown-divider m-0"></div>
-                          <Link className="dropdown-item" href={`/dashboard`}>
+                          <Link
+                            className="dropdown-item"
+                            href={`/dashboard/profile`}
+                          >
                             <i className="dropdown-icon fe fe-user"></i> Profile
-                          </Link>
-                          <Link className="dropdown-item" href={`/dashboard`}>
-                            <i className="dropdown-icon fe fe-lock"></i>{' '}
-                            Lockscreen
                           </Link>
                           <span
                             className="dropdown-item"
-                            href={`/`}
-                            onClick={() => dispatch(signOutUser())}
+                            onClick={async () => {
+                              await dispatch(signOutUser());
+                              router.push('/auth/login');
+                            }}
+                            style={{cursor: 'pointer'}}
                           >
                             <i className="dropdown-icon fe fe-alert-circle"></i>{' '}
                             Sign out

@@ -3,15 +3,15 @@ export const MENUITEMS = [
     menutitle: '',
     Items: [
       {
-        path: `/dashboard`,
+        path: `/dashboard/home`,
         icon: 'fe fe-home',
         type: 'link',
         active: false,
         selected: false,
-        title: 'Dashboard',
+        title: 'Home',
       },
       {
-        path: `/profile`,
+        path: `/dashboard/profile`,
         icon: 'fa fa-user',
         type: 'link',
         active: false,

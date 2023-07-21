@@ -1,7 +1,7 @@
 'use client';
 import React, {Fragment, useEffect, useState} from 'react';
 import Link from 'next/link';
-import {useRouter} from 'next/navigation';
+import {usePathname, useRouter} from 'next/navigation';
 import {MENUITEMS} from './sidemenu';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
@@ -16,6 +16,7 @@ let history = [];
 
 const Sidebar = () => {
   const [domLoaded, setDomLoaded] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     setDomLoaded(true);
@@ -241,8 +242,8 @@ const Sidebar = () => {
     <Fragment>
       <div
         className="app-sidebar"
-        onMouseOver={() => Onhover()}
-        onMouseOut={() => Outhover()}
+        // onMouseOver={() => Onhover()}
+        // onMouseOut={() => Outhover()}
       >
         <PerfectScrollbar
           options={{suppressScrollX: true, useBothWheelAxes: false}}
@@ -302,8 +303,13 @@ const Sidebar = () => {
                   {Item.Items.map((menuItem, i) => (
                     <li
                       className={`slide ${
-                        menuItem.selected ? 'is-expanded' : ''
-                      }`}
+                        pathname.split('/')[pathname.split('/').length - 2] ==
+                        menuItem.path.split('/')[
+                          menuItem.path.split('/').length - 1
+                        ]
+                          ? 'bg-default'
+                          : ''
+                      } ${menuItem.selected ? 'is-expanded' : ''}`}
                       key={i}
                     >
                       {menuItem.type === 'sub' ? (

@@ -36,7 +36,7 @@ export const SignInWithGoogle = () => {
           });
         } else {
           await dispatch(signInUser(user));
-          router.push('/welcome');
+          router.push('/dashboard/home');
         }
       })
       .catch((error) => {
