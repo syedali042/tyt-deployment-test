@@ -263,6 +263,18 @@ const Sidebar = () => {
                 style={{width: '140px', marginTop: 5}}
               />
               <img
+                src={`/assets/images/brand/logo-toggle.png`}
+                className="header-brand-img toggle-logo"
+                alt="logo1"
+                style={{marginTop: 15}}
+              />
+              <img
+                src={`/assets/images/brand/logo-toggle.png`}
+                className="header-brand-img light-logo"
+                alt="logo1"
+                style={{marginTop: 15}}
+              />
+              <img
                 src={`/assets/images/brand/logo-dark.png`}
                 className="header-brand-img light-logo1"
                 alt="logo1"
