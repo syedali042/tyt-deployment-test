@@ -29706,18 +29706,18 @@ div.conv-form-wrapper div#messages div.message.from {
 .dark-mode .side-menu__item:hover,
 .dark-mode .side-menu__item:focus,
 .dark-mode .side-menu__item.active .side-menu__icon {
-  color: rgb(191, 77, 77) !important;
+  color: #dcdfed !important;
 }
 
 .dark-mode .side-menu__item:hover,
 .dark-mode .side-menu__item:focus {
-  color: rgb(191, 77, 77);
+  color: #dcdfed;
 }
 
 .dark-mode.dark-menu .side-menu__item.active .side-menu__icon,
 .dark-mode.dark-menu .side-menu__item:hover .side-menu__icon,
 .dark-mode.dark-menu .side-menu__item:focus .side-menu__icon {
-  color: rgb(191, 77, 77);
+  color: #DCDFED;
 }
 
 .dark-mode .footer a:not(.btn) {
@@ -34231,7 +34231,7 @@ body.dark-mode *:hover::-webkit-scrollbar-thumb {
 
 .dark-mode .side-menu__item:hover .side-menu__icon,
 .dark-mode .side-menu__item:hover .side-menu__label {
-  color: rgb(191, 77, 77) !important;
+  color: #fcfcfc !important;
 }
 
 .dark-mode .side-menu__item:focus .side-menu__icon,
@@ -37369,7 +37369,7 @@ body.dark-mode *:hover::-webkit-scrollbar-thumb {
 
 .dark-mode a.text-dark:hover,
 .dark-mode a.text-dark:focus {
-  color: rgb(191, 77, 77) !important;
+  color: #dcdfed !important;
 }
 
 .dark-mode .text-body {
@@ -39563,7 +39563,7 @@ body.dark-mode *:hover::-webkit-scrollbar-thumb {
 
 .dark-mode.light-menu .slide-menu li.active > a,
 .dark-mode.light-menu .slide-menu li:hover > a {
-  color: rgb(191, 77, 77) !important;
+  color: #dcdfed !important;
 }
 
 @media (min-width: 992px) {
@@ -40045,7 +40045,7 @@ body.dark-mode *:hover::-webkit-scrollbar-thumb {
 
 .dark-menu .app-sidebar .slide a.active .side-menu__icon,
 .dark-menu .app-sidebar .side-menu__item:hover .side-menu__icon {
-  color: rgb(191, 77, 77) !important;
+  color: #fcfcfc !important;
   opacity: inherit;
 }
 
@@ -40058,7 +40058,7 @@ body.dark-mode *:hover::-webkit-scrollbar-thumb {
 .dark-menu .app-sidebar .side-menu__item:hover .side-menu__label,
 .dark-menu .app-sidebar .side-menu__item:hover .side-menu__icon,
 .dark-menu .app-sidebar .side-menu__item:hover .angle {
-  color: rgb(191, 77, 77) !important;
+  color: #fcfcfc !important;
   opacity: inherit;
 }
 
@@ -40066,7 +40066,7 @@ body.dark-mode *:hover::-webkit-scrollbar-thumb {
 .dark-menu .app-sidebar .side-menu__item:hover .side-menu__label,
 .dark-menu .app-sidebar .side-menu__item:focus .side-menu__icon,
 .dark-menu .app-sidebar .side-menu__item:focus .side-menu__label {
-  color: rgb(191, 77, 77) !important;
+  color: #fcfcfc !important;
 }
 
 .dark-menu .app-sidebar .app-sidebar__user {
@@ -43013,7 +43013,7 @@ body.dark-mode *:hover::-webkit-scrollbar-thumb {
   .hover-submenu.dark-mode.app.sidebar-mini.sidenav-toggled.sidenav-toggled-open.light-menu
     .side-menu__item:focus
     .side-menu__icon {
-    color: rgb(191, 77, 77) !important;
+    color: #fcfcfc !important;
   }
 
   .hover-submenu1.dark-mode.app.sidebar-mini.sidenav-toggled.sidenav-toggled-open.light-menu
@@ -43022,7 +43022,7 @@ body.dark-mode *:hover::-webkit-scrollbar-thumb {
   .hover-submenu1.dark-mode.app.sidebar-mini.sidenav-toggled.sidenav-toggled-open.light-menu
     .side-menu__item:focus
     .side-menu__icon {
-    color: rgb(191, 77, 77) !important;
+    color: #fcfcfc !important;
   }
 
   .hover-submenu.transparent-mode.app.sidebar-mini.sidenav-toggled.sidenav-toggled-open.light-menu
@@ -64237,5 +64237,13 @@ textarea.form-control {
   .w-sm-60 {
     width: 60% !important;
   }
+}
+
+.sidebar-menu-item-bg {
+  background-color: #e9e9f1;
+}
+
+.dark-mode .sidebar-menu-item-bg {
+  background-color: #bf4d4d !important;
 }
 /*# sourceMappingURL=style.css.map */

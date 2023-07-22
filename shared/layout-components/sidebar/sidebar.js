@@ -267,13 +267,13 @@ const Sidebar = () => {
                 src={`/assets/images/brand/logo-toggle.png`}
                 className="header-brand-img toggle-logo"
                 alt="logo1"
-                style={{marginTop: 15}}
+                style={{marginTop: 15, width: '25px', height: '35px'}}
               />
               <img
                 src={`/assets/images/brand/logo-toggle.png`}
                 className="header-brand-img light-logo"
                 alt="logo1"
-                style={{marginTop: 15}}
+                style={{marginTop: 15, width: '25px', height: '35px'}}
               />
               <img
                 src={`/assets/images/brand/logo-dark.png`}
@@ -307,7 +307,7 @@ const Sidebar = () => {
                         menuItem.path.split('/')[
                           menuItem.path.split('/').length - 1
                         ]
-                          ? 'bg-default'
+                          ? 'sidebar-menu-item-bg'
                           : ''
                       } ${menuItem.selected ? 'is-expanded' : ''}`}
                       key={i}

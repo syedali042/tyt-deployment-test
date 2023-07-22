@@ -7,7 +7,7 @@ import Contentlayout from '@/shared/layout-components/layout/content-layout';
 const Dashboard = () => {
   return (
     <Contentlayout>
-      <PageHeader titles="" active="Dashboard" items={['Home']} />
+      <PageHeader titles="" active="Home" items={['Dashboard']} />
     </Contentlayout>
   );
 };
