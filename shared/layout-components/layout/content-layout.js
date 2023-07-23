@@ -11,7 +11,10 @@ import {usePathname, useRouter} from 'next/navigation';
 const Contentlayout = ({children}) => {
   const pathname = usePathname();
   const isDashboardIncludes = pathname.includes('/dashboard');
-  const userFromStorage = window?.localStorage?.getItem('user');
+  let userFromStorage;
+  if (typeof window !== 'undefined') {
+    userFromStorage = window?.localStorage?.getItem('user');
+  }
   const renderUi = userFromStorage && isDashboardIncludes;
   const router = useRouter();
   useEffect(() => {

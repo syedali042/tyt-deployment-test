@@ -8,7 +8,10 @@ const Authenticationlayout = ({children}) => {
   const router = useRouter();
   const pathname = usePathname();
   const isDashboardIncludes = pathname.includes('/dashboard');
-  const userFromStorage = window?.localStorage?.getItem('user');
+  let userFromStorage;
+  if (typeof window !== 'undefined') {
+    userFromStorage = window?.localStorage?.getItem('user');
+  }
   const renderUi = !userFromStorage && !isDashboardIncludes;
   useEffect(() => {
     if (userFromStorage && !isDashboardIncludes) router.push('/dashboard/home');
