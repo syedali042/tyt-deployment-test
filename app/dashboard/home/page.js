@@ -4,7 +4,7 @@ import React from 'react';
 import PageHeader from '@/shared/layout-components/pageheader/pageHeader';
 import Contentlayout from '@/shared/layout-components/layout/content-layout';
 
-const Dashboard = () => {
+const DashboardHome = () => {
   return (
     <Contentlayout>
       <PageHeader titles="" active="Home" items={['Dashboard']} />
@@ -12,4 +12,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardHome;
