@@ -165,7 +165,7 @@ export const initializeOrUpdateTipProcess =
         } else if (action == 'updateAmountTipperEmailAndNotes') {
           const body = {amount, metadata: {email: tipperEmail, notes}};
           response = await axios.patch(
-            `/payments/checkout-updation/${previousPaymentIntentId}`,
+            `/payments/checkout-updation/${userPaymentId}/${previousPaymentIntentId}`,
             body
           );
         }
