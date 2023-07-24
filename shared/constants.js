@@ -19,7 +19,7 @@ export const SEND_TIP_TABS_ARR = Object.keys(SEND_TIP_TABS).map((key) => [
   key,
 ]);
 
-export const suggestedAmounts = ['10', '50', '100', 'Other'];
+export const suggestedAmounts = ['15', '50', '100', 'Other'];
 
 export const toastSettings = {
   position: 'top-right',

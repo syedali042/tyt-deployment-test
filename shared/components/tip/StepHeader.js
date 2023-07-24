@@ -53,10 +53,10 @@ const StepsHeader = ({toast}) => {
 
       if (!success) return {success: false, error};
 
-      if (amount < 1)
+      if (amount < 15)
         return {
           success: false,
-          error: 'Amount must be greater than 0',
+          error: 'Amount must be greater than or equall to 15',
         };
 
       if (clientSecret == '') {
