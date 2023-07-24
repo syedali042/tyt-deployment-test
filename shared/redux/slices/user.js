@@ -11,7 +11,7 @@ const initialState = {
   isLoading: false,
   error: null,
   currentUser: {
-    userInternalId: '',
+    id: '',
     firebaseId: '',
     username: '',
     email: '',
@@ -79,7 +79,7 @@ export const checkUsernameAvailability =
       if (response.data.statusCode === 200)
         dispatch(
           actions.setCurrentUser({
-            userInternalId: '',
+            id: '',
             firebaseId: '',
             username,
             email: '',
@@ -150,7 +150,7 @@ export const signOutUser = () => async (dispatch) => {
       .then(() => {
         dispatch(
           actions.setCurrentUser({
-            userInternalId: '',
+            id: '',
             firebaseId: '',
             username: '',
             email: '',
@@ -216,3 +216,9 @@ export const getUserToken = (state) => state.user.token;
 export const getCurrentUser = (state) => state.user.currentUser;
 
 export const isLoading = (state) => state.user.isLoading;
+
+// set user in state
+export const setUserInStateFromLocalStorage = () => (dispatch) => {
+  const user = localStorage.getItem('user');
+  if (user) dispatch(actions.setCurrentUser(JSON.parse(user)));
+};
