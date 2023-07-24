@@ -7,14 +7,14 @@ import {usePathname} from 'next/navigation';
 const Authenticationlayout = ({children}) => {
   const router = useRouter();
   const pathname = usePathname();
-  const isDashboardIncludes = pathname.includes('/dashboard');
-  let userFromStorage;
-  if (typeof window !== 'undefined') {
-    userFromStorage = window?.localStorage?.getItem('user');
-  }
-  const renderUi = !userFromStorage && !isDashboardIncludes;
+  const [renderUi, setRenderUi] = useState(false);
+
   useEffect(() => {
-    if (userFromStorage && !isDashboardIncludes) router.push('/dashboard/home');
+    const isDashboardIncludes = pathname.includes('/dashboard');
+    const userFromStorage = localStorage?.getItem('user');
+    if (!userFromStorage && !isDashboardIncludes) setRenderUi(true);
+    else if (userFromStorage && !isDashboardIncludes)
+      router.push('/dashboard/home');
     else if (!userFromStorage && isDashboardIncludes)
       router.push('/auth/login');
   }, []);
