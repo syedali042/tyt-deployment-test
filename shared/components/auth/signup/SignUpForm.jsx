@@ -108,7 +108,7 @@ export const SignUpForm = () => {
         };
 
         await dispatch(createUser(createUserObj));
-        router.push('/welcome');
+        router.push('/dashboard/home');
       })
       .catch((error) => {
         setError('email', {message: 'Email Already Taken'});

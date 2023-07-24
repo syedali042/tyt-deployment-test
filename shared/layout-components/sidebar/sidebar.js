@@ -1,7 +1,7 @@
 'use client';
 import React, {Fragment, useEffect, useState} from 'react';
 import Link from 'next/link';
-import {useRouter} from 'next/navigation';
+import {usePathname, useRouter} from 'next/navigation';
 import {MENUITEMS} from './sidemenu';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
@@ -16,6 +16,7 @@ let history = [];
 
 const Sidebar = () => {
   const [domLoaded, setDomLoaded] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     setDomLoaded(true);
@@ -241,8 +242,8 @@ const Sidebar = () => {
     <Fragment>
       <div
         className="app-sidebar"
-        onMouseOver={() => Onhover()}
-        onMouseOut={() => Outhover()}
+        // onMouseOver={() => Onhover()}
+        // onMouseOut={() => Outhover()}
       >
         <PerfectScrollbar
           options={{suppressScrollX: true, useBothWheelAxes: false}}
@@ -258,26 +259,27 @@ const Sidebar = () => {
             <Link className="header-brand1" href={`/`}>
               <img
                 src={`/assets/images/brand/logo-white.png`}
-                className="desktop-logo"
+                className="header-brand-img desktop-logo"
                 alt="logo1"
-                style={{width: '150px'}}
+                style={{width: '140px', marginTop: 5}}
               />
-              {/* <img
-                src={`/assets/images/brand/icon-white.png`}
+              <img
+                src={`/assets/images/brand/logo-toggle.png`}
                 className="header-brand-img toggle-logo"
-                alt="logo-2"
-              /> */}
-              {/* <img
-                src={`/assets/images/brand/icon-dark.png`}
+                alt="logo1"
+                style={{marginTop: 15, width: '25px', height: '35px'}}
+              />
+              <img
+                src={`/assets/images/brand/logo-toggle.png`}
                 className="header-brand-img light-logo"
-                alt="logo-3"
-                style={{width: '150px'}}
-              /> */}
+                alt="logo1"
+                style={{marginTop: 15, width: '25px', height: '35px'}}
+              />
               <img
                 src={`/assets/images/brand/logo-dark.png`}
-                className="light-logo1"
-                alt="logo-4"
-                style={{width: '150px'}}
+                className="header-brand-img light-logo1"
+                alt="logo1"
+                style={{width: '140px'}}
               />
             </Link>
           </div>
@@ -297,14 +299,17 @@ const Sidebar = () => {
             <ul className="side-menu" style={{marginLeft: '0px'}}>
               {menuitems.map((Item, i) => (
                 <Fragment key={i + Math.random() * 100}>
-                  <li className="sub-category">
-                    <h3>{Item.menutitle}</h3>
-                  </li>
+                  <li className="sub-category"></li>
                   {Item.Items.map((menuItem, i) => (
                     <li
                       className={`slide ${
-                        menuItem.selected ? 'is-expanded' : ''
-                      }`}
+                        pathname.split('/')[pathname.split('/').length - 2] ==
+                        menuItem.path.split('/')[
+                          menuItem.path.split('/').length - 1
+                        ]
+                          ? 'sidebar-menu-item-bg'
+                          : ''
+                      } ${menuItem.selected ? 'is-expanded' : ''}`}
                       key={i}
                     >
                       {menuItem.type === 'sub' ? (
@@ -342,7 +347,7 @@ const Sidebar = () => {
                               ) ? (
                               <i className="angle fe fe-chevron-down"></i>
                             ) : (
-                              <i className="angle fe fe-chevron-right"></i>
+                              <i className="angle fe fen-right"></i>
                             ))}
                         </Link>
                       ) : (

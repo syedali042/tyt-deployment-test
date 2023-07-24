@@ -9,15 +9,18 @@ import SSRProvider from 'react-bootstrap/SSRProvider';
 import {usePathname, useRouter} from 'next/navigation';
 
 const Contentlayout = ({children}) => {
+  const pathname = usePathname();
   const [renderUi, setRenderUi] = useState(false);
   const router = useRouter();
-  const pathname = usePathname();
+
   useEffect(() => {
     const isDashboardIncludes = pathname.includes('/dashboard');
-    const userFromStorage = localStorage.getItem('user');
-    if (userFromStorage && !isDashboardIncludes) router.push('/dashboard');
-    else if (!userFromStorage && !isDashboardIncludes) setRenderUi(true);
-    else if (userFromStorage && isDashboardIncludes) setRenderUi(true);
+    const userFromStorage = localStorage?.getItem('user');
+    if (userFromStorage && isDashboardIncludes) setRenderUi(true);
+    // if user is logged in but not on dashboard, redirect it to dashboard
+    else if (userFromStorage && !isDashboardIncludes)
+      router.push('/dashboard/home');
+    // if user is not logged in but try to visit dashboard, redirect it to login page
     else if (!userFromStorage && isDashboardIncludes)
       router.push('/auth/login');
   }, []);

@@ -5,19 +5,17 @@ import {useRouter} from 'next/navigation';
 import {usePathname} from 'next/navigation';
 
 const Authenticationlayout = ({children}) => {
-  const [renderUi, setRenderUi] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const [renderUi, setRenderUi] = useState(false);
+
   useEffect(() => {
-    const isWelcomeOrDashboardIncludes =
-      pathname.includes('/welcome') || pathname.includes('/dashboard');
-    const userFromStorage = localStorage.getItem('user');
-    if (userFromStorage && !isWelcomeOrDashboardIncludes)
-      router.push('/welcome');
-    else if (!userFromStorage && !isWelcomeOrDashboardIncludes)
-      setRenderUi(true);
-    else if (userFromStorage && isWelcomeOrDashboardIncludes) setRenderUi(true);
-    else if (!userFromStorage && isWelcomeOrDashboardIncludes)
+    const isDashboardIncludes = pathname.includes('/dashboard');
+    const userFromStorage = localStorage?.getItem('user');
+    if (!userFromStorage && !isDashboardIncludes) setRenderUi(true);
+    else if (userFromStorage && !isDashboardIncludes)
+      router.push('/dashboard/home');
+    else if (!userFromStorage && isDashboardIncludes)
       router.push('/auth/login');
   }, []);
 

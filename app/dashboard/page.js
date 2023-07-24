@@ -1,15 +1,11 @@
 'use client';
-import React from 'react';
-// For Later Use
-import PageHeader from '../../shared/layout-components/pageheader/pageHeader';
-import Contentlayout from '@/shared/layout-components/layout/content-layout';
+import {useRouter} from 'next/navigation';
+import {useEffect} from 'react';
 
 const Dashboard = () => {
-  return (
-    <Contentlayout>
-      <PageHeader titles="Dashboard" active="Dashboard" items={['Home']} />
-    </Contentlayout>
-  );
+  const router = useRouter();
+  useEffect(() => {
+    router.push('/dashboard/home');
+  }, []);
 };
-
 export default Dashboard;
