@@ -11,9 +11,9 @@ import {Elements} from '@stripe/react-stripe-js';
 // Redux
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  getActiveStep,
   getClientSecret,
   getCurrentTeacher,
-  getStepsSettings,
   getTipAmount,
   getTipNotes,
   setTipNotes,
@@ -22,11 +22,10 @@ import {
 import CheckoutForm from './CheckoutForm';
 // Styles
 import '../../../app/tip/page.css';
-import {SEND_TIP_TABS} from '@/shared/constants';
 
 const CheckoutTab = () => {
   const notes = useSelector(getTipNotes);
-  const stepsSettings = useSelector(getStepsSettings);
+  const activeStep = useSelector(getActiveStep);
   const currentTeacher = useSelector(getCurrentTeacher);
   const amount = useSelector(getTipAmount);
   const dispatch = useDispatch();
@@ -50,12 +49,7 @@ const CheckoutTab = () => {
 
   return (
     <>
-      <Stack
-        className={`${
-          stepsSettings?.activeStep !== SEND_TIP_TABS.checkoutTab.name &&
-          'd-none'
-        }`}
-      >
+      <Stack className={`${activeStep !== 3 && 'd-none'}`}>
         <Row>
           <Col lg={{span: 4, offset: 1}}>
             <Row className="px-3">

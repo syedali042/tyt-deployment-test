@@ -7,9 +7,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 // Redux
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  getActiveStep,
   getErrors,
   getIsPaymentRequestLoading,
-  getStepsSettings,
   getTeacherUsernameOrEmail,
   setTeacherUsernameOrEmail,
   setTipErrors,
@@ -18,13 +18,12 @@ import {
 // Components
 import {FormGroupInput} from '@/shared/components/bootstrap/FormGroupInput';
 import TipMessage from './TipMessage';
-import {SEND_TIP_TABS} from '@/shared/constants';
 
 const FindTeacherTab = () => {
   const isLoading = useSelector(getIsPaymentRequestLoading);
   const dispatch = useDispatch();
 
-  const stepsSettings = useSelector(getStepsSettings);
+  const activeStep = useSelector(getActiveStep);
 
   const error = useSelector(getErrors);
 
@@ -43,12 +42,7 @@ const FindTeacherTab = () => {
   const verifyUser = async () => await dispatch(verifyUserToTip());
 
   return (
-    <Stack
-      className={`${
-        stepsSettings?.activeStep !== SEND_TIP_TABS.findTeacherTab.name &&
-        'd-none'
-      }`}
-    >
+    <Stack className={`${activeStep !== 1 && 'd-none'}`}>
       <TipMessage
         message={error?.message}
         onClick={() => dispatch(setTipErrors({error: null}))}

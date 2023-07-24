@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import axios from '../axios';
-import {createStepsSettings, validateEmail} from '@/shared/utils/tipUtils';
+import {validateEmail} from '@/shared/utils/tipUtils';
 import {TIP_MESSAGES} from '@/shared/constants';
 
 const initialState = {
@@ -12,10 +12,7 @@ const initialState = {
   clientSecret: '',
   paymentIntentId: '',
   notes: '',
-  stepsSettings: {
-    activeStep: 'find-teacher-tab',
-    completedSteps: ['find-teacher-tab'],
-  },
+  activeStep: 1,
   tipperEmail: '',
 };
 
@@ -53,14 +50,14 @@ const slice = createSlice({
     setTipNotes(state, action) {
       state.notes = action.payload;
     },
-    setStepsSettings(state, action) {
-      state.stepsSettings = action.payload;
-    },
     setTipState(state, action) {
       state = action.payload;
     },
     setTipperEmail(state, action) {
       state.tipperEmail = action.payload;
+    },
+    setActiveStep(state, action) {
+      state.activeStep = action.payload;
     },
   },
 });
@@ -96,9 +93,7 @@ export const verifyUserToTip = () => async (dispatch, getState) => {
       .then((response) => {
         const {body} = response.data;
         dispatch(actions.setCurrentTeacher({...body}));
-        dispatch(
-          actions.setStepsSettings(createStepsSettings('selectAmountTab'))
-        );
+        dispatch(actions.setActiveStep(2));
         dispatch(actions.stopLoading());
       })
       .catch((error) => {
@@ -117,9 +112,7 @@ export const verifyUserToTip = () => async (dispatch, getState) => {
               [type]: teacherUsernameOrEmail,
             })
           );
-          dispatch(
-            actions.setStepsSettings(createStepsSettings('selectAmountTab'))
-          );
+          dispatch(actions.setActiveStep(2));
           dispatch(actions.stopLoading());
         }
       });
@@ -182,7 +175,7 @@ export const initializeOrUpdateTipProcess =
         dispatch(actions.setClientSecret(clientSecret));
         dispatch(actions.setPaymentIntentId(paymentIntentId));
       }
-      dispatch(actions.setStepsSettings(createStepsSettings('checkoutTab')));
+      dispatch(actions.setActiveStep(3));
       dispatch(actions.stopLoading());
     } catch (error) {
       dispatch(actions.setError(error));
@@ -222,15 +215,6 @@ export const setTipNotes =
     dispatch(actions.setTipNotes(notes));
   };
 
-// Get Steps Settings
-export const getStepsSettings = (state) => state.tip.stepsSettings;
-
-// Set Steps Settings
-export const setStepsSettings = (step) => (dispatch) => {
-  const settings = createStepsSettings(step);
-  dispatch(actions.setStepsSettings(settings));
-};
-
 export const resetTipState = () => (dispatch) =>
   dispatch(actions.setTipState(initialState));
 
@@ -241,3 +225,10 @@ export const getTipperEmail = (state) => state.tip.tipperEmail;
 export const setTipperEmail = (email) => (dispatch) => {
   dispatch(actions.setTipperEmail(email));
 };
+
+// Get Active Step
+export const getActiveStep = (state) => state.tip.activeStep;
+
+// Set Active Step
+export const setActiveStep = (step) => (dispatch) =>
+  dispatch(actions.setActiveStep(step));

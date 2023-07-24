@@ -15,13 +15,12 @@ import {
   getIsPaymentRequestLoading,
   getCurrentTeacher,
   getClientSecret,
-  getStepsSettings,
+  getActiveStep,
 } from '@/shared/redux/slices/tip';
 // Components
 import TipMessage from './TipMessage';
 // Constants
 import {
-  SEND_TIP_TABS,
   TIP_MESSAGES,
   suggestedAmounts,
   toastSettings,
@@ -31,7 +30,7 @@ const SelectAmountTab = () => {
   const isLoading = useSelector(getIsPaymentRequestLoading);
   const dispatch = useDispatch();
   const amount = useSelector(getTipAmount);
-  const stepsSettings = useSelector(getStepsSettings);
+  const activeStep = useSelector(getActiveStep);
   const currentTeacher = useSelector(getCurrentTeacher);
   const clientSecret = useSelector(getClientSecret);
 
@@ -57,12 +56,7 @@ const SelectAmountTab = () => {
   };
 
   return (
-    <Stack
-      className={`${
-        stepsSettings?.activeStep !== SEND_TIP_TABS.selectAmountTab.name &&
-        'd-none'
-      }`}
-    >
+    <Stack className={`${activeStep !== 2 && 'd-none'}`}>
       {currentTeacher?.verified ? (
         <TipMessage
           icon={<ThumbUpAltOutlined />}
