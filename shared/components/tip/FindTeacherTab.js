@@ -18,6 +18,8 @@ import {
 // Components
 import {FormGroupInput} from '@/shared/components/bootstrap/FormGroupInput';
 import TipMessage from './TipMessage';
+import {toast} from 'react-toastify';
+import {toastSettings} from '@/shared/constants';
 
 const FindTeacherTab = () => {
   const isLoading = useSelector(getIsPaymentRequestLoading);
@@ -39,7 +41,14 @@ const FindTeacherTab = () => {
     }
   };
 
-  const verifyUser = async () => await dispatch(verifyUserToTip());
+  const verifyUser = async () => {
+    if (teacherUsernameOrEmail.length >= 3) await dispatch(verifyUserToTip());
+    else
+      toast.error(
+        'Please enter a valid email address or username',
+        toastSettings
+      );
+  };
 
   return (
     <Stack className={`${activeStep !== 1 && 'd-none'}`}>

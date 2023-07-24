@@ -8,7 +8,7 @@ const initialState = {
   error: null,
   teacher: null,
   teacherUsernameOrEmail: '',
-  amount: 0,
+  amount: 15,
   clientSecret: '',
   paymentIntentId: '',
   notes: '',

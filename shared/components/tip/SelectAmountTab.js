@@ -44,8 +44,11 @@ const SelectAmountTab = () => {
   };
 
   const initializeCheckout = async () => {
-    if (amount < 1)
-      return toast.error('Amount must be greater than 0', toastSettings);
+    if (amount < 15)
+      return toast.error(
+        'Amount must be greater than or equall to 15',
+        toastSettings
+      );
     if (clientSecret !== '') {
       await dispatch(initializeOrUpdateTipProcess({action: 'noUpdate'}));
     } else {
@@ -102,7 +105,7 @@ const SelectAmountTab = () => {
                   fontSize: '16px',
                 }}
                 onKeyDown={handleEnterKeyPressEvent}
-                min={1}
+                min={15}
               />
             </InputGroup>
           </Form.Group>
