@@ -149,7 +149,7 @@ export const initializeOrUpdateTipProcess =
       const state = getState();
       let response;
       const {
-        teacher: {stripeAccountId, email},
+        teacher: {userPaymentId, email},
         amount,
         paymentIntentId: previousPaymentIntentId,
         tipperEmail,
@@ -161,8 +161,8 @@ export const initializeOrUpdateTipProcess =
           dispatch(actions.setClientSecret(''));
           dispatch(actions.setPaymentIntentId(''));
 
-          const body = stripeAccountId
-            ? {stripeAccountId, amount}
+          const body = userPaymentId
+            ? {teacherPaymentId: userPaymentId, amount}
             : {email, amount};
 
           response = await axios.post(

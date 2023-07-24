@@ -24,10 +24,6 @@ import CheckoutForm from './CheckoutForm';
 import '../../../app/tip/page.css';
 import {SEND_TIP_TABS} from '@/shared/constants';
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
-
 const CheckoutTab = () => {
   const notes = useSelector(getTipNotes);
   const stepsSettings = useSelector(getStepsSettings);
@@ -35,12 +31,17 @@ const CheckoutTab = () => {
   const amount = useSelector(getTipAmount);
   const dispatch = useDispatch();
 
+  const clientSecret = useSelector(getClientSecret);
+
+  const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    {stripeAccount: currentTeacher?.userPaymentId}
+  );
+
   const appearance = {
     theme: 'stripe',
     labels: 'floating',
   };
-
-  const clientSecret = useSelector(getClientSecret);
 
   const options = {
     clientSecret: clientSecret,
