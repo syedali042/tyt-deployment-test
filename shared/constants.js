@@ -85,3 +85,44 @@ export const DASHBOARD_WIDGETS_ARR = Object.keys(DASHBOARD_WIDGETS).map(
     key,
   ]
 );
+
+export const TRANSACTION_TYPES = {
+  tip: {
+    label: 'Tip',
+    value: 'tip',
+    icon: <i className="text-info fa-solid fa-circle-dollar-to-slot"></i>,
+  },
+  //   tax: {
+  //     label: 'Tax',
+  //     value: 'tax',
+  //     icon: 'fa fa-calendar',
+  //   },
+  fee: {
+    label: 'Fee',
+    value: 'fee',
+    icon: <i className="text-info fa-solid fa-receipt"></i>,
+  },
+  disbursement: {
+    label: 'Disbursement',
+    value: 'disbursement',
+    icon: <i className="text-info fa fa-repeat"></i>,
+  },
+};
+
+export const TRANSACTION_STATUS = {
+  pending: {
+    label: 'Pending',
+    value: 'pending',
+    color: 'warning',
+  },
+  cancelled: {
+    label: 'Cancelled',
+    value: 'cancelled',
+    color: 'danger',
+  },
+  succeeded: {
+    label: 'Succeeded',
+    value: 'succeeded',
+    color: 'success',
+  },
+};
