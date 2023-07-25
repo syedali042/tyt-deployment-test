@@ -5,11 +5,13 @@ import axios from '../axios';
 import {tokenVariable} from '@/shared/config';
 import {auth as firebaseAuth} from '@/shared/firebase';
 import {signOut} from 'firebase/auth';
+import {decodeJwtToken} from '@/shared/utils/jwtUtils';
 
 // ----------------------------------------------------------------------
 const initialState = {
   isLoading: false,
   error: null,
+  invitedUser: null,
   currentUser: {
     userInternalId: '',
     firebaseId: '',
@@ -55,6 +57,9 @@ const slice = createSlice({
 
     removeUserToken(state) {
       state.token = '';
+    },
+    setInvitedUser(state, action) {
+      state.invitedUser = action.payload;
     },
   },
 });
@@ -216,3 +221,40 @@ export const getUserToken = (state) => state.user.token;
 export const getCurrentUser = (state) => state.user.currentUser;
 
 export const isLoading = (state) => state.user.isLoading;
+
+// Set Invited User
+export const setInvitedUser =
+  ({token}) =>
+  (dispatch) => {
+    dispatch(actions.startLoading());
+    try {
+      const invitedUser = decodeJwtToken({token});
+      dispatch(actions.setInvitedUser(invitedUser));
+      dispatch(actions.stopLoading());
+    } catch (error) {
+      dispatch(actions.stopLoading());
+      dispatch(actions.hasError(error));
+    }
+  };
+
+// Get Invited User
+export const getInvitedUser = (state) => state.user.invitedUser;
+
+// Update User
+export const updateUser = (user) => async (dispatch) => {
+  dispatch(actions.startLoading());
+  try {
+    const response = await axios.patch('/users', user, {
+      headers: {
+        [tokenVariable]: user.accessToken,
+      },
+    });
+    dispatch(actions.setCurrentUser(response.data.body));
+    localStorage.setItem('user', JSON.stringify(response.data.body));
+    dispatch(actions.stopLoading());
+  } catch (error) {
+    dispatch(actions.stopLoading());
+    dispatch(actions.hasError(error));
+    throw error;
+  }
+};

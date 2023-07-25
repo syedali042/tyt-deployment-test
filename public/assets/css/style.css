@@ -64246,4 +64246,8 @@ textarea.form-control {
 .dark-mode .sidebar-menu-item-bg {
   background-color: #bf4d4d !important;
 }
+
+.form-control-custom:disabled{
+  color: #fff;
+}
 /*# sourceMappingURL=style.css.map */

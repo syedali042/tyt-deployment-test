@@ -1,6 +1,9 @@
 'use client';
+// React
 import {useState} from 'react';
+// React Bootstrap
 import {Form, InputGroup} from 'react-bootstrap';
+// Components
 import FormFieldError from '../FormFieldError';
 
 export const FormGroupInput = ({
@@ -24,7 +27,7 @@ export const FormGroupInput = ({
         )}
         <InputGroup>
           <Form.Control
-            className="form-control"
+            className="form-control form-control-custom"
             placeholder={placeholder}
             name={name}
             {...register(name)}
