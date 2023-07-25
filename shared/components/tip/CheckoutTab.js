@@ -14,6 +14,7 @@ import {
   getActiveStep,
   getClientSecret,
   getCurrentTeacher,
+  getPaymentIdToBeUsed,
   getTipAmount,
   getTipNotes,
   setTipNotes,
@@ -27,6 +28,7 @@ const CheckoutTab = () => {
   const notes = useSelector(getTipNotes);
   const activeStep = useSelector(getActiveStep);
   const currentTeacher = useSelector(getCurrentTeacher);
+  const paymentIdToBeUsed = useSelector(getPaymentIdToBeUsed);
   const amount = useSelector(getTipAmount);
   const dispatch = useDispatch();
 
@@ -34,7 +36,7 @@ const CheckoutTab = () => {
 
   const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-    {stripeAccount: currentTeacher?.userPaymentId}
+    {stripeAccount: paymentIdToBeUsed}
   );
 
   const appearance = {

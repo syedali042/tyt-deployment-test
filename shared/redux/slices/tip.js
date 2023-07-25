@@ -14,6 +14,7 @@ const initialState = {
   notes: '',
   activeStep: 1,
   tipperEmail: '',
+  paymentIdToBeUsed: '', // if teacher is verified, this will of teacher, if not then it will be the unverifiedUsersPaymentId (handled by backend anyway)
 };
 
 const slice = createSlice({
@@ -59,6 +60,9 @@ const slice = createSlice({
     setActiveStep(state, action) {
       state.activeStep = action.payload;
     },
+    setPaymentIdToBeUsed(state, action) {
+      state.paymentIdToBeUsed = action.payload;
+    },
   },
 });
 
@@ -81,6 +85,7 @@ export const verifyUserToTip = () => async (dispatch, getState) => {
   dispatch(actions.startLoading());
   dispatch(actions.setClientSecret(''));
   dispatch(actions.setPaymentIntentId(''));
+  dispatch(actions.setPaymentIdToBeUsed(''));
   dispatch(actions.setError(null));
   try {
     const state = getState();
@@ -147,12 +152,14 @@ export const initializeOrUpdateTipProcess =
         paymentIntentId: previousPaymentIntentId,
         tipperEmail,
         notes,
+        paymentIdToBeUsed,
       } = state.tip;
 
       if (action !== 'noUpdate') {
         if (action == 'initializeCheckout') {
           dispatch(actions.setClientSecret(''));
           dispatch(actions.setPaymentIntentId(''));
+          dispatch(actions.setPaymentIdToBeUsed(''));
 
           const body = userPaymentId
             ? {teacherPaymentId: userPaymentId, amount}
@@ -165,15 +172,21 @@ export const initializeOrUpdateTipProcess =
         } else if (action == 'updateAmountTipperEmailAndNotes') {
           const body = {amount, metadata: {email: tipperEmail, notes}};
           response = await axios.patch(
-            `/payments/checkout-updation/${userPaymentId}/${previousPaymentIntentId}`,
+            `/payments/checkout-updation/${paymentIdToBeUsed}/${previousPaymentIntentId}`,
             body
           );
         }
 
-        const {clientSecret, paymentIntentId} = response.data.body;
+        const {clientSecret, paymentIntentId, paymentId, isNewUser} =
+          response.data.body;
+
+        if (isNewUser) {
+          await dispatch(getTeacherByEmail());
+        }
 
         dispatch(actions.setClientSecret(clientSecret));
         dispatch(actions.setPaymentIntentId(paymentIntentId));
+        dispatch(actions.setPaymentIdToBeUsed(paymentId));
       }
       dispatch(actions.setActiveStep(3));
       dispatch(actions.stopLoading());
@@ -182,6 +195,33 @@ export const initializeOrUpdateTipProcess =
       dispatch(actions.stopLoading());
     }
   };
+
+export const getTeacherByEmail = () => async (dispatch, getState) => {
+  dispatch(actions.startLoading());
+  dispatch(actions.setError(null));
+  try {
+    const state = getState();
+    const {teacherUsernameOrEmail} = state.tip;
+    const type = validateEmail({email: teacherUsernameOrEmail})
+      ? 'email'
+      : 'username';
+    await axios
+      .get(`/users?${type}=${teacherUsernameOrEmail}`)
+      .then((response) => {
+        const {body} = response.data;
+        dispatch(actions.setCurrentTeacher({...body}));
+        dispatch(actions.setActiveStep(2));
+        dispatch(actions.stopLoading());
+      })
+      .catch((error) => {
+        dispatch(actions.setError(error));
+        dispatch(actions.stopLoading());
+      });
+  } catch (error) {
+    dispatch(actions.setError(error));
+    dispatch(actions.stopLoading());
+  }
+};
 
 // Get Client Secret
 export const getClientSecret = (state) => state.tip.clientSecret;
@@ -232,3 +272,6 @@ export const getActiveStep = (state) => state.tip.activeStep;
 // Set Active Step
 export const setActiveStep = (step) => (dispatch) =>
   dispatch(actions.setActiveStep(step));
+
+// Get Temporary Payment Id
+export const getPaymentIdToBeUsed = (state) => state.tip.paymentIdToBeUsed;
