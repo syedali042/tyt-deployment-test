@@ -177,10 +177,9 @@ export const initializeOrUpdateTipProcess =
           );
         }
 
-        const {clientSecret, paymentIntentId, paymentId, isNewUser} =
-          response.data.body;
+        const {clientSecret, paymentIntentId, paymentId} = response.data.body;
 
-        if (isNewUser) {
+        if (!userPaymentId) {
           await dispatch(getTeacherByEmail());
         }
 
