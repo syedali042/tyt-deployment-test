@@ -1,32 +1,45 @@
 'use client';
-import {Row} from 'react-bootstrap';
-import {useRouter} from 'next/navigation';
-import {FormProvider, useForm} from 'react-hook-form';
-import * as Yup from 'yup';
-import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
+// React
 import {useEffect, useState} from 'react';
+// Next
+import {useRouter} from 'next/navigation';
+// Redux
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getCurrentUser,
   createUser,
   isLoading as getIsUserRequestLoading,
+  getInvitedUser,
+  updateUser,
 } from '@/shared/redux/slices/user';
+// React Bootstrap
+import {Row} from 'react-bootstrap';
+// React Hook Form
+import {FormProvider, useForm} from 'react-hook-form';
+// Yup
+import * as Yup from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
+// Firebase
 import {auth as firebaseAuth} from '@/shared/firebase';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
-import {CircularProgress} from '@mui/material';
+// Icons
+// import {CircularProgress} from '@mui/material';
+// Components
 import {UsernameVerifier} from './UsernameVerifier';
-import {SignUpOptions} from './SignUpOptions';
+// import {SignUpOptions} from './SignUpOptions';
 import {EmailPasswordForm} from './EmailPasswordForm';
+
 export const SignUpForm = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
+  const invitedUser = useSelector(getInvitedUser);
   const isRequestLoading = useSelector(getIsUserRequestLoading);
 
-  const [isUsernameAndPassword, setIsUserNamePassword] = useState(false);
+  // const [isUsernameAndPassword, setIsUserNamePassword] = useState(false);
   const [isUsernameVerified, setIsUsernameVerified] = useState(false);
 
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
 
   const SignUpSchema = Yup.object().shape({
     username: Yup.string().min(3).max(40).required('Username is required'),
@@ -59,7 +72,7 @@ export const SignUpForm = () => {
     resolver: yupResolver(SignUpSchema),
     defaultValues: {
       username: currentUser?.username,
-      email: '',
+      email: invitedUser?.email || '',
       password: '',
       confirmPassword: '',
     },
@@ -79,7 +92,7 @@ export const SignUpForm = () => {
     if (currentUser?.username !== values?.username) {
       setIsUsernameVerified(false);
     } else {
-      if (values.username.length >= 3) {
+      if (values?.username?.length >= 3) {
         setIsUsernameVerified(true);
       }
     }
@@ -97,7 +110,7 @@ export const SignUpForm = () => {
       .then(async (user) => {
         const {displayName, photoURL, uid, email, accessToken} = user.user;
         const username = values?.username;
-        const createUserObj = {
+        const userObj = {
           firebaseId: uid,
           email,
           username,
@@ -107,7 +120,12 @@ export const SignUpForm = () => {
           loginType: 'email',
         };
 
-        await dispatch(createUser(createUserObj));
+        if (!invitedUser) await dispatch(createUser(userObj));
+        else {
+          userObj.id = invitedUser?.id;
+          userObj.verified = true;
+          await dispatch(updateUser(userObj));
+        }
         router.push('/dashboard/home');
       })
       .catch((error) => {

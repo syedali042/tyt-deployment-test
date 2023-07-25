@@ -5,11 +5,13 @@ import axios from '../axios';
 import {tokenVariable} from '@/shared/config';
 import {auth as firebaseAuth} from '@/shared/firebase';
 import {signOut} from 'firebase/auth';
+import {decodeJwtToken} from '@/shared/utils/jwtUtils';
 
 // ----------------------------------------------------------------------
 const initialState = {
   isLoading: false,
   error: null,
+  invitedUser: null,
   currentUser: {
     userInternalId: '',
     firebaseId: '',
@@ -55,6 +57,9 @@ const slice = createSlice({
 
     removeUserToken(state) {
       state.token = '';
+    },
+    setInvitedUser(state, action) {
+      state.invitedUser = action.payload;
     },
   },
 });
@@ -221,4 +226,20 @@ export const isLoading = (state) => state.user.isLoading;
 export const setUserInStateFromLocalStorage = () => (dispatch) => {
   const user = localStorage.getItem('user');
   if (user) dispatch(actions.setCurrentUser(JSON.parse(user)));
-};
+
+export const setInvitedUser =
+  ({token}) =>
+  (dispatch) => {
+    dispatch(actions.startLoading());
+    try {
+      const invitedUser = decodeJwtToken({token});
+      dispatch(actions.setInvitedUser(invitedUser));
+      dispatch(actions.stopLoading());
+    } catch (error) {
+      dispatch(actions.stopLoading());
+      dispatch(actions.hasError(error));
+    }
+  };
+
+// Get Invited User
+export const getInvitedUser = (state) => state.user.invitedUser;
