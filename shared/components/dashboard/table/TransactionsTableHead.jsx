@@ -1,16 +1,14 @@
 // React Bootstrap
 import {Row, Col, ButtonGroup, Stack, Dropdown} from 'react-bootstrap';
+// Redux
+import {useDispatch, useSelector} from 'react-redux';
+import {getActiveType, setActiveType} from '../../../redux/slices/transaction';
 // Constants
 import {TRANSACTION_TYPES} from '@/shared/constants';
-// Dummy Data ====> Will be replaced by redux selector later
-import {TRANSACTIONS} from './data';
 
-const TransactionsTableHead = ({
-  setTransactionsArr,
-  setActiveType,
-  activeType,
-}) => {
-  const transactions = TRANSACTIONS;
+const TransactionsTableHead = () => {
+  const dispatch = useDispatch();
+  const activeType = useSelector(getActiveType);
   return (
     <Row>
       <Col md={8} sm={6}>
@@ -31,27 +29,14 @@ const TransactionsTableHead = ({
                   {activeType}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item
-                    onClick={() => {
-                      setTransactionsArr(transactions);
-                      setActiveType('All');
-                    }}
-                  >
-                    All
-                  </Dropdown.Item>
                   {Object.keys(TRANSACTION_TYPES).map((key) => {
                     return (
                       <>
                         <Dropdown.Item
                           onClick={() => {
-                            setTransactionsArr(
-                              transactions.filter(
-                                (transaction) =>
-                                  transaction.type.toLowerCase() ==
-                                  TRANSACTION_TYPES[key].value
-                              )
+                            dispatch(
+                              setActiveType(TRANSACTION_TYPES[key].value)
                             );
-                            setActiveType(TRANSACTION_TYPES[key].label);
                           }}
                         >
                           {' '}

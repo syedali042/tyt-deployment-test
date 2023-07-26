@@ -5,25 +5,43 @@ import {Card, Col, Row} from 'react-bootstrap';
 import {Line} from 'react-chartjs-2';
 // Chart Js
 import {Chart, registerables} from 'chart.js';
+// Redux
+import {useSelector} from 'react-redux';
+import {
+  getEndDate,
+  getStartDate,
+  getTransactions,
+} from '@/shared/redux/slices/transaction';
 // Components
 import TransactionsGraphActions from './TransactionsGraphActions';
 // Chart Settings
+import {graphOptions as options} from './graphOptions';
+// Utils
 import {
-  graphOptions as options,
-  labels,
-  data as graphData,
-} from './graphOptions';
+  generateMonthYearLabelsArray,
+  sumAmountsByMonth,
+} from '@/shared/utils/transaction';
 
 Chart.register(...registerables);
 
 const TransactionsGraph = () => {
+  const startDate = useSelector(getStartDate);
+  const endDate = useSelector(getEndDate);
+  const labels = generateMonthYearLabelsArray({startDate, endDate});
+  const transactions = useSelector(
+    getTransactions({filterByStartDate: true, filterByEndDate: true})
+  );
+  const transactionsSumByMonth = sumAmountsByMonth(
+    transactions?.length > 0 ? transactions : []
+  );
+
   const data = {
     labels,
     datasets: [
       {
         fill: true,
         label: 'Transactions',
-        data: graphData,
+        data: transactionsSumByMonth,
         borderColor: '#6c5ffc',
         backgroundColor: 'rgba(108, 95, 252, 0.6)',
         tension: 0.3,

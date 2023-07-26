@@ -4,6 +4,7 @@ import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 // slices
 import userReducer from './slices/user';
 import tipReducer from './slices/tip';
+import transactionReducer from './slices/transaction';
 import {clearStore} from './util';
 
 // ----------------------------------------------------------------------
@@ -46,9 +47,18 @@ const tipPersistConfig = {
   // whitelist: [],
 };
 
+const transactionPersistConfig = {
+  key: 'transaction',
+  storage,
+  keyPrefix: 'redux-',
+  // whitelist: [],
+};
+
 const appReducer = combineReducers({
   user: userReducer,
   tip: tipReducer,
+  transaction: transactionReducer,
+  // transaction: persistReducer(transactionPersistConfig, transactionReducer),
   // user: persistReducer(userPersistConfig, userReducer),
   // tip: persistReducer(tipPersistConfig, tipReducer),
 });
@@ -58,6 +68,7 @@ const rootReducer = (state, action) => {
   if (action.type === clearStore.type) {
     storage.removeItem('persist:root');
     storage.removeItem('persist:user');
+    storage.removeItem('persist:transaction');
 
     return appReducer(undefined, action);
   }
