@@ -54,7 +54,7 @@ export const SignUpWithGoogle = ({isUsernameVerified, setError, username}) => {
         if (isNewUser) {
           if (!invitedUser) await dispatch(createUser(userObj));
           else {
-            userObj.id = invitedUser?.id;
+            userObj.id = invitedUser?.userInternalId;
             userObj.verified = true;
             await dispatch(updateUser(userObj));
           }
