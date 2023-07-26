@@ -1,21 +1,27 @@
 'use client';
-import './page.css';
-import {Stack, Row, Container, Image, Alert, Col} from 'react-bootstrap';
+// React
+import {useEffect} from 'react';
+// React Toast
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+// React Bootstrap
+import {Stack, Row, Container, Image} from 'react-bootstrap';
+//Redux
+import {useDispatch} from 'react-redux';
+import {resetTipState} from '@/shared/redux/slices/tip';
+// Components
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
 import StepsHeader from '@/shared/components/tip/StepHeader';
 import FindTeacherTab from '@/shared/components/tip/FindTeacherTab';
-import {ToastContainer, toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import SelectAmountTab from '@/shared/components/tip/SelectAmountTab';
 import CheckoutTab from '@/shared/components/tip/CheckoutTab';
-import {useState} from 'react';
+import './page.css';
 
 export default function GetStarted() {
-  const [tabSettings, setTabSettings] = useState({
-    active: 'find-teacher-tab',
-    steps: ['find-teacher-tab'],
-  });
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(resetTipState());
+  }, []);
   return (
     <>
       <Authenticationlayout>
@@ -30,13 +36,10 @@ export default function GetStarted() {
                     style={{width: '220px'}}
                   />
                 </center>
-                <StepsHeader
-                  tabSettings={tabSettings}
-                  setTabSettings={setTabSettings}
-                />
-                <FindTeacherTab tabSettings={tabSettings} />
-                <SelectAmountTab tabSettings={tabSettings} />
-                <CheckoutTab tabSettings={tabSettings} />
+                <StepsHeader toast={toast} />
+                <FindTeacherTab />
+                <SelectAmountTab />
+                <CheckoutTab />
               </Stack>
             </Container>
           </Stack>

@@ -1,34 +1,94 @@
+// React Bootstrap
 import {Stack} from 'react-bootstrap';
-import {SEND_TIP_TABS, SEND_TIP_TABS_ARR} from '@/shared/constants';
+// Redux
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getCurrentTeacher,
+  getTipAmount,
+  getClientSecret,
+  getTeacherUsernameOrEmail,
+  initializeOrUpdateTipProcess,
+  getActiveStep,
+  setActiveStep,
+} from '@/shared/redux/slices/tip';
+// Utils
+import {commonValidationsForTabs} from '@/shared/utils/tipUtils';
+// Constants
+import {SEND_TIP_TABS_ARR, toastSettings} from '@/shared/constants';
 
-const StepsHeader = ({tabSettings, setTabSettings}) => {
-  const activateTab = async ({tab}) => {
-    const {active: activeTab, steps} = tabSettings;
-    if (activeTab == tab) {
-      return;
+const StepsHeader = ({toast}) => {
+  const dispatch = useDispatch();
+
+  const activeStep = useSelector(getActiveStep);
+
+  const currentTeacher = useSelector(getCurrentTeacher);
+
+  const amount = useSelector(getTipAmount);
+
+  const clientSecret = useSelector(getClientSecret);
+
+  const teacherUsernameOrEmail = useSelector(getTeacherUsernameOrEmail);
+
+  const validateTabShifting = async (tab) => {
+    if (tab == 1) return {success: true};
+
+    if (tab == 2) {
+      const {success, error} = commonValidationsForTabs({
+        currentTeacher,
+        teacherUsernameOrEmail,
+      });
+
+      if (!success) {
+        return {success: false, error};
+      } else {
+        return {success: true};
+      }
     }
 
-    setTabSettings({
-      active: tab,
-      steps:
-        tab == SEND_TIP_TABS.findTeacherTab.name
-          ? ['find-teacher-tab']
-          : tab == SEND_TIP_TABS.selectAmountTab.name
-          ? ['find-teacher-tab', 'select-amount-tab']
-          : ['find-teacher-tab', 'select-amount-tab', 'checkout-tab'],
-    });
+    if (tab == 3) {
+      const {success, error} = commonValidationsForTabs({
+        currentTeacher,
+        teacherUsernameOrEmail,
+      });
+
+      if (!success) return {success: false, error};
+
+      if (amount < 15)
+        return {
+          success: false,
+          error: 'Amount must be greater than or equall to 15',
+        };
+
+      if (clientSecret == '') {
+        await dispatch(
+          initializeOrUpdateTipProcess({action: 'initializeCheckout'})
+        );
+        return {
+          success: true,
+        };
+      }
+
+      return {success: true};
+    }
+  };
+
+  const activateTab = async ({step}) => {
+    if (activeStep == step) return;
+
+    const {success, error} = await validateTabShifting(step);
+
+    if (!success) return toast.error(error, toastSettings);
+
+    await dispatch(setActiveStep(step));
   };
   return (
     <Stack className="md-stepper-horizontal orange">
       {SEND_TIP_TABS_ARR.map((tab, index) => {
         const tabLabel = tab[0];
-        const tabName = tab[1];
         return (
           <Stack
-            className={`md-step ${
-              tabSettings.steps.includes(tabName) && 'active'
-            }`}
-            onClick={() => activateTab({tab: tabName})}
+            className={`md-step ${activeStep >= index + 1 && 'active'}`}
+            onClick={() => activateTab({step: index + 1})}
             style={{cursor: 'pointer'}}
           >
             <Stack className="md-step-circle">

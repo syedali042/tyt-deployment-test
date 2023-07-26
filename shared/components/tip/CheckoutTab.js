@@ -1,25 +1,49 @@
 'use client';
-import '../../../app/tip/page.css';
+// React
+import {useState} from 'react';
+// Bootstrap
 import {Stack, Row, Col, Card, Form, InputGroup, Badge} from 'react-bootstrap';
-
+// Mui
+import {Typography} from '@mui/material';
+// Stripe
 import {loadStripe} from '@stripe/stripe-js';
 import {Elements} from '@stripe/react-stripe-js';
+// Redux
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getActiveStep,
+  getClientSecret,
+  getCurrentTeacher,
+  getPaymentIdToBeUsed,
+  getTipAmount,
+  getTipNotes,
+  setTipNotes,
+} from '@/shared/redux/slices/tip';
+// Component
 import CheckoutForm from './CheckoutForm';
-import {useState} from 'react';
+// Styles
+import '../../../app/tip/page.css';
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
+const CheckoutTab = () => {
+  const notes = useSelector(getTipNotes);
+  const activeStep = useSelector(getActiveStep);
+  const currentTeacher = useSelector(getCurrentTeacher);
+  const paymentIdToBeUsed = useSelector(getPaymentIdToBeUsed);
+  const amount = useSelector(getTipAmount);
+  const dispatch = useDispatch();
 
-const CheckoutTab = ({tabSettings}) => {
-  const [notes, setNotes] = useState('');
+  const clientSecret = useSelector(getClientSecret);
+
+  const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    {stripeAccount: paymentIdToBeUsed}
+  );
 
   const appearance = {
     theme: 'stripe',
     labels: 'floating',
   };
-  const clientSecret =
-    'pi_3NTjR6I5pCbhF7Be18mBc295_secret_8gHlARVoM6z1jUT1YDDSaVu7o';
+
   const options = {
     clientSecret: clientSecret,
     appearance,
@@ -27,7 +51,7 @@ const CheckoutTab = ({tabSettings}) => {
 
   return (
     <>
-      <Stack className={`${tabSettings.active !== 'checkout-tab' && 'd-none'}`}>
+      <Stack className={`${activeStep !== 3 && 'd-none'}`}>
         <Row>
           <Col lg={{span: 4, offset: 1}}>
             <Row className="px-3">
@@ -37,23 +61,37 @@ const CheckoutTab = ({tabSettings}) => {
                 </Card.Header>
                 <Card.Body>
                   <Row>
-                    <Col md={5} className="py-1">
-                      <strong>Teacher&apos;s Name</strong>
-                    </Col>
-                    <Col md={7} className="text-md-end py-1">
-                      Syed Ali
-                    </Col>
+                    {currentTeacher?.displayName && (
+                      <>
+                        <Col md={5} className="py-1">
+                          <strong>Teacher&apos;s Name</strong>
+                        </Col>
+                        <Col md={7} className="text-md-end py-1">
+                          {currentTeacher?.displayName}
+                        </Col>
+                      </>
+                    )}
                     <Col md={5} className="py-1">
                       <strong>Teacher&apos;s Email</strong>
                     </Col>
                     <Col md={7} className="text-md-end py-1">
-                      syed.ali@desolint.com
+                      <Typography
+                        style={{transform: 'translateY(10%)'}}
+                        fontSize={12}
+                      >
+                        {currentTeacher?.email}
+                      </Typography>
                     </Col>
                     <Col md={5} className="py-1">
                       <strong>Amount to tip</strong>
                     </Col>
                     <Col md={7} className="text-md-end py-1">
-                      $980
+                      <Typography
+                        style={{transform: 'translateY(10%)'}}
+                        fontSize={12}
+                      >
+                        ${amount}
+                      </Typography>
                     </Col>
                   </Row>
                 </Card.Body>
@@ -64,12 +102,16 @@ const CheckoutTab = ({tabSettings}) => {
                   >
                     <InputGroup>
                       <Form.Control
-                        placeholder="Write your note to Syed Ali || the teacher..."
+                        placeholder={`Write your note to ${
+                          currentTeacher?.displayName || 'the teacher'
+                        }...`}
                         rows={3}
                         name="Note"
                         as={'textarea'}
                         value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
+                        onChange={(e) =>
+                          dispatch(setTipNotes({notes: e.target.value}))
+                        }
                         className="form-control"
                         style={{
                           padding: '15px',
