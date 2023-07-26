@@ -87,6 +87,11 @@ export const DASHBOARD_WIDGETS_ARR = Object.keys(DASHBOARD_WIDGETS).map(
 );
 
 export const TRANSACTION_TYPES = {
+  all: {
+    label: 'All',
+    value: 'all',
+    notSpecificType: true,
+  },
   tip: {
     label: 'Tip',
     value: 'tip',
