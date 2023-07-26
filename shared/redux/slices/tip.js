@@ -209,7 +209,6 @@ export const getTeacherByEmail = () => async (dispatch, getState) => {
       .then((response) => {
         const {body} = response.data;
         dispatch(actions.setCurrentTeacher({...body}));
-        dispatch(actions.setActiveStep(2));
         dispatch(actions.stopLoading());
       })
       .catch((error) => {
