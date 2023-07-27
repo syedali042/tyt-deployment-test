@@ -62,6 +62,7 @@ const slice = createSlice({
 // Reducer
 export default slice.reducer;
 const actions = slice.actions;
+export const userActions = slice.actions;
 
 export const checkUsernameAvailability =
   ({username, email, type}) =>
@@ -130,6 +131,10 @@ export const signInUser = (user) => async (dispatch) => {
     );
     dispatch(actions.setCurrentUser(response.data.body));
     localStorage.setItem('user', JSON.stringify(response.data.body));
+    localStorage.setItem(
+      [tokenVariable],
+      JSON.stringify(response.headers[tokenVariable])
+    );
     dispatch(actions.stopLoading());
   } catch (error) {
     dispatch(actions.stopLoading());
@@ -166,6 +171,44 @@ export const signOutUser = () => async (dispatch) => {
     throw error;
   }
 };
+
+export const getVerificationURL = () => async (dispatch) => {
+  dispatch(actions.startLoading());
+  try {
+    const response = await axios.get(`/users/get-verification-url`, {
+      headers: {
+        [tokenVariable]: JSON.parse(localStorage.getItem([tokenVariable])),
+      },
+    });
+    const url = response.data.body.url;
+    window.open(url);
+    dispatch(actions.stopLoading());
+  } catch (error) {
+    dispatch(actions.stopLoading());
+    dispatch(actions.hasError(error));
+    throw error;
+  }
+};
+
+export const updateUser =
+  ({user}) =>
+  async (dispatch) => {
+    dispatch(actions.startLoading());
+    try {
+      const response = await axios.patch(`/users`, user, {
+        headers: {
+          [tokenVariable]: JSON.parse(localStorage.getItem('token')),
+        },
+      });
+      dispatch(actions.setCurrentUser(response.data.body));
+      localStorage.setItem('user', JSON.stringify(response.data.body));
+      dispatch(actions.stopLoading());
+    } catch (error) {
+      dispatch(actions.stopLoading());
+      dispatch(actions.hasError(error));
+      throw error;
+    }
+  };
 
 // Selectors
 export const getUserToken = (state) => state.user.token;
