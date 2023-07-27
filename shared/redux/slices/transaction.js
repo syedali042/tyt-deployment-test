@@ -54,9 +54,8 @@ export const getTransactions =
     let transactions = transactionsState.list;
     const {activeType, startDate, endDate} = transactionsState;
     if (filterByActiveType) {
-      if (activeType == TRANSACTION_TYPES.all.value)
-        transactions = transactions;
-      else transactions = transactions.filter(({type}) => type == activeType);
+      if (activeType != TRANSACTION_TYPES.all.value)
+        transactions = transactions.filter(({type}) => type == activeType);
     }
 
     if (filterByStartDate) {
@@ -68,14 +67,6 @@ export const getTransactions =
     if (filterByEndDate) {
       transactions = transactions.filter(
         ({date}) => new Date(date) <= new Date(endDate)
-      );
-    }
-
-    if (filterByStartDate && filterByEndDate) {
-      transactions = transactions.filter(
-        ({date}) =>
-          new Date(date) >= new Date(startDate) &&
-          new Date(date) <= new Date(endDate)
       );
     }
 
