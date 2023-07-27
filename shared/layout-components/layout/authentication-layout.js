@@ -27,7 +27,7 @@ const Authenticationlayout = ({children}) => {
     else if (!currentUser?.id && isDashboardPage) router.push('/auth/login');
   }, [currentUser]);
 
-  return <SSRProvider>{!currentUser?.id && children}</SSRProvider>;
+  return <SSRProvider>{currentUser?.id == undefined && children}</SSRProvider>;
 };
 
 export default Authenticationlayout;
