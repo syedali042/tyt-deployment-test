@@ -68,3 +68,11 @@
   max-width: 600px;
   /* min-width: 370px; */
 }
+
+.page-signup-get-started-tip-text {
+  font-size: 14px !important;
+}
+
+.page-signup-get-started-default-input {
+  font-size: 14px !important;
+}
