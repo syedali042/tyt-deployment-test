@@ -24,12 +24,14 @@ const Contentlayout = ({children}) => {
     const setUserInState = async () => {
       await dispatch(setUserInStateFromLocalStorage());
     };
-    if (!currentUser?.id) setUserInState();
+    if (!currentUser?.userInternalId) setUserInState();
   }, []);
 
   useEffect(() => {
-    if (currentUser?.id && !isDashboardPage) router.push('/dashboard/home');
-    else if (!currentUser?.id && isDashboardPage) router.push('/auth/login');
+    if (currentUser?.userInternalId && !isDashboardPage)
+      router.push('/dashboard/home');
+    else if (!currentUser?.userInternalId && isDashboardPage)
+      router.push('/auth/login');
   }, [currentUser]);
 
   useEffect(() => {
@@ -68,7 +70,7 @@ const Contentlayout = ({children}) => {
   return (
     <>
       {/* <Script src="//code.tidio.co/ejjaylsnuydywf5a0sqc1gvcus5orpml.js" /> */}
-      {currentUser?.id && (
+      {currentUser?.userInternalId && (
         <SSRProvider>
           <div className="horizontalMenucontainer">
             <div className="page">

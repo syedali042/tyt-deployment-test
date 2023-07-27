@@ -19,15 +19,17 @@ const Authenticationlayout = ({children}) => {
     const setUserInState = async () => {
       await dispatch(setUserInStateFromLocalStorage());
     };
-    if (!currentUser?.id) setUserInState();
+    if (!currentUser?.userInternalId) setUserInState();
   }, []);
 
   useEffect(() => {
-    if (currentUser?.id && !isDashboardPage) router.push('/dashboard/home');
-    else if (!currentUser?.id && isDashboardPage) router.push('/auth/login');
+    if (currentUser?.userInternalId && !isDashboardPage)
+      router.push('/dashboard/home');
+    else if (!currentUser?.userInternalId && isDashboardPage)
+      router.push('/auth/login');
   }, [currentUser]);
 
-  return <SSRProvider>{currentUser?.id == undefined && children}</SSRProvider>;
+  return !currentUser?.userInternalId && <SSRProvider>{children}</SSRProvider>;
 };
 
 export default Authenticationlayout;
