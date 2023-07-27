@@ -17,9 +17,9 @@ export default function SignUp() {
   const params = useSearchParams();
   const token = params.get('token');
   const dispatch = useDispatch();
-  const callSetInvitedUser = async () =>
-    await dispatch(setInvitedUser({token}));
   useEffect(() => {
+    const callSetInvitedUser = async () =>
+      await dispatch(setInvitedUser({token}));
     if (token) callSetInvitedUser();
   }, []);
   return (
