@@ -12,16 +12,8 @@ const initialState = {
   isLoading: false,
   error: null,
   invitedUser: null,
-  currentUser: {
-    userInternalId: '',
-    firebaseId: '',
-    username: '',
-    email: '',
-    photoURL: '',
-    displayName: '',
-    loginType: '',
-  },
-  token: '',
+  currentUser: null,
+  token: null,
 };
 
 const slice = createSlice({
@@ -42,22 +34,21 @@ const slice = createSlice({
     },
 
     setCurrentUser(state, action) {
-      state.currentUser = {
-        ...action.payload,
-      };
+      const {user, token, preventLocal} = action.payload;
+      state.currentUser = user;
+      state.token = token;
+      if (!preventLocal) {
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', JSON.stringify(token));
+      }
     },
 
     removeCurrentUser(state) {
-      state.currentUser = {};
+      state = initialState;
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
     },
 
-    setUserToken(state, action) {
-      state.token = action.payload;
-    },
-
-    removeUserToken(state) {
-      state.token = '';
-    },
     setInvitedUser(state, action) {
       state.invitedUser = action.payload;
     },
@@ -81,18 +72,11 @@ export const checkUsernameAvailability =
         type,
       });
 
+      const user = {username};
+      const token = undefined;
+
       if (response.data.statusCode === 200)
-        dispatch(
-          actions.setCurrentUser({
-            userInternalId: '',
-            firebaseId: '',
-            username,
-            email: '',
-            photoURL: '',
-            displayName: '',
-            loginType: '',
-          })
-        );
+        dispatch(actions.setCurrentUser({user, preventLocal: true}));
       else throw 'Username Not Available';
 
       dispatch(actions.stopLoading());
@@ -103,16 +87,17 @@ export const checkUsernameAvailability =
     }
   };
 
-export const createUser = (user) => async (dispatch) => {
+export const createUser = (userToCreate) => async (dispatch) => {
   dispatch(actions.startLoading());
   try {
-    const response = await axios.post('/users', user, {
+    const response = await axios.post('/users', userToCreate, {
       headers: {
-        [tokenVariable]: user.accessToken,
+        [tokenVariable]: userToCreate.accessToken,
       },
     });
-    dispatch(actions.setCurrentUser(response.data.body));
-    localStorage.setItem('user', JSON.stringify(response.data.body));
+    const user = response.data.body;
+    const token = response.headers[tokenVariable];
+    dispatch(actions.setCurrentUser({user, token}));
     dispatch(actions.stopLoading());
   } catch (error) {
     console.log(error);
@@ -122,7 +107,7 @@ export const createUser = (user) => async (dispatch) => {
   }
 };
 
-export const signInUser = (user) => async (dispatch) => {
+export const signInUser = (userToSignIn) => async (dispatch) => {
   dispatch(actions.startLoading());
   try {
     const response = await axios.post(
@@ -130,16 +115,14 @@ export const signInUser = (user) => async (dispatch) => {
       {},
       {
         headers: {
-          [tokenVariable]: user.accessToken,
+          [tokenVariable]: userToSignIn.accessToken,
         },
       }
     );
-    dispatch(actions.setCurrentUser(response.data.body));
-    localStorage.setItem('user', JSON.stringify(response.data.body));
-    localStorage.setItem(
-      [tokenVariable],
-      JSON.stringify(response.headers[tokenVariable])
-    );
+
+    const user = response.data.body;
+    const token = response.headers[tokenVariable];
+    dispatch(actions.setCurrentUser({user, token}));
     dispatch(actions.stopLoading());
   } catch (error) {
     dispatch(actions.stopLoading());
@@ -153,18 +136,7 @@ export const signOutUser = () => async (dispatch) => {
   try {
     await signOut(firebaseAuth)
       .then(() => {
-        dispatch(
-          actions.setCurrentUser({
-            userInternalId: '',
-            firebaseId: '',
-            username: '',
-            email: '',
-            photoURL: '',
-            displayName: '',
-            loginType: '',
-          })
-        );
-        localStorage.removeItem('user');
+        dispatch(actions.removeCurrentUser());
       })
       .catch((error) => {
         dispatch(actions.hasError(error));
@@ -194,26 +166,6 @@ export const getVerificationURL = () => async (dispatch) => {
     throw error;
   }
 };
-
-export const updateUser =
-  ({user}) =>
-  async (dispatch) => {
-    dispatch(actions.startLoading());
-    try {
-      const response = await axios.patch(`/users`, user, {
-        headers: {
-          [tokenVariable]: JSON.parse(localStorage.getItem('token')),
-        },
-      });
-      dispatch(actions.setCurrentUser(response.data.body));
-      localStorage.setItem('user', JSON.stringify(response.data.body));
-      dispatch(actions.stopLoading());
-    } catch (error) {
-      dispatch(actions.stopLoading());
-      dispatch(actions.hasError(error));
-      throw error;
-    }
-  };
 
 // Selectors
 export const getUserToken = (state) => state.user.token;

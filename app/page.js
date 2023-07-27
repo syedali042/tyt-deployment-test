@@ -40,7 +40,7 @@ export default function GetStarted() {
     try {
       const {username} = data;
       await dispatch(checkUsernameAvailability({username, type: 'username'}));
-      if (currentUser.username !== undefined) router.push('/auth/signup');
+      if (currentUser?.username !== undefined) router.push('/auth/signup');
       else setError('username', {message: 'Username already taken'});
     } catch (error) {
       setError('username', {message: error.message || error});

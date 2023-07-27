@@ -1,6 +1,9 @@
 import './UsernameVerifier.css';
-import {checkUsernameAvailability} from '@/shared/redux/slices/user';
-import {useDispatch} from 'react-redux';
+import {
+  checkUsernameAvailability,
+  getCurrentUser,
+} from '@/shared/redux/slices/user';
+import {useSelector, useDispatch} from 'react-redux';
 import {Stack, Form, Button, Row, Col} from 'react-bootstrap';
 import FormFieldError from '../../FormFieldError';
 import {CircularProgress} from '@mui/material';
@@ -15,12 +18,12 @@ export const UsernameVerifier = ({
   value,
 }) => {
   const dispatch = useDispatch();
-
+  const currentUser = useSelector(getCurrentUser);
   const verifyUsernameAvailability = async () => {
     try {
       const username = value;
       await dispatch(checkUsernameAvailability({username, type: 'username'}));
-      if (currentUser.username) setIsUsernameVerified(true);
+      if (currentUser?.username) setIsUsernameVerified(true);
       else setError('username', {message: 'Username already taken'});
     } catch (error) {
       setError('username', {message: error.message || error});
@@ -45,7 +48,7 @@ export const UsernameVerifier = ({
             }}
           >
             <h3
-              className="get-started-tip-text font-weight-bold"
+              className="get-started-tip-text page-signup-get-started-tip-text font-weight-bold"
               style={{
                 transform: 'translateY(25%)',
                 fontWeight: 500,
@@ -56,7 +59,7 @@ export const UsernameVerifier = ({
             <input
               name={'username'}
               placeholder="yourname"
-              className="get-started-default-input"
+              className="get-started-default-input page-signup-get-started-tip-text"
               {...register('username')}
               type="text"
               required
