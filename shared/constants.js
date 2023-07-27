@@ -1,3 +1,8 @@
+import AverageTipApexChart from './components/dashboard/widgets-charts/AverageTipApexChart';
+import TotalTippersApexChart from './components/dashboard/widgets-charts/TotalTippersApexChart';
+import TotalTipsAmountApexChart from './components/dashboard/widgets-charts/TotalTipsAmountApexChart';
+import TotalTipsApexChart from './components/dashboard/widgets-charts/TotalTipsApexChart';
+
 export const SEND_TIP_TABS = {
   findTeacherTab: {
     label: 'Find Teacher',
@@ -51,5 +56,78 @@ export const TIP_MESSAGES = {
         We'll notify them as soon as the payment is completed.
       </div>
     );
+  },
+};
+
+export const DASHBOARD_WIDGETS = {
+  totalTippers: {
+    label: 'Total Tippers',
+    chart: <TotalTippersApexChart />,
+  },
+  totalTipsAmount: {
+    label: 'Total Tips Amount',
+    chart: <TotalTipsAmountApexChart />,
+  },
+  totalTips: {
+    label: 'Total Tips',
+    chart: <TotalTipsApexChart />,
+  },
+  averageTipAmount: {
+    label: 'Average Tip Amount',
+    chart: <AverageTipApexChart />,
+  },
+};
+
+export const DASHBOARD_WIDGETS_ARR = Object.keys(DASHBOARD_WIDGETS).map(
+  (key) => [
+    DASHBOARD_WIDGETS[key]['label'],
+    DASHBOARD_WIDGETS[key]['chart'],
+    key,
+  ]
+);
+
+export const TRANSACTION_TYPES = {
+  all: {
+    label: 'All',
+    value: 'all',
+    notSpecificType: true,
+  },
+  tip: {
+    label: 'Tip',
+    value: 'tip',
+    icon: <i className="text-info fa-solid fa-circle-dollar-to-slot"></i>,
+  },
+  //   tax: {
+  //     label: 'Tax',
+  //     value: 'tax',
+  //     icon: 'fa fa-calendar',
+  //   },
+  fee: {
+    label: 'Fee',
+    value: 'fee',
+    icon: <i className="text-info fa-solid fa-receipt"></i>,
+  },
+  disbursement: {
+    label: 'Disbursement',
+    value: 'disbursement',
+    icon: <i className="text-info fa fa-repeat"></i>,
+  },
+};
+
+export const TRANSACTION_STATUS = {
+  pending: {
+    label: 'Pending',
+    value: 'pending',
+    color: 'warning',
+  },
+  cancelled: {
+    label: 'Cancelled',
+    value: 'cancelled',
+    color: 'danger',
+  },
+  succeeded: {
+    label: 'Succeeded',
+    value: 'succeeded',
+    color: 'success',
   },
 };
