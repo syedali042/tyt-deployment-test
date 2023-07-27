@@ -122,9 +122,9 @@ export const SignUpForm = () => {
 
         if (!invitedUser) await dispatch(createUser(userObj));
         else {
-          userObj.id = invitedUser?.userInternalId;
+          userObj.userInternalId = invitedUser?.userInternalId;
           userObj.verified = true;
-          await dispatch(updateUser(userObj));
+          await dispatch(updateUser({userDataToUpdate: userObj}));
         }
         router.push('/dashboard/home');
       })

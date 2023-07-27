@@ -73,7 +73,6 @@ export const checkUsernameAvailability =
       });
 
       const user = {username};
-      const token = undefined;
 
       if (response.data.statusCode === 200)
         dispatch(actions.setCurrentUser({user, preventLocal: true}));
@@ -193,22 +192,24 @@ export const setInvitedUser =
 export const getInvitedUser = (state) => state.user.invitedUser;
 
 // Update User
-export const updateUser = (userDataToUpdate) => async (dispatch) => {
-  dispatch(actions.startLoading());
-  try {
-    const response = await axios.patch('/users', userDataToUpdate, {
-      headers: {
-        [tokenVariable]: userDataToUpdate.accessToken,
-      },
-    });
+export const updateUser =
+  ({userDataToUpdate}) =>
+  async (dispatch) => {
+    dispatch(actions.startLoading());
+    try {
+      const response = await axios.patch('/users', userDataToUpdate, {
+        headers: {
+          [tokenVariable]: userDataToUpdate.accessToken,
+        },
+      });
 
-    const user = response.data.body;
-    const token = response.headers[tokenVariable];
-    dispatch(actions.setCurrentUser({user, token}));
-    dispatch(actions.stopLoading());
-  } catch (error) {
-    dispatch(actions.stopLoading());
-    dispatch(actions.hasError(error));
-    throw error;
-  }
-};
+      const user = response.data.body;
+      const token = response.headers[tokenVariable];
+      dispatch(actions.setCurrentUser({user, token}));
+      dispatch(actions.stopLoading());
+    } catch (error) {
+      dispatch(actions.stopLoading());
+      dispatch(actions.hasError(error));
+      throw error;
+    }
+  };
