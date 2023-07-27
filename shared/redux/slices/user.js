@@ -73,7 +73,6 @@ export const checkUsernameAvailability =
       });
 
       const user = {username};
-      const token = undefined;
 
       if (response.data.statusCode === 200)
         dispatch(actions.setCurrentUser({user, preventLocal: true}));
