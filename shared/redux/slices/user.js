@@ -216,3 +216,9 @@ export const getUserToken = (state) => state.user.token;
 export const getCurrentUser = (state) => state.user.currentUser;
 
 export const isLoading = (state) => state.user.isLoading;
+
+// set user in state
+export const setUserInStateFromLocalStorage = () => (dispatch) => {
+  const user = localStorage.getItem('user');
+  if (user) dispatch(actions.setCurrentUser(JSON.parse(user)));
+};
