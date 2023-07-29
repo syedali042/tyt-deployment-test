@@ -213,3 +213,9 @@ export const updateUser =
       throw error;
     }
   };
+
+// set user in state
+export const setUserInStateFromLocalStorage = () => (dispatch) => {
+  const user = localStorage.getItem('user');
+  if (user) dispatch(actions.setCurrentUser(JSON.parse(user)));
+};

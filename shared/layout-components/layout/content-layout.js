@@ -7,23 +7,32 @@ import Header from '../header/header';
 import Sidebar from '../sidebar/sidebar';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import {usePathname, useRouter} from 'next/navigation';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getCurrentUser,
+  setUserInStateFromLocalStorage,
+} from '@/shared/redux/slices/user';
 
 const Contentlayout = ({children}) => {
   const pathname = usePathname();
-  const [renderUi, setRenderUi] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
+  const currentUser = useSelector(getCurrentUser);
+  const isDashboardPage = pathname.includes('/dashboard');
 
   useEffect(() => {
-    const isDashboardIncludes = pathname.includes('/dashboard');
-    const userFromStorage = localStorage?.getItem('user');
-    if (userFromStorage && isDashboardIncludes) setRenderUi(true);
-    // if user is logged in but not on dashboard, redirect it to dashboard
-    else if (userFromStorage && !isDashboardIncludes)
-      router.push('/dashboard/home');
-    // if user is not logged in but try to visit dashboard, redirect it to login page
-    else if (!userFromStorage && isDashboardIncludes)
-      router.push('/auth/login');
+    const setUserInState = async () => {
+      await dispatch(setUserInStateFromLocalStorage());
+    };
+    if (!currentUser?.userInternalId) setUserInState();
   }, []);
+
+  useEffect(() => {
+    if (currentUser?.userInternalId && !isDashboardPage)
+      router.push('/dashboard/home');
+    else if (!currentUser?.userInternalId && isDashboardPage)
+      router.push('/auth/login');
+  }, [currentUser]);
 
   useEffect(() => {
     document
@@ -61,7 +70,7 @@ const Contentlayout = ({children}) => {
   return (
     <>
       {/* <Script src="//code.tidio.co/ejjaylsnuydywf5a0sqc1gvcus5orpml.js" /> */}
-      {renderUi && (
+      {currentUser?.userInternalId && (
         <SSRProvider>
           <div className="horizontalMenucontainer">
             <div className="page">
