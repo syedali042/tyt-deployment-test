@@ -173,11 +173,7 @@ export const getCurrentUser = (state) => state.user.currentUser;
 
 export const isLoading = (state) => state.user.isLoading;
 
-// set user in state
-export const setUserInStateFromLocalStorage = () => (dispatch) => {
-  const user = localStorage.getItem('user');
-  if (user) dispatch(actions.setCurrentUser(JSON.parse(user)));
-
+// Set Invited User
 export const setInvitedUser =
   ({token}) =>
   (dispatch) => {
@@ -194,3 +190,32 @@ export const setInvitedUser =
 
 // Get Invited User
 export const getInvitedUser = (state) => state.user.invitedUser;
+
+// Update User
+export const updateUser =
+  ({userDataToUpdate}) =>
+  async (dispatch) => {
+    dispatch(actions.startLoading());
+    try {
+      const response = await axios.patch('/users', userDataToUpdate, {
+        headers: {
+          [tokenVariable]: userDataToUpdate.accessToken,
+        },
+      });
+
+      const user = response.data.body;
+      const token = response.headers[tokenVariable];
+      dispatch(actions.setCurrentUser({user, token}));
+      dispatch(actions.stopLoading());
+    } catch (error) {
+      dispatch(actions.stopLoading());
+      dispatch(actions.hasError(error));
+      throw error;
+    }
+  };
+
+// set user in state
+export const setUserInStateFromLocalStorage = () => (dispatch) => {
+  const user = localStorage.getItem('user');
+  if (user) dispatch(actions.setCurrentUser(JSON.parse(user)));
+};
