@@ -11,6 +11,7 @@ import {decodeJwtToken} from '@/shared/utils/jwtUtils';
 const initialState = {
   isLoading: false,
   error: null,
+  usernameToRegister: null,
   invitedUser: null,
   currentUser: null,
   token: null,
@@ -34,23 +35,30 @@ const slice = createSlice({
     },
 
     setCurrentUser(state, action) {
-      const {user, token, preventLocal} = action.payload;
+      const {user, token} = action.payload;
       state.currentUser = user;
       state.token = token;
-      if (!preventLocal) {
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('token', JSON.stringify(token));
-      }
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', JSON.stringify(token));
     },
 
     removeCurrentUser(state) {
-      state = initialState;
+      state.isLoading = false;
+      state.error = null;
+      state.usernameToRegister = null;
+      state.invitedUser = null;
+      state.currentUser = null;
+      state.token = null;
       localStorage.removeItem('user');
       localStorage.removeItem('token');
     },
 
     setInvitedUser(state, action) {
       state.invitedUser = action.payload;
+    },
+
+    setUsernameToRegister(state, action) {
+      state.usernameToRegister = action.payload;
     },
   },
 });
@@ -72,10 +80,8 @@ export const checkUsernameAvailability =
         type,
       });
 
-      const user = {username};
-
       if (response.data.statusCode === 200)
-        dispatch(actions.setCurrentUser({user, preventLocal: true}));
+        dispatch(actions.setUsernameToRegister(username));
       else throw 'Username Not Available';
 
       dispatch(actions.stopLoading());
@@ -219,3 +225,6 @@ export const setUserInStateFromLocalStorage = () => (dispatch) => {
   const user = localStorage.getItem('user');
   if (user) dispatch(actions.setCurrentUser(JSON.parse(user)));
 };
+
+// Get username to register
+export const getUsernameToRegister = (state) => state.user.usernameToRegister;

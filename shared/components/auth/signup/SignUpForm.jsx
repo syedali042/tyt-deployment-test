@@ -6,11 +6,11 @@ import {useRouter} from 'next/navigation';
 // Redux
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  getCurrentUser,
   createUser,
   isLoading as getIsUserRequestLoading,
   getInvitedUser,
   updateUser,
+  getUsernameToRegister,
 } from '@/shared/redux/slices/user';
 // React Bootstrap
 import {Row} from 'react-bootstrap';
@@ -32,7 +32,7 @@ import {EmailPasswordForm} from './EmailPasswordForm';
 export const SignUpForm = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const currentUser = useSelector(getCurrentUser);
+  const usernameToRegister = useSelector(getUsernameToRegister);
   const invitedUser = useSelector(getInvitedUser);
   const isRequestLoading = useSelector(getIsUserRequestLoading);
 
@@ -71,7 +71,7 @@ export const SignUpForm = () => {
   const methods = useForm({
     resolver: yupResolver(SignUpSchema),
     defaultValues: {
-      username: currentUser?.username,
+      username: usernameToRegister,
       email: invitedUser?.email || '',
       password: '',
       confirmPassword: '',
@@ -89,7 +89,7 @@ export const SignUpForm = () => {
   const values = watch();
 
   useEffect(() => {
-    if (currentUser?.username !== values?.username) {
+    if (usernameToRegister !== values?.username) {
       setIsUsernameVerified(false);
     } else {
       if (values?.username?.length >= 3) {
