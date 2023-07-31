@@ -107,7 +107,7 @@ export const UsernameVerifier = ({
           </Col>
         </Row>
         <FormFieldError error={error} />
-        {isUsernameVerified && usernameToRegister.length >= 3 && (
+        {isUsernameVerified && usernameToRegister && (
           <Stack className="text-success px-1" style={{fontSize: '0.8rem'}}>
             Username is available
           </Stack>
