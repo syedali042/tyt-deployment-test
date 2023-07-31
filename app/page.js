@@ -8,16 +8,19 @@ import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import FormFieldError from '@/shared/components/FormFieldError';
 import {
   checkUsernameAvailability,
-  getCurrentUser,
+  getIsUsernameVerified,
+  getUsernameToRegister,
 } from '@/shared/redux/slices/user';
 import {useDispatch, useSelector} from 'react-redux';
 import {CircularProgress} from '@mui/material';
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
+import {useEffect} from 'react';
 
 export default function GetStarted() {
   let router = useRouter();
   const dispatch = useDispatch();
-  const currentUser = useSelector(getCurrentUser);
+  const usernameToRegister = useSelector(getUsernameToRegister);
+  const isUsernameVerified = useSelector(getIsUsernameVerified);
   const GetStartedSchema = Yup.object().shape({
     username: Yup.string().min(3).max(40).required('User Name is required'),
   });
@@ -36,16 +39,22 @@ export default function GetStarted() {
     formState: {errors, isSubmitting, isSubmitSuccessful},
   } = methods;
 
+  useEffect(() => {
+    if (!isUsernameVerified) {
+      setError('username', {message: 'user already registered'});
+    }
+  }, [isUsernameVerified]);
+
   const onSubmit = async (data) => {
     try {
       const {username} = data;
-      await dispatch(checkUsernameAvailability({username, type: 'username'}));
-      if (currentUser.username !== undefined) router.push('/auth/signup');
-      else setError('username', {message: 'Username already taken'});
+      await dispatch(checkUsernameAvailability({username}));
+      router.push('/auth/signup');
     } catch (error) {
       setError('username', {message: error.message || error});
     }
   };
+
   return (
     <>
       <Authenticationlayout>

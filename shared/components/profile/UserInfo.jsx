@@ -20,10 +20,10 @@ const UserInfo = () => {
   const dispatch = useDispatch();
   const methods = useForm({
     defaultValues: {
-      displayName: currentUser.displayName,
-      username: currentUser.username,
-      email: currentUser.email,
-      photoURL: currentUser.photoURL,
+      displayName: currentUser?.displayName,
+      username: currentUser?.username,
+      email: currentUser?.email,
+      photoURL: currentUser?.photoURL,
     },
   });
 
@@ -42,21 +42,21 @@ const UserInfo = () => {
       displayName: data.displayName,
       photoURL: data.photoURL,
     };
-    updateProfile(firebaseAuth.currentUser, obj)
+    updateProfile(firebaseAuth?.currentUser, obj)
       .then(() => {
         dispatch(
           userActions.setCurrentUser({
             ...currentUser,
-            photoURL: firebaseAuth.currentUser.photoURL,
-            displayName: firebaseAuth.currentUser.displayName,
+            photoURL: firebaseAuth?.currentUser?.photoURL,
+            displayName: firebaseAuth?.currentUser?.displayName,
           })
         );
         dispatch(
           updateUser({
-            user: {
-              photoURL: firebaseAuth.currentUser.photoURL,
-              displayName: firebaseAuth.currentUser.displayName,
-              id: currentUser.id,
+            userDataToUpdate: {
+              photoURL: firebaseAuth?.currentUser?.photoURL,
+              displayName: firebaseAuth?.currentUser?.displayName,
+              userInternalId: currentUser?.userInternalId,
             },
           })
         );
@@ -146,7 +146,7 @@ const UserInfo = () => {
                 disabled={true}
               />
             </Stack>
-            {values.displayName != currentUser.displayName && (
+            {values.displayName != currentUser?.displayName && (
               <div
                 className="ms-2 d-flex align-items-start"
                 style={{height: '100%', paddingTop: '2.3rem'}}

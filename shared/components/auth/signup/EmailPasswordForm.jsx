@@ -1,6 +1,15 @@
+// React
+import {useState} from 'react';
+// React Bootstrap
 import {Stack, Row, Button, Alert} from 'react-bootstrap';
+// Mui
 import {CircularProgress, Typography} from '@mui/material';
+// Redux
+import {useSelector} from 'react-redux';
+import {getInvitedUser} from '@/shared/redux/slices/user';
+// Components
 import {FormGroupInput} from '../../bootstrap/FormGroupInput';
+
 export const EmailPasswordForm = ({
   register,
   errors,
@@ -8,6 +17,9 @@ export const EmailPasswordForm = ({
   isSubmitSuccessful,
   isSubmitting,
 }) => {
+  const invitedUser = useSelector(getInvitedUser);
+  const [isEmailDisabled, setIsEmailDisabled] = useState(invitedUser);
+
   return (
     <Stack>
       <Row style={{border: '1px solid #eee'}}></Row>
@@ -20,7 +32,26 @@ export const EmailPasswordForm = ({
         error={errors?.email?.message}
         placeholder={'Enter Your Email'}
         required
+        id={'signup-email-field'}
+        disabled={invitedUser && isEmailDisabled}
       />
+      <Stack>
+        <Typography
+          textAlign={'right'}
+          onClick={() => {
+            (async () => {
+              setIsEmailDisabled(false);
+            })().then(() => {
+              document.querySelector('#signup-email-field').focus();
+            });
+          }}
+          fontSize={'12px'}
+          color={'#fff'}
+          style={{cursor: 'pointer', display: invitedUser ? 'block' : 'none'}}
+        >
+          <u>Chnage Email</u>
+        </Typography>
+      </Stack>
       <FormGroupInput
         label={'Password'}
         labelColor={'#fff'}
@@ -32,7 +63,12 @@ export const EmailPasswordForm = ({
         required
       />
       {!errors?.password?.message && (
-        <Typography color={'#FFFFCC'} fontSize={12} px={0.5} mt={-1.5}>
+        <Typography
+          sx={{color: '#fff !important'}}
+          fontSize={12}
+          px={0.5}
+          mt={-1.5}
+        >
           Password has to have at least 1 small character, 1 capital character,
           a number and a special character
         </Typography>

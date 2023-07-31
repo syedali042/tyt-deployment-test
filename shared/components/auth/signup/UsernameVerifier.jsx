@@ -1,27 +1,35 @@
 import './UsernameVerifier.css';
-import {checkUsernameAvailability} from '@/shared/redux/slices/user';
-import {useDispatch} from 'react-redux';
+import {
+  checkUsernameAvailability,
+  getIsUsernameVerified,
+  getUsernameToRegister,
+} from '@/shared/redux/slices/user';
+import {useSelector, useDispatch} from 'react-redux';
 import {Stack, Form, Button, Row, Col} from 'react-bootstrap';
 import FormFieldError from '../../FormFieldError';
 import {CircularProgress} from '@mui/material';
+import {useEffect} from 'react';
 
 export const UsernameVerifier = ({
   register,
-  isUsernameVerified,
   error,
   isRequestLoading,
   setError,
-  setIsUsernameVerified,
   value,
 }) => {
   const dispatch = useDispatch();
+  const usernameToRegister = useSelector(getUsernameToRegister);
+  const isUsernameVerified = useSelector(getIsUsernameVerified);
+
+  useEffect(() => {
+    if (!isUsernameVerified)
+      setError('username', {message: 'user already registered'});
+  }, [usernameToRegister]);
 
   const verifyUsernameAvailability = async () => {
     try {
       const username = value;
-      await dispatch(checkUsernameAvailability({username, type: 'username'}));
-      if (currentUser.username) setIsUsernameVerified(true);
-      else setError('username', {message: 'Username already taken'});
+      await dispatch(checkUsernameAvailability({username}));
     } catch (error) {
       setError('username', {message: error.message || error});
     }
@@ -45,7 +53,7 @@ export const UsernameVerifier = ({
             }}
           >
             <h3
-              className="get-started-tip-text font-weight-bold"
+              className="get-started-tip-text page-signup-get-started-tip-text font-weight-bold"
               style={{
                 transform: 'translateY(25%)',
                 fontWeight: 500,
@@ -56,7 +64,7 @@ export const UsernameVerifier = ({
             <input
               name={'username'}
               placeholder="yourname"
-              className="get-started-default-input"
+              className="get-started-default-input page-signup-get-started-tip-text"
               {...register('username')}
               type="text"
               required
@@ -99,7 +107,7 @@ export const UsernameVerifier = ({
           </Col>
         </Row>
         <FormFieldError error={error} />
-        {isUsernameVerified && (
+        {isUsernameVerified && usernameToRegister && (
           <Stack className="text-success px-1" style={{fontSize: '0.8rem'}}>
             Username is available
           </Stack>

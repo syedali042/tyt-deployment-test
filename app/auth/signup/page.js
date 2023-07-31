@@ -1,8 +1,27 @@
 'use client';
+// React
+import {useEffect} from 'react';
+// Next
+import {useSearchParams} from 'next/navigation';
+// Redux
+import {useDispatch} from 'react-redux';
+import {setInvitedUser} from '@/shared/redux/slices/user';
+// React Bootstrap
 import {Stack, Row, Col, Image} from 'react-bootstrap';
+// Layout
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
+// Components
 import {SignUpForm} from '@/shared/components/auth/signup/SignUpForm';
+
 export default function SignUp() {
+  const params = useSearchParams();
+  const token = params.get('token');
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const callSetInvitedUser = async () =>
+      await dispatch(setInvitedUser({token}));
+    if (token) callSetInvitedUser();
+  }, []);
   return (
     <>
       <Authenticationlayout>
