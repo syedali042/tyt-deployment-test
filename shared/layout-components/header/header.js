@@ -202,7 +202,6 @@ const Header = ({localVaraiable}) => {
                             className="dropdown-item"
                             onClick={async () => {
                               await dispatch(signOutUser());
-                              router.push('/auth/login');
                             }}
                             style={{cursor: 'pointer'}}
                           >

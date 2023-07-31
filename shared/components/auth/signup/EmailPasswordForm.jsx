@@ -63,7 +63,12 @@ export const EmailPasswordForm = ({
         required
       />
       {!errors?.password?.message && (
-        <Typography color={'#FFFFCC'} fontSize={12} px={0.5} mt={-1.5}>
+        <Typography
+          sx={{color: '#fff !important'}}
+          fontSize={12}
+          px={0.5}
+          mt={-1.5}
+        >
           Password has to have at least 1 small character, 1 capital character,
           a number and a special character
         </Typography>

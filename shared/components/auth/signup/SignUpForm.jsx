@@ -11,6 +11,8 @@ import {
   getInvitedUser,
   updateUser,
   getUsernameToRegister,
+  setIsUsernameVerified,
+  getIsUsernameVerified,
 } from '@/shared/redux/slices/user';
 // React Bootstrap
 import {Row} from 'react-bootstrap';
@@ -33,11 +35,11 @@ export const SignUpForm = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const usernameToRegister = useSelector(getUsernameToRegister);
+  const isUsernameVerified = useSelector(getIsUsernameVerified);
   const invitedUser = useSelector(getInvitedUser);
   const isRequestLoading = useSelector(getIsUserRequestLoading);
 
   // const [isUsernameAndPassword, setIsUserNamePassword] = useState(false);
-  const [isUsernameVerified, setIsUsernameVerified] = useState(false);
 
   // const [showPassword, setShowPassword] = useState(false);
 
@@ -90,11 +92,9 @@ export const SignUpForm = () => {
 
   useEffect(() => {
     if (usernameToRegister !== values?.username) {
-      setIsUsernameVerified(false);
+      dispatch(setIsUsernameVerified(false));
     } else {
-      if (values?.username?.length >= 3) {
-        setIsUsernameVerified(true);
-      }
+      dispatch(setIsUsernameVerified(true));
     }
   }, [values]);
 
@@ -144,8 +144,6 @@ export const SignUpForm = () => {
         ></Row>
         <UsernameVerifier
           register={register}
-          isUsernameVerified={isUsernameVerified}
-          setIsUsernameVerified={setIsUsernameVerified}
           error={errors?.username?.message}
           setError={setError}
           isRequestLoading={isRequestLoading}

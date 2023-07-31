@@ -1,6 +1,7 @@
 import './UsernameVerifier.css';
 import {
   checkUsernameAvailability,
+  getIsUsernameVerified,
   getUsernameToRegister,
 } from '@/shared/redux/slices/user';
 import {useSelector, useDispatch} from 'react-redux';
@@ -11,27 +12,24 @@ import {useEffect} from 'react';
 
 export const UsernameVerifier = ({
   register,
-  isUsernameVerified,
   error,
   isRequestLoading,
   setError,
-  setIsUsernameVerified,
   value,
 }) => {
   const dispatch = useDispatch();
   const usernameToRegister = useSelector(getUsernameToRegister);
+  const isUsernameVerified = useSelector(getIsUsernameVerified);
 
   useEffect(() => {
-    if (usernameToRegister != null) {
-      if (usernameToRegister) setIsUsernameVerified(true);
-      else setError('username', {message: 'Username already taken'});
-    }
+    if (!isUsernameVerified)
+      setError('username', {message: 'user already registered'});
   }, [usernameToRegister]);
 
   const verifyUsernameAvailability = async () => {
     try {
       const username = value;
-      await dispatch(checkUsernameAvailability({username, type: 'username'}));
+      await dispatch(checkUsernameAvailability({username}));
     } catch (error) {
       setError('username', {message: error.message || error});
     }
@@ -109,7 +107,7 @@ export const UsernameVerifier = ({
           </Col>
         </Row>
         <FormFieldError error={error} />
-        {isUsernameVerified && (
+        {isUsernameVerified && usernameToRegister.length >= 3 && (
           <Stack className="text-success px-1" style={{fontSize: '0.8rem'}}>
             Username is available
           </Stack>

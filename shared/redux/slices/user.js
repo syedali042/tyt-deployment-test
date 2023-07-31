@@ -8,10 +8,11 @@ import {signOut} from 'firebase/auth';
 import {decodeJwtToken} from '@/shared/utils/jwtUtils';
 
 // ----------------------------------------------------------------------
-const initialState = {
+const defaultState = {
   isLoading: false,
   error: null,
-  usernameToRegister: null,
+  usernameToRegister: '',
+  isUsernameVerified: true,
   invitedUser: null,
   currentUser: null,
   token: null,
@@ -19,7 +20,7 @@ const initialState = {
 
 const slice = createSlice({
   name: 'user',
-  initialState,
+  initialState: defaultState,
   reducers: {
     startLoading(state) {
       state.isLoading = true;
@@ -43,14 +44,9 @@ const slice = createSlice({
     },
 
     removeCurrentUser(state) {
-      state.isLoading = false;
-      state.error = null;
-      state.usernameToRegister = null;
-      state.invitedUser = null;
-      state.currentUser = null;
-      state.token = null;
       localStorage.removeItem('user');
       localStorage.removeItem('token');
+      return defaultState;
     },
 
     setInvitedUser(state, action) {
@@ -59,6 +55,10 @@ const slice = createSlice({
 
     setUsernameToRegister(state, action) {
       state.usernameToRegister = action.payload;
+    },
+
+    setIsUsernameVerified(state, action) {
+      state.isUsernameVerified = action.payload;
     },
   },
 });
@@ -69,7 +69,7 @@ const actions = slice.actions;
 export const userActions = slice.actions;
 
 export const checkUsernameAvailability =
-  ({username, email, type}) =>
+  ({username}) =>
   async (dispatch) => {
     dispatch(actions.startLoading());
     try {
@@ -77,12 +77,16 @@ export const checkUsernameAvailability =
 
       const response = await axios.post('/users/check-availability', {
         value,
-        type,
+        type: 'username',
       });
 
-      if (response.data.statusCode === 200)
+      if (response.data.statusCode === 200) {
         dispatch(actions.setUsernameToRegister(username));
-      else throw 'Username Not Available';
+        dispatch(actions.setIsUsernameVerified(true));
+      } else {
+        dispatch(actions.setUsernameToRegister(''));
+        dispatch(actions.setIsUsernameVerified(false));
+      }
 
       dispatch(actions.stopLoading());
     } catch (error) {
@@ -228,3 +232,10 @@ export const setUserInStateFromLocalStorage = () => (dispatch) => {
 
 // Get username to register
 export const getUsernameToRegister = (state) => state.user.usernameToRegister;
+
+// Set Is Username Verified;
+export const setIsUsernameVerified = (isUsernameVerified) => (dispatch) =>
+  dispatch(actions.setIsUsernameVerified(isUsernameVerified));
+
+// Get Is Username Verified
+export const getIsUsernameVerified = (state) => state.user.isUsernameVerified;
