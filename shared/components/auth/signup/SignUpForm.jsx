@@ -126,7 +126,6 @@ export const SignUpForm = () => {
           userObj.verified = true;
           await dispatch(updateUser({userDataToUpdate: userObj}));
         }
-        router.push('/dashboard/home');
       })
       .catch((error) => {
         console.log(error);

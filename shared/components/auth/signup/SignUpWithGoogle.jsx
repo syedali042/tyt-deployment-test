@@ -58,7 +58,6 @@ export const SignUpWithGoogle = ({isUsernameVerified, setError, username}) => {
             userObj.verified = true;
             await dispatch(updateUser({userDataToUpdate: userObj}));
           }
-          router.push('/dashboard/home');
         } else {
           handleOpenModal();
         }
