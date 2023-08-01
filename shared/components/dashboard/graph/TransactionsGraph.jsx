@@ -23,6 +23,9 @@ import {
 } from '@/shared/utils/transaction';
 
 Chart.register(...registerables);
+Chart.defaults.color = '#BF4D4D';
+Chart.defaults.font.weight = 'bold';
+Chart.defaults.font.size = '14px';
 
 const TransactionsGraph = () => {
   const startDate = useSelector(getStartDate);
