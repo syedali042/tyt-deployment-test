@@ -276,10 +276,12 @@ export const getPaymentIdToBeUsed = (state) => state.tip.paymentIdToBeUsed;
 
 // Initialize Direct Tip
 export const initializeDirectTip =
-  ({usernameOrUserPaymentId}) =>
+  ({usernameOrUserPublicIdentifier}) =>
   async (dispatch) => {
     try {
-      const response = await axios.get(`/users/${usernameOrUserPaymentId}`);
+      const response = await axios.get(
+        `/users/${usernameOrUserPublicIdentifier}`
+      );
       const {body} = response.data;
       dispatch(actions.setCurrentTeacher({...body}));
       dispatch(actions.setTeacherUsernameOrEmail(body?.email));
