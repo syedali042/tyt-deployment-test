@@ -1,7 +1,6 @@
 'use client';
 // React
 import {useEffect} from 'react';
-import {useRouter, useParams} from 'next/navigation';
 // React Toast
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,8 +22,15 @@ import SelectAmountTab from '@/shared/components/tip/SelectAmountTab';
 import CheckoutTab from '@/shared/components/tip/CheckoutTab';
 import '../../tip/page.css';
 
-const DirectTip = () => {
-  const params = useParams();
+export async function getStaticProps({params}) {
+  return {
+    props: {
+      params,
+    },
+  };
+}
+
+const DirectTip = ({params}) => {
   const dispatch = useDispatch();
   const isPaymentRequestLoading = useSelector(getIsPaymentRequestLoading);
   const {usernameOrUserPaymentId} = params;
