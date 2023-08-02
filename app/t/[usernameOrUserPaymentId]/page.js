@@ -1,6 +1,7 @@
 'use client';
 // React
 import {useEffect} from 'react';
+import {useRouter, useParams} from 'next/navigation';
 // React Toast
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,9 +22,9 @@ import FindTeacherTab from '@/shared/components/tip/FindTeacherTab';
 import SelectAmountTab from '@/shared/components/tip/SelectAmountTab';
 import CheckoutTab from '@/shared/components/tip/CheckoutTab';
 import '../../tip/page.css';
-// Redux
 
-const DirectTip = ({params}) => {
+const DirectTip = () => {
+  const params = useParams();
   const dispatch = useDispatch();
   const isPaymentRequestLoading = useSelector(getIsPaymentRequestLoading);
   const {usernameOrUserPaymentId} = params;
