@@ -1,58 +1,63 @@
-export const graphOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  tooltips: {
-    enabled: false,
-  },
-  legend: {
-    display: false,
-    labels: {
-      usePointStyle: false,
-    },
-  },
-  scales: {
-    x: {
-      display: true,
-      grid: {
-        display: false,
-        drawBorder: false,
-        color: 'rgba(119, 119, 142, 0.08)',
-      },
-      ticks: {
-        fontColor: '#b0bac9',
-        autoSkip: true,
-      },
-      scaleLabel: {
-        display: false,
-        labelString: 'Month',
-        fontColor: 'transparent',
+export const graphOptions = ({themeMode}) => {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      colors: {
+        forceOverride: true,
       },
     },
-    y: {
-      ticks: {
-        min: 0,
-        max: 1050,
-        stepSize: 150,
-        fontColor: '#b0bac9',
+    tooltips: {
+      enabled: false,
+    },
+    legend: {
+      display: false,
+      labels: {
+        usePointStyle: false,
       },
-      display: true,
-      grid: {
+    },
+    scales: {
+      x: {
         display: true,
-        drawBorder: false,
-        zeroLineColor: 'rgba(142, 156, 173,0.1)',
-        color: 'rgba(142, 156, 173,0.1)',
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
+        ticks: {
+          fontColor: themeMode == 'light-mode' ? '#0C0D0E' : '#fff',
+          color: themeMode == 'light-mode' ? '#0C0D0E' : '#fff',
+          autoSkip: true,
+        },
+        scaleLabel: {
+          display: false,
+          labelString: 'Month',
+        },
       },
-      scaleLabel: {
-        display: false,
-        labelString: 'sales',
-        fontColor: 'transparent',
+      y: {
+        ticks: {
+          min: 0,
+          max: 1050,
+          stepSize: 150,
+          fontColor: themeMode == 'light-mode' ? '#0C0D0E' : '#fff',
+          color: themeMode == 'light-mode' ? '#0C0D0E' : '#fff',
+        },
+        display: true,
+        grid: {
+          display: true,
+          drawBorder: false,
+          zeroLineColor: 'rgba(142, 156, 173,0.1)',
+        },
+        scaleLabel: {
+          display: false,
+          labelString: 'sales',
+        },
       },
     },
-  },
-  title: {
-    display: false,
-    text: 'Normal Legend',
-  },
+    title: {
+      display: false,
+      text: 'Normal Legend',
+    },
+  };
 };
 
 export const labels = [

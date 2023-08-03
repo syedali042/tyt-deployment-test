@@ -89,7 +89,14 @@ const UserInfo = () => {
             className="d-flex flex-column flex-sm-row align-items-center"
             style={{height: '100%'}}
           >
-            <label className="p-5">
+            <label
+              className="p-5"
+              style={{
+                background: '#fffffc',
+                borderRadius: '50%',
+                marginRight: '10px',
+              }}
+            >
               <input
                 className="d-none"
                 onChange={(e) => handleLogo(e)}

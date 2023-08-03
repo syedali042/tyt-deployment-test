@@ -12,19 +12,11 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {getCurrentUser, signOutUser} from '@/shared/redux/slices/user';
 import {useRouter} from 'next/navigation';
+import {setThemeMode} from '@/shared/redux/slices/theme';
 
 //leftsidemenu
 const SideMenuIcon = () => {
   document.querySelector('.app').classList.toggle('sidenav-toggled');
-};
-
-// Darkmode
-const DarkMode = () => {
-  if (document.querySelector('.app').classList.contains('dark-mode')) {
-    document.querySelector('.app').classList.remove('dark-mode');
-  } else {
-    document.querySelector('.app').classList.add('dark-mode');
-  }
 };
 
 // FullScreen
@@ -57,6 +49,17 @@ const Header = ({localVaraiable}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
+
+  // Darkmode
+  const DarkMode = () => {
+    if (document.querySelector('.app').classList.contains('dark-mode')) {
+      document.querySelector('.app').classList.remove('dark-mode');
+      dispatch(setThemeMode({mode: 'light-mode'}));
+    } else {
+      document.querySelector('.app').classList.add('dark-mode');
+      dispatch(setThemeMode({mode: 'dark-mode'}));
+    }
+  };
 
   return (
     <div>
