@@ -22,7 +22,7 @@ const TransactionsTableRow = ({index, item}) => {
       </td>
       <td
         style={{maxWidth: '150px !important'}}
-        className="view-message clickable-row text-end"
+        className="view-message text-dark clickable-row text-end"
       >
         {new Date(item.date).toLocaleDateString('en-US', {
           year: 'numeric',

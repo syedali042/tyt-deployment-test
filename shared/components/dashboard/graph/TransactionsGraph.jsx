@@ -1,4 +1,6 @@
 'use client';
+// React
+import {useEffect} from 'react';
 // React Bootstrap
 import {Card, Col, Row} from 'react-bootstrap';
 // React Chart
@@ -15,16 +17,19 @@ import {
 // Components
 import TransactionsGraphActions from './TransactionsGraphActions';
 // Chart Settings
-import {graphOptions as options} from './graphOptions';
+// import {graphOptions as options} from './graphOptions';
 // Utils
 import {
   generateMonthYearLabelsArray,
   sumAmountsByMonth,
 } from '@/shared/utils/transaction';
+import {getThemeMode} from '@/shared/redux/slices/theme';
+import {graphOptions} from './graphOptions';
 
 Chart.register(...registerables);
 
 const TransactionsGraph = () => {
+  const themeMode = useSelector(getThemeMode);
   const startDate = useSelector(getStartDate);
   const endDate = useSelector(getEndDate);
   const labels = generateMonthYearLabelsArray({startDate, endDate});
@@ -40,7 +45,7 @@ const TransactionsGraph = () => {
     datasets: [
       {
         fill: true,
-        label: 'Transactions',
+        label: '',
         data: transactionsSumByMonth,
         borderColor: '#6c5ffc',
         backgroundColor: 'rgba(108, 95, 252, 0.6)',
@@ -50,6 +55,8 @@ const TransactionsGraph = () => {
       },
     ],
   };
+
+  const options = graphOptions({themeMode});
 
   return (
     <Row>
