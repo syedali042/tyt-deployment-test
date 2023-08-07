@@ -1,15 +1,23 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {TRANSACTION_TYPES} from '@/shared/constants';
+import axios from '../axios';
 // Dummy Data
 import {TRANSACTIONS} from '@/shared/components/dashboard/table/data';
+import {tokenVariable} from '@/shared/config';
 
 const initialState = {
   isLoading: false,
   error: null,
-  list: TRANSACTIONS,
+  list: [],
   activeType: TRANSACTION_TYPES.all.value,
-  startDate: '2022-06-14',
-  endDate: '2023-07-12',
+  startDate: null,
+  endDate: null,
+  summary: {
+    totalTippers: null,
+    totalTipsAmount: null,
+    totalNumberOfTips: null,
+    averageTipAmount: null,
+  },
 };
 
 const slice = createSlice({
@@ -31,6 +39,80 @@ const slice = createSlice({
     // Set Active Type
     setActiveType(state, action) {
       state.activeType = action.payload;
+    },
+    // Set Start Date
+    setStartDate(state, action) {
+      state.startDate = action.payload;
+    },
+    // Set End Date
+    setEndDate(state, action) {
+      state.endDate = action.payload;
+    },
+    // Set Transactions List
+    setTransactionsList(state, action) {
+      const transactions = action.payload;
+      const transactionsSortedByDate = transactions.sort(
+        (a, b) => new Date(a.date) - new Date(b.date)
+      );
+
+      state.list = transactionsSortedByDate;
+
+      const transactionEndDate = new Date(
+        transactionsSortedByDate[transactionsSortedByDate.length - 1].date
+      );
+
+      const transactionStartDate = new Date(transactionEndDate);
+      transactionStartDate.setFullYear(transactionEndDate.getFullYear() - 1);
+      transactionStartDate.setDate(1);
+      transactionStartDate.setMonth(transactionEndDate.getMonth() + 1);
+      state.endDate = transactionEndDate;
+      state.startDate = transactionStartDate;
+    },
+    prepareDashboardSummary(state, action) {
+      const transactions = state.list;
+
+      let totalTippers = 0;
+
+      let totalNumberOfTips = 0;
+
+      let averageTipAmount = 0;
+
+      let totalTipsAmount = 0;
+
+      let uniqueTippers = [];
+
+      for (let i = 0; i < transactions.length; i++) {
+        const transaction = transactions[i];
+
+        if (transaction.type == 'tip') {
+          if (
+            transaction.tipperEmail &&
+            !uniqueTippers.includes(transaction.tipperEmail)
+          ) {
+            uniqueTippers.push(transaction.tipperEmail);
+          }
+          totalTipsAmount += transaction.amount;
+          totalNumberOfTips++;
+        }
+      }
+
+      averageTipAmount = totalTipsAmount / totalNumberOfTips;
+
+      // For touqeer: Tipper email is required to calculate the tippers
+      // totalTippers = uniqueTippers.length;
+
+      state.summary = {
+        totalTippers: parseInt(totalTippers),
+        totalNumberOfTips: parseInt(totalNumberOfTips),
+        totalTipsAmount: parseInt(totalTipsAmount),
+        averageTipAmount: parseInt(averageTipAmount),
+      };
+    },
+    resetTransactionsState(state, action) {
+      state.list = [];
+      state.startDate = null;
+      state.endDate = null;
+      state.summary = {};
     },
   },
 });
@@ -78,3 +160,103 @@ export const getStartDate = (state) => state.transaction.startDate;
 
 // Get End Date
 export const getEndDate = (state) => state.transaction.endDate;
+
+// Set Start Date
+export const setStartDate =
+  ({date}) =>
+  (dispatch) =>
+    dispatch(actions.setStartDate(date));
+
+// Set End Date
+export const setEndDate =
+  ({date}) =>
+  (dispatch) =>
+    dispatch(actions.setEndDate(date));
+
+// Prepare Dashboard
+export const prepareDashboard = () => async (dispatch, getState) => {
+  try {
+    const state = getState();
+    const {currentUser, list} = state.user;
+    if (currentUser?.role == 'user') await dispatch(fetchTransactions({}));
+    else
+      await dispatch(
+        fetchTransactions({userPaymentIdFromAdmin: list[0]?.userPaymentId})
+      );
+  } catch (error) {
+    dispatch(actions.stopLoading());
+    dispatch(actions.setError(error));
+  }
+};
+
+// Prepare User Transactions
+export const fetchTransactions =
+  ({userPaymentIdFromAdmin}) =>
+  async (dispatch, getState) => {
+    dispatch(actions.startLoading());
+    dispatch(actions.resetTransactionsState());
+    try {
+      const state = getState();
+
+      const {
+        currentUser: {userPaymentId},
+        token,
+      } = state.user;
+
+      // For Initial Request
+      let startingAfter = null;
+      // For Last Request Check
+      let nextKey;
+
+      let oldTransactionsList = state.transaction.list;
+      while (nextKey !== null) {
+        const response = await axios.get(
+          `/transactions/${
+            userPaymentIdFromAdmin || userPaymentId
+          }/${startingAfter}`,
+          {
+            headers: {
+              [tokenVariable]: token,
+            },
+          }
+        );
+        const {nextKey: nextRecordKey, list} = response.data.body;
+        nextKey = nextRecordKey;
+        startingAfter = nextRecordKey;
+        dispatch(
+          actions.setTransactionsList([...oldTransactionsList, ...list])
+        );
+      }
+
+      // Prepare summary when after last request
+      if (nextKey === null) dispatch(actions.prepareDashboardSummary());
+      dispatch(actions.stopLoading());
+    } catch (error) {
+      dispatch(actions.stopLoading());
+      dispatch(actions.setError(error));
+    }
+  };
+
+// Get Transactions Summary
+export const getTransactionsSummary = (state) => state.transaction.summary;
+
+// Create Refund
+// Not Completed Backend was throwing error
+export const createRefund =
+  ({transactionId}) =>
+  async (dispatch, getState) => {
+    try {
+      const state = getState();
+      const list = state.transaction.list;
+      const {
+        currentUser: {userPaymentId},
+      } = state.user;
+      const response = await axios.post('/payments/refund', {
+        transactionId,
+        userPaymentId,
+      });
+    } catch (error) {
+      dispatch(actions.stopLoading());
+      dispatch(actions.hasError(error));
+    }
+  };

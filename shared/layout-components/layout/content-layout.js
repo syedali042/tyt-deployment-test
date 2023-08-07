@@ -9,9 +9,11 @@ import SSRProvider from 'react-bootstrap/SSRProvider';
 import {usePathname, useRouter} from 'next/navigation';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  fetchUsers,
   getCurrentUser,
   setUserInStateFromLocalStorage,
 } from '@/shared/redux/slices/user';
+import {prepareDashboard} from '@/shared/redux/slices/transaction';
 
 const Contentlayout = ({children}) => {
   const pathname = usePathname();
@@ -67,6 +69,15 @@ const Contentlayout = ({children}) => {
       document.querySelector('.card.search-result').classList.add('d-none');
     }
   };
+
+  useEffect(() => {
+    const initializeDashboardPreparation = async () => {
+      if (currentUser?.role == 'admin') await dispatch(fetchUsers());
+      await dispatch(prepareDashboard());
+    };
+    if (currentUser?.userInternalId) initializeDashboardPreparation();
+  }, [currentUser]);
+
   return (
     <>
       {/* <Script src="//code.tidio.co/ejjaylsnuydywf5a0sqc1gvcus5orpml.js" /> */}

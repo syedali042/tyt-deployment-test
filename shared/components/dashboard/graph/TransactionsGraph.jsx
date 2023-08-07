@@ -37,7 +37,8 @@ const TransactionsGraph = () => {
     getTransactions({filterByStartDate: true, filterByEndDate: true})
   );
   const transactionsSumByMonth = sumAmountsByMonth(
-    transactions?.length > 0 ? transactions : []
+    transactions?.length > 0 ? transactions : [],
+    startDate
   );
 
   const data = {

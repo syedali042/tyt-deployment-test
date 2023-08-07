@@ -16,6 +16,7 @@ const defaultState = {
   invitedUser: null,
   currentUser: null,
   token: null,
+  list: [],
 };
 
 const slice = createSlice({
@@ -59,6 +60,9 @@ const slice = createSlice({
 
     setIsUsernameVerified(state, action) {
       state.isUsernameVerified = action.payload;
+    },
+    setUsersList(state, action) {
+      state.list = action.payload;
     },
   },
 });
@@ -158,12 +162,14 @@ export const signOutUser = () => async (dispatch) => {
   }
 };
 
-export const getVerificationURL = () => async (dispatch) => {
+export const getVerificationURL = () => async (dispatch, getState) => {
   dispatch(actions.startLoading());
   try {
+    const state = getState();
+    const token = state.user.token;
     const response = await axios.get(`/users/get-verification-url`, {
       headers: {
-        [tokenVariable]: JSON.parse(localStorage.getItem([tokenVariable])),
+        [tokenVariable]: token,
       },
     });
     const url = response.data.body.url;
@@ -251,3 +257,24 @@ export const getIsUsernameVerified = (state) => state.user.isUsernameVerified;
 
 // Get User Error
 export const getErrors = (state) => state.user.error;
+
+// Fetch All Users For Admin
+export const fetchUsers = () => async (dispatch, getState) => {
+  try {
+    const state = getState();
+    const {token} = state.user;
+    const response = await axios.get('/users', {
+      headers: {
+        [tokenVariable]: token,
+      },
+    });
+    dispatch(actions.setUsersList(response.data.body));
+    dispatch(actions.stopLoading());
+  } catch (error) {
+    dispatch(actions.stopLoading());
+    dispatch(actions.hasError(error));
+  }
+};
+
+// Get Users List
+export const getUsersList = (state) => state.user.list;

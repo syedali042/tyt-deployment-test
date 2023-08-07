@@ -68,7 +68,7 @@ export const DASHBOARD_WIDGETS = {
     label: 'Total Tips Amount',
     chart: <TotalTipsAmountApexChart />,
   },
-  totalTips: {
+  totalNumberOfTips: {
     label: 'Total Tips',
     chart: <TotalTipsApexChart />,
   },
@@ -97,11 +97,11 @@ export const TRANSACTION_TYPES = {
     value: 'tip',
     icon: <i className="text-info fa-solid fa-circle-dollar-to-slot"></i>,
   },
-  //   tax: {
-  //     label: 'Tax',
-  //     value: 'tax',
-  //     icon: 'fa fa-calendar',
-  //   },
+  tax: {
+    label: 'Tax',
+    value: 'tax',
+    icon: <i className="text-info fa fa-calendar"></i>,
+  },
   fee: {
     label: 'Fee',
     value: 'fee',
@@ -111,6 +111,11 @@ export const TRANSACTION_TYPES = {
     label: 'Disbursement',
     value: 'disbursement',
     icon: <i className="text-info fa fa-repeat"></i>,
+  },
+  refund: {
+    label: 'Refund',
+    value: 'refund',
+    icon: <i className="text-info fa fa-backward"></i>,
   },
 };
 
@@ -125,9 +130,9 @@ export const TRANSACTION_STATUS = {
     value: 'cancelled',
     color: 'danger',
   },
-  succeeded: {
-    label: 'Succeeded',
-    value: 'succeeded',
+  cleared: {
+    label: 'Cleared',
+    value: 'cleared',
     color: 'success',
   },
 };
