@@ -93,27 +93,27 @@ export const TRANSACTION_TYPES = {
     notSpecificType: true,
   },
   tip: {
-    label: 'Tip',
+    label: 'Tips',
     value: 'tip',
     icon: <i className="text-info fa-solid fa-circle-dollar-to-slot"></i>,
   },
-  tax: {
-    label: 'Tax',
-    value: 'tax',
-    icon: <i className="text-info fa fa-calendar"></i>,
-  },
+  // tax: {
+  //   label: 'Taxes',
+  //   value: 'tax',
+  //   icon: <i className="text-info fa fa-calendar"></i>,
+  // },
   fee: {
-    label: 'Fee',
+    label: 'Fees',
     value: 'fee',
     icon: <i className="text-info fa-solid fa-receipt"></i>,
   },
   disbursement: {
-    label: 'Disbursement',
+    label: 'Disbursements',
     value: 'disbursement',
     icon: <i className="text-info fa fa-repeat"></i>,
   },
   refund: {
-    label: 'Refund',
+    label: 'Refunds',
     value: 'refund',
     icon: <i className="text-info fa fa-backward"></i>,
   },
