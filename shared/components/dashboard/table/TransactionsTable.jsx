@@ -15,9 +15,18 @@ import TransactionsTableRow from './TransactionsTableRow';
 export const TransactionsTable = () => {
   const transactions = useSelector(getTransactions({filterByActiveType: true}));
 
+  const [sortedTransactions, setSortedTransactions] = useState([]);
+
+  useEffect(() => {
+    let filteredTransactions = [...transactions];
+    setSortedTransactions(
+      filteredTransactions.sort((a, b) => new Date(b.date) - new Date(a.date))
+    );
+  }, [transactions]);
+
   const itemsPerPage = 10;
 
-  const pageCount = Math.ceil(transactions?.length / itemsPerPage);
+  const pageCount = Math.ceil(sortedTransactions?.length / itemsPerPage);
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -29,7 +38,7 @@ export const TransactionsTable = () => {
 
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = transactions?.slice(startIndex, endIndex);
+  const currentData = sortedTransactions?.slice(startIndex, endIndex);
 
   return (
     <Row>
@@ -41,7 +50,7 @@ export const TransactionsTable = () => {
               <div className="table-responsive">
                 <Table className="table-inbox table-hover text-nowrap mb-0">
                   <tbody>
-                    {transactions?.length > 0 ? (
+                    {sortedTransactions?.length > 0 ? (
                       currentData.map((item, index) => (
                         <TransactionsTableRow
                           item={item}
