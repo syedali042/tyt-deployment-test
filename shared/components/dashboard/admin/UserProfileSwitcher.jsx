@@ -23,7 +23,7 @@ const UserProfileSwitcher = () => {
                 fetchTransactions({userPaymentIdFromAdmin: userPaymentId})
               );
             }}
-            defaultValue={allUsers.find((item, index) => index === 0)}
+            defaultValue={allUsers[0]}
             renderInput={(params) => (
               <div ref={params.InputProps.ref}>
                 <Form.Label {...params.InputLabelProps}>

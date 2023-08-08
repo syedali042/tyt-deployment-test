@@ -31,16 +31,6 @@ const TransactionsTableRow = ({index, item}) => {
         {item.notes || 'No Notes Available'}
       </td>
       <td
-        style={{maxWidth: '150px !important'}}
-        className="view-message text-dark clickable-row text-end"
-      >
-        {new Date(item.date).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })}
-      </td>
-      <td
         style={{display: currentUser?.role == 'admin' ? 'none' : 'block'}}
         className="view-message text-dark clickable-row text-end"
       >
@@ -54,6 +44,16 @@ const TransactionsTableRow = ({index, item}) => {
             Refund
           </button>
         )}
+      </td>
+      <td
+        style={{maxWidth: '150px !important'}}
+        className="view-message text-dark clickable-row text-end"
+      >
+        {new Date(item.date).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
       </td>
     </tr>
   );

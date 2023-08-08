@@ -1,8 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {TRANSACTION_TYPES} from '@/shared/constants';
 import axios from '../axios';
-// Dummy Data
-import {TRANSACTIONS} from '@/shared/components/dashboard/table/data';
 import {tokenVariable} from '@/shared/config';
 
 const initialState = {
