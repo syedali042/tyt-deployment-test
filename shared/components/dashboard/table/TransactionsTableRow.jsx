@@ -36,6 +36,7 @@ const TransactionsTableRow = ({index, item}) => {
       >
         {item.isRefundable && (
           <button
+            style={{padding: '0rem 0.51rem'}}
             className="btn btn-primary btn-sm"
             onClick={async () => {
               await dispatch(createRefund({transactionId: item.objId}));
