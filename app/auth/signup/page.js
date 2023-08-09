@@ -2,12 +2,12 @@
 // React
 import {useEffect} from 'react';
 // Next
-import {useSearchParams} from 'next/navigation';
+import {useRouter, useSearchParams} from 'next/navigation';
 // Redux
-import {useDispatch} from 'react-redux';
-import {setInvitedUser} from '@/shared/redux/slices/user';
+import {useDispatch, useSelector} from 'react-redux';
+import {getErrors, setInvitedUser} from '@/shared/redux/slices/user';
 // React Bootstrap
-import {Stack, Row, Col, Image} from 'react-bootstrap';
+import {Stack, Row, Col, Image, Alert} from 'react-bootstrap';
 // Layout
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
 // Components
@@ -17,11 +17,19 @@ export default function SignUp() {
   const params = useSearchParams();
   const token = params.get('token');
   const dispatch = useDispatch();
+  const router = useRouter();
+  const errors = useSelector(getErrors);
   useEffect(() => {
     const callSetInvitedUser = async () =>
       await dispatch(setInvitedUser({token}));
     if (token) callSetInvitedUser();
   }, []);
+
+  useEffect(() => {
+    if (errors?.code == 403) {
+      router.push('/auth/login');
+    }
+  }, [errors]);
   return (
     <>
       <Authenticationlayout>
@@ -39,6 +47,18 @@ export default function SignUp() {
                     style={{width: '50%'}}
                   />
                 </Col>
+                {errors?.code === 403 && (
+                  <center>
+                    <Alert
+                      className="mt-2"
+                      variant={'danger'}
+                      style={{color: '#fff', textAlign: 'center'}}
+                    >
+                      You are already verified user, redirecting to login please
+                      wait....
+                    </Alert>
+                  </center>
+                )}
                 <SignUpForm />
               </Row>
             </Stack>

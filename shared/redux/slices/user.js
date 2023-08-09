@@ -186,11 +186,19 @@ export const isLoading = (state) => state.user.isLoading;
 // Set Invited User
 export const setInvitedUser =
   ({token}) =>
-  (dispatch) => {
+  async (dispatch) => {
     dispatch(actions.startLoading());
     try {
       const invitedUser = decodeJwtToken({token});
-      dispatch(actions.setInvitedUser(invitedUser));
+      const response = await axios.get(
+        `/users/get-user-info?email=${invitedUser?.email}`
+      );
+      const {verified} = response.data.body;
+      if (!verified) dispatch(actions.setInvitedUser(invitedUser));
+      else
+        dispatch(
+          actions.hasError({code: 403, message: 'User Already Verified'})
+        );
       dispatch(actions.stopLoading());
     } catch (error) {
       dispatch(actions.stopLoading());
@@ -239,3 +247,6 @@ export const setIsUsernameVerified = (isUsernameVerified) => (dispatch) =>
 
 // Get Is Username Verified
 export const getIsUsernameVerified = (state) => state.user.isUsernameVerified;
+
+// Get User Error
+export const getErrors = (state) => state.user.error;
