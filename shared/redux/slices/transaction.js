@@ -69,6 +69,8 @@ const slice = createSlice({
     prepareDashboardSummary(state, action) {
       const transactions = state.list;
 
+      let uniqueTippers = [];
+
       let totalTippers = 0;
 
       let totalNumberOfTips = 0;
@@ -77,27 +79,27 @@ const slice = createSlice({
 
       let totalTipsAmount = 0;
 
-      let uniqueTippers = [];
+      let totalRefundAmount = 0;
 
       for (let i = 0; i < transactions.length; i++) {
         const transaction = transactions[i];
+        const {type, tipperId, amount} = transaction;
 
-        if (transaction.type == 'tip') {
-          if (
-            transaction.tipperEmail &&
-            !uniqueTippers.includes(transaction.tipperEmail)
-          ) {
-            uniqueTippers.push(transaction.tipperEmail);
+        if (type == 'tip') {
+          if (tipperId && !uniqueTippers.includes(tipperId)) {
+            uniqueTippers.push(tipperId);
           }
-          totalTipsAmount += transaction.amount;
+          totalTipsAmount += amount;
           totalNumberOfTips++;
         }
+
+        if (type == 'refund') totalRefundAmount += amount;
       }
 
-      averageTipAmount = totalTipsAmount / totalNumberOfTips;
+      totalTippers = uniqueTippers.length;
+      totalTipsAmount = totalTipsAmount + totalRefundAmount;
 
-      // For touqeer: Tipper email is required to calculate the tippers
-      // totalTippers = uniqueTippers.length;
+      averageTipAmount = totalTipsAmount / totalNumberOfTips;
 
       state.summary = {
         totalTippers: parseInt(totalTippers),
@@ -239,13 +241,14 @@ export const fetchTransactions =
 export const getTransactionsSummary = (state) => state.transaction.summary;
 
 // Create Refund
-// Not Completed Backend was throwing error
 export const createRefund =
   ({transactionId}) =>
   async (dispatch, getState) => {
     try {
       const state = getState();
-      const list = state.transaction.list;
+      const transactionsState = state.transaction;
+      const {list} = transactionsState;
+      let transactionsList = list.map((transations) => transations);
       const {
         currentUser: {userPaymentId},
       } = state.user;
@@ -253,8 +256,18 @@ export const createRefund =
         transactionId,
         userPaymentId,
       });
+      const {transaction} = response.data.body;
+      const tip = transactions[0];
+      const refund = transactions[1];
+      const foundIndex = transactionsList.findIndex(
+        ({objId, tipperId}) => tipperId && objId == tip.objId
+      );
+      transactionsList[foundIndex] = tip;
+      transactionsList.push(refund);
+      dispatch(actions.setTransactionsList(transactionsList));
+      dispatch(actions.prepareDashboardSummary());
     } catch (error) {
       dispatch(actions.stopLoading());
-      dispatch(actions.hasError(error));
+      dispatch(actions.setError(error));
     }
   };
