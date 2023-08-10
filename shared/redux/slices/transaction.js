@@ -256,7 +256,7 @@ export const createRefund =
         transactionId,
         userPaymentId,
       });
-      const {transaction} = response.data.body;
+      const {transactions} = response.data.body;
       const tip = transactions[0];
       const refund = transactions[1];
       const foundIndex = transactionsList.findIndex(
