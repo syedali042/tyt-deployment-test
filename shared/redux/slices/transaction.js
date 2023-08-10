@@ -93,7 +93,10 @@ const slice = createSlice({
           totalNumberOfTips++;
         }
 
-        if (type == 'refund') totalRefundAmount += amount;
+        if (type == 'refund') {
+          totalRefundAmount += amount;
+          totalNumberOfTips -= 1;
+        }
       }
 
       totalTippers = uniqueTippers.length;

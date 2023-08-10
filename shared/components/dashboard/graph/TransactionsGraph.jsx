@@ -33,8 +33,11 @@ const TransactionsGraph = () => {
   const startDate = useSelector(getStartDate);
   const endDate = useSelector(getEndDate);
   const labels = generateMonthYearLabelsArray({startDate, endDate});
-  const transactions = useSelector(
+  let transactions = useSelector(
     getTransactions({filterByStartDate: true, filterByEndDate: true})
+  );
+  transactions = transactions.filter(
+    ({type}) => type == 'refund' || type == 'tip'
   );
   const transactionsSumByMonth = sumAmountsByMonth(
     transactions?.length > 0 ? transactions : [],
