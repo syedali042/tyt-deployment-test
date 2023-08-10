@@ -85,6 +85,7 @@ export const SignUpForm = () => {
     handleSubmit,
     watch,
     setError,
+    setValue,
     formState: {errors, isSubmitting, isSubmitSuccessful},
   } = methods;
 
@@ -103,6 +104,10 @@ export const SignUpForm = () => {
       setError('username', null);
     }
   }, [isUsernameVerified]);
+
+  useEffect(() => {
+    if (invitedUser) setValue('email', invitedUser?.email);
+  }, [invitedUser]);
 
   const onSubmit = async (data) => {
     const {username, email, password} = data;

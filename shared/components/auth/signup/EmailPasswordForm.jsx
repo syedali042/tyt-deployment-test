@@ -1,5 +1,5 @@
 // React
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 // React Bootstrap
 import {Stack, Row, Button, Alert} from 'react-bootstrap';
 // Mui
@@ -19,6 +19,9 @@ export const EmailPasswordForm = ({
 }) => {
   const invitedUser = useSelector(getInvitedUser);
   const [isEmailDisabled, setIsEmailDisabled] = useState(invitedUser);
+  useEffect(() => {
+    if (invitedUser) setIsEmailDisabled(true);
+  }, [invitedUser]);
 
   return (
     <Stack>
