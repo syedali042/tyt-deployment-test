@@ -1,3 +1,5 @@
+import {TRANSACTION_TYPES} from '../constants';
+
 export const generateMonthYearLabelsArray = ({startDate, endDate}) => {
   if (!endDate) {
     let start = new Date(startDate);
@@ -35,8 +37,16 @@ export const sumAmountsByMonth = (array, startDate) => {
   const startMonth = new Date(startDate).getMonth();
 
   array.forEach(function (obj) {
+    const {type} = obj;
     const month = new Date(obj.date).getMonth();
-    resultArray[(month - startMonth + 12) % 12] += obj.amount;
+    if (
+      type == TRANSACTION_TYPES.disbursement.value ||
+      type == TRANSACTION_TYPES.refund.value
+    ) {
+      resultArray[(month - startMonth + 12) % 12] += -obj.amount;
+    } else {
+      resultArray[(month - startMonth + 12) % 12] += obj.amount;
+    }
   });
 
   return resultArray;
