@@ -10,26 +10,24 @@ const TransactionsTableRow = ({index, item}) => {
     <tr key={index}>
       <td
         className="inbox-small-cells"
-        title={TRANSACTION_STATUS[item.status].label}
+        title={TRANSACTION_STATUS[item?.status].label}
       >
         <i
           className={`fa fa-circle text-${
-            TRANSACTION_STATUS[item.status].color
+            TRANSACTION_STATUS[item?.status].color
           }`}
         ></i>
       </td>
       <td
-        className="inbox-small-cells"
-        title={TRANSACTION_TYPES[item.type.toLowerCase()].label}
+        className="inbox-small-cells text-center"
+        title={TRANSACTION_TYPES[item?.type.toLowerCase()].label}
       >
-        {TRANSACTION_TYPES[item.type.toLowerCase()].icon}
+        {TRANSACTION_TYPES[item?.type.toLowerCase()].icon}
       </td>
       <td className="view-message dont-show text-dark fw-semibold clickable-row">
-        ${item.amount}
+        ${item?.amount}
       </td>
-      <td className="view-message  text-dark clickable-row">
-        {item.notes || 'No Notes Available'}
-      </td>
+      <td className="view-message  text-dark clickable-row">{item?.notes}</td>
       <td
         style={{display: currentUser?.role == 'admin' ? 'none' : 'block'}}
         className="view-message text-dark clickable-row text-end"

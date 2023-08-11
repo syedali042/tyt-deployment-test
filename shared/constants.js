@@ -95,7 +95,7 @@ export const TRANSACTION_TYPES = {
   tip: {
     label: 'Tips',
     value: 'tip',
-    icon: <i className="text-info fa-solid fa-circle-dollar-to-slot"></i>,
+    icon: <badge className="badge bg-success text-white">Tip</badge>,
   },
   // tax: {
   //   label: 'Taxes',
@@ -105,17 +105,17 @@ export const TRANSACTION_TYPES = {
   fee: {
     label: 'Fees',
     value: 'fee',
-    icon: <i className="text-info fa-solid fa-receipt"></i>,
+    icon: <badge className="badge bg-warning text-white">Fee</badge>,
   },
   disbursement: {
     label: 'Disbursements',
     value: 'disbursement',
-    icon: <i className="text-info fa fa-repeat"></i>,
+    icon: <badge className="badge bg-secondary text-white">Tip</badge>,
   },
   refund: {
     label: 'Refunds',
     value: 'refund',
-    icon: <i className="text-info fa fa-backward"></i>,
+    icon: <badge className="badge bg-danger text-white">Refund</badge>,
   },
 };
 
