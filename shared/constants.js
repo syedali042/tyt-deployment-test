@@ -110,7 +110,7 @@ export const TRANSACTION_TYPES = {
     label: 'Fees',
     value: 'fee',
     icon: (
-      <badge style={{width: '70px'}} className="badge bg-warning text-white">
+      <badge style={{width: '70px'}} className="badge bg-info text-white">
         Fee
       </badge>
     ),
