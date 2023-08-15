@@ -13,7 +13,13 @@ import {
   getCurrentUser,
   setUserInStateFromLocalStorage,
 } from '@/shared/redux/slices/user';
-import {prepareDashboard} from '@/shared/redux/slices/transaction';
+import {
+  calculateTransactionsDatesForGraph,
+  getIsTransactionsRequestLoading,
+  getTransactions,
+  initializeTransactions,
+  prepareTransactionsSummary,
+} from '@/shared/redux/slices/transaction';
 
 const Contentlayout = ({children}) => {
   const pathname = usePathname();
@@ -21,6 +27,10 @@ const Contentlayout = ({children}) => {
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
   const isDashboardPage = pathname.includes('/dashboard');
+  const transactionsList = useSelector(getTransactions({}));
+  const isTransactionsRequestLoading = useSelector(
+    getIsTransactionsRequestLoading
+  );
 
   useEffect(() => {
     const setUserInState = async () => {
@@ -73,10 +83,17 @@ const Contentlayout = ({children}) => {
   useEffect(() => {
     const initializeDashboardPreparation = async () => {
       if (currentUser?.role == 'admin') await dispatch(fetchUsers());
-      await dispatch(prepareDashboard());
+      await dispatch(initializeTransactions());
     };
     if (currentUser?.userInternalId) initializeDashboardPreparation();
   }, [currentUser]);
+
+  useEffect(() => {
+    if (transactionsList.length > 0 && !isTransactionsRequestLoading) {
+      dispatch(prepareTransactionsSummary());
+      dispatch(calculateTransactionsDatesForGraph());
+    }
+  }, [transactionsList, isTransactionsRequestLoading]);
 
   return (
     <>

@@ -54,11 +54,10 @@ const slice = createSlice({
       );
 
       state.list = transactionsSortedByDate;
-
-      const transactionEndDate = new Date(
-        transactionsSortedByDate[transactionsSortedByDate.length - 1].date
-      );
-
+    },
+    calculateTransactionsDatesForGraph(state, action) {
+      const list = state.list;
+      const transactionEndDate = new Date(list[list.length - 1].date);
       const transactionStartDate = new Date(transactionEndDate);
       transactionStartDate.setFullYear(transactionEndDate.getFullYear() - 1);
       transactionStartDate.setDate(1);
@@ -66,7 +65,7 @@ const slice = createSlice({
       state.endDate = transactionEndDate;
       state.startDate = transactionStartDate;
     },
-    prepareDashboardSummary(state, action) {
+    prepareTransactionsSummary(state, action) {
       const transactions = state.list;
 
       let uniqueTippers = [];
@@ -116,6 +115,28 @@ const slice = createSlice({
       state.startDate = null;
       state.endDate = null;
       state.summary = {};
+    },
+    updateTransactionsList(state, action) {
+      const list = state.list;
+
+      const {transactions} = action.payload;
+
+      const tip = transactions.find(
+        ({type}) => type == TRANSACTION_TYPES.tip.value
+      );
+
+      const refund = transactions.find(
+        ({type}) => type == TRANSACTION_TYPES.refund.value
+      );
+
+      const foundIndex = list.findIndex(
+        ({objId, tipperId}) => tipperId && objId == tip.objId
+      );
+
+      list[foundIndex] = tip;
+      list.push(refund);
+
+      state.list = list;
     },
   },
 });
@@ -177,7 +198,7 @@ export const setEndDate =
     dispatch(actions.setEndDate(date));
 
 // Prepare Dashboard
-export const prepareDashboard = () => async (dispatch, getState) => {
+export const initializeTransactions = () => async (dispatch, getState) => {
   try {
     const state = getState();
     const {currentUser, list} = state.user;
@@ -197,6 +218,7 @@ export const fetchTransactions =
   ({userPaymentIdFromAdmin}) =>
   async (dispatch, getState) => {
     dispatch(actions.startLoading());
+    // Reseting the state for admin when he switch the preview user
     dispatch(actions.resetTransactionsState());
     try {
       const state = getState();
@@ -208,9 +230,7 @@ export const fetchTransactions =
 
       // For Initial Request
       let startingAfter = null;
-      // For Last Request Check
       let nextKey;
-
       let oldTransactionsList = state.transaction.list;
       while (nextKey !== null) {
         const response = await axios.get(
@@ -230,9 +250,6 @@ export const fetchTransactions =
           actions.setTransactionsList([...oldTransactionsList, ...list])
         );
       }
-
-      // Prepare summary when after last request
-      if (nextKey === null) dispatch(actions.prepareDashboardSummary());
       dispatch(actions.stopLoading());
     } catch (error) {
       dispatch(actions.stopLoading());
@@ -248,6 +265,7 @@ export const createRefund =
   ({transactionId}) =>
   async (dispatch, getState) => {
     try {
+      dispatch(actions.startLoading());
       const state = getState();
       const transactionsState = state.transaction;
       const {list} = transactionsState;
@@ -259,18 +277,19 @@ export const createRefund =
         transactionId,
         userPaymentId,
       });
-      const {transactions} = response.data.body;
-      const tip = transactions[0];
-      const refund = transactions[1];
-      const foundIndex = transactionsList.findIndex(
-        ({objId, tipperId}) => tipperId && objId == tip.objId
-      );
-      transactionsList[foundIndex] = tip;
-      transactionsList.push(refund);
-      dispatch(actions.setTransactionsList(transactionsList));
-      dispatch(actions.prepareDashboardSummary());
+      dispatch(actions.updateTransactionsList(response.data.body));
+      dispatch(actions.stopLoading());
     } catch (error) {
       dispatch(actions.stopLoading());
       dispatch(actions.setError(error));
     }
   };
+
+export const getIsTransactionsRequestLoading = (state) =>
+  state.transaction.isLoading;
+
+export const prepareTransactionsSummary = () => (dispatch) =>
+  dispatch(actions.prepareTransactionsSummary());
+
+export const calculateTransactionsDatesForGraph = () => (dispatch) =>
+  dispatch(actions.calculateTransactionsDatesForGraph());
