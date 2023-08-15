@@ -234,8 +234,9 @@ export const updateUser =
 
 // set user in state
 export const setUserInStateFromLocalStorage = () => (dispatch) => {
-  const user = localStorage.getItem('user');
-  if (user) dispatch(actions.setCurrentUser(JSON.parse(user)));
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = JSON.parse(localStorage.getItem('token'));
+  if (user) dispatch(actions.setCurrentUser({user, token}));
 };
 
 // Get username to register
