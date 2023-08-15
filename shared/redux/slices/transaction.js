@@ -58,7 +58,7 @@ const slice = createSlice({
     // Calculate Transactions Dates For Graph
     calculateTransactionsDatesForGraph(state, action) {
       const list = state.list;
-      const transactionEndDate = new Date(list[list.length - 1].date);
+      const transactionEndDate = new Date(list[list.length - 1]?.date);
       const transactionStartDate = new Date(transactionEndDate);
       transactionStartDate.setFullYear(transactionEndDate.getFullYear() - 1);
       transactionStartDate.setDate(1);
