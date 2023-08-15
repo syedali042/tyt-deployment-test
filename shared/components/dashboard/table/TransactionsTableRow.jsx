@@ -29,7 +29,7 @@ const TransactionsTableRow = ({index, item}) => {
       </td>
       <td className="view-message  text-dark clickable-row">{item?.notes}</td>
       <td
-        style={{display: currentUser?.role == 'admin' ? 'none' : 'block'}}
+        style={{display: currentUser?.role == 'user' ? 'none' : 'block'}}
         className="view-message text-dark clickable-row text-end"
       >
         {item.isRefundable && (

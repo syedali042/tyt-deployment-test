@@ -141,14 +141,19 @@ export const TRANSACTION_STATUS = {
     value: 'pending',
     color: 'warning',
   },
-  cancelled: {
-    label: 'Cancelled',
-    value: 'cancelled',
-    color: 'danger',
-  },
+  // cancelled: {
+  //   label: 'Cancelled',
+  //   value: 'cancelled',
+  //   color: 'danger',
+  // },
   cleared: {
     label: 'Cleared',
     value: 'cleared',
     color: 'success',
+  },
+  refunded: {
+    label: 'Refunded',
+    value: 'refunded',
+    color: 'danger',
   },
 };

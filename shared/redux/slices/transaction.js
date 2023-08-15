@@ -55,6 +55,7 @@ const slice = createSlice({
 
       state.list = transactionsSortedByDate;
     },
+    // Calculate Transactions Dates For Graph
     calculateTransactionsDatesForGraph(state, action) {
       const list = state.list;
       const transactionEndDate = new Date(list[list.length - 1].date);
@@ -65,6 +66,7 @@ const slice = createSlice({
       state.endDate = transactionEndDate;
       state.startDate = transactionStartDate;
     },
+    // Prepare Transactions Summary
     prepareTransactionsSummary(state, action) {
       const transactions = state.list;
 
@@ -110,12 +112,14 @@ const slice = createSlice({
         averageTipAmount: parseInt(averageTipAmount),
       };
     },
+    // Reset Transactions State
     resetTransactionsState(state, action) {
       state.list = [];
       state.startDate = null;
       state.endDate = null;
       state.summary = {};
     },
+    // Update transactions list
     updateTransactionsList(state, action) {
       const list = state.list;
 
@@ -267,16 +271,22 @@ export const createRefund =
     try {
       dispatch(actions.startLoading());
       const state = getState();
-      const transactionsState = state.transaction;
-      const {list} = transactionsState;
-      let transactionsList = list.map((transations) => transations);
       const {
+        token,
         currentUser: {userPaymentId},
       } = state.user;
-      const response = await axios.post('/payments/refund', {
-        transactionId,
-        userPaymentId,
-      });
+      const response = await axios.post(
+        '/payments/refund',
+        {
+          transactionId,
+          userPaymentId,
+        },
+        {
+          headers: {
+            [tokenVariable]: token,
+          },
+        }
+      );
       dispatch(actions.updateTransactionsList(response.data.body));
       dispatch(actions.stopLoading());
     } catch (error) {
@@ -285,11 +295,14 @@ export const createRefund =
     }
   };
 
+// Get, Is Transactions Request Loading?
 export const getIsTransactionsRequestLoading = (state) =>
   state.transaction.isLoading;
 
+// Prepare Transactions Summary
 export const prepareTransactionsSummary = () => (dispatch) =>
   dispatch(actions.prepareTransactionsSummary());
 
+// Calculate Transactions Dates For Graph
 export const calculateTransactionsDatesForGraph = () => (dispatch) =>
   dispatch(actions.calculateTransactionsDatesForGraph());
