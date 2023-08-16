@@ -16,6 +16,7 @@ const initialState = {
     totalNumberOfTips: null,
     averageTipAmount: null,
   },
+  viewUser: null,
 };
 
 const slice = createSlice({
@@ -141,6 +142,10 @@ const slice = createSlice({
 
       state.list = list;
     },
+    // Set Active View User
+    setViewUser(state, action) {
+      state.viewUser = action.payload;
+    },
   },
 });
 
@@ -206,10 +211,7 @@ export const initializeTransactions = () => async (dispatch, getState) => {
     const state = getState();
     const {currentUser, list} = state.user;
     if (currentUser?.role == 'user') await dispatch(fetchTransactions({}));
-    else
-      await dispatch(
-        fetchTransactions({userPaymentIdFromAdmin: list[0]?.userPaymentId})
-      );
+    else await dispatch(fetchTransactions({user: list[0]}));
   } catch (error) {
     dispatch(actions.stopLoading());
     dispatch(actions.setError(error));
@@ -218,18 +220,21 @@ export const initializeTransactions = () => async (dispatch, getState) => {
 
 // Prepare User Transactions
 export const fetchTransactions =
-  ({userPaymentIdFromAdmin}) =>
+  ({user}) =>
   async (dispatch, getState) => {
     dispatch(actions.startLoading());
     // Reseting the state for admin when he switch the preview user
     dispatch(actions.resetTransactionsState());
     try {
-      const state = getState();
+      if (user) dispatch(actions.setViewUser(user));
 
+      const state = getState();
       const {
         currentUser: {userPaymentId},
         token,
       } = state.user;
+
+      const paymentId = user ? user?.userPaymentId : userPaymentId;
 
       // For Initial Request
       let startingAfter = null;
@@ -237,9 +242,7 @@ export const fetchTransactions =
       let oldTransactionsList = state.transaction.list;
       while (nextKey !== null) {
         const response = await axios.get(
-          `/transactions/${
-            userPaymentIdFromAdmin || userPaymentId
-          }/${startingAfter}`,
+          `/transactions/${paymentId}/${startingAfter}`,
           {
             headers: {
               [tokenVariable]: token,
@@ -270,10 +273,8 @@ export const createRefund =
     try {
       dispatch(actions.startLoading());
       const state = getState();
-      const {
-        token,
-        currentUser: {userPaymentId},
-      } = state.user;
+      const {token} = state.user;
+      const {userPaymentId} = state.transaction.viewUser;
       const response = await axios.post(
         '/payments/refund',
         {
@@ -305,3 +306,6 @@ export const prepareTransactionsSummary = () => (dispatch) =>
 // Calculate Transactions Dates For Graph
 export const calculateTransactionsDatesForGraph = () => (dispatch) =>
   dispatch(actions.calculateTransactionsDatesForGraph());
+
+// Get View User
+export const getViewUser = (state) => state.transaction.viewUser;

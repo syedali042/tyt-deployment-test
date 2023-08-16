@@ -1,50 +1,27 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Footer from '../footer/footer';
 import Rightside from '../rightside/rightside';
 import BacktoTop from '../backtotop/backtotop';
 import Header from '../header/header';
 import Sidebar from '../sidebar/sidebar';
 import SSRProvider from 'react-bootstrap/SSRProvider';
-import {usePathname, useRouter} from 'next/navigation';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  fetchUsers,
-  getCurrentUser,
-  setUserInStateFromLocalStorage,
-} from '@/shared/redux/slices/user';
+import {getCurrentUser} from '@/shared/redux/slices/user';
 import {
   calculateTransactionsDatesForGraph,
   getIsTransactionsRequestLoading,
   getTransactions,
-  initializeTransactions,
   prepareTransactionsSummary,
 } from '@/shared/redux/slices/transaction';
 
 const Contentlayout = ({children}) => {
-  const pathname = usePathname();
-  const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
-  const isDashboardPage = pathname.includes('/dashboard');
   const transactionsList = useSelector(getTransactions({}));
   const isTransactionsRequestLoading = useSelector(
     getIsTransactionsRequestLoading
   );
-
-  useEffect(() => {
-    const setUserInState = async () => {
-      await dispatch(setUserInStateFromLocalStorage());
-    };
-    if (!currentUser?.userInternalId) setUserInState();
-  }, []);
-
-  useEffect(() => {
-    if (currentUser?.userInternalId && !isDashboardPage)
-      router.push('/dashboard/home');
-    else if (!currentUser?.userInternalId && isDashboardPage)
-      router.push('/auth/login');
-  }, [currentUser]);
 
   useEffect(() => {
     document
@@ -79,14 +56,6 @@ const Contentlayout = ({children}) => {
       document.querySelector('.card.search-result').classList.add('d-none');
     }
   };
-
-  useEffect(() => {
-    const initializeDashboardPreparation = async () => {
-      if (currentUser?.role == 'admin') await dispatch(fetchUsers());
-      await dispatch(initializeTransactions());
-    };
-    if (currentUser?.userInternalId) initializeDashboardPreparation();
-  }, [currentUser]);
 
   useEffect(() => {
     if (transactionsList.length > 0 && !isTransactionsRequestLoading) {

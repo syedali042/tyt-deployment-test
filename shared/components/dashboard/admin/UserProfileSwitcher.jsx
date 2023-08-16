@@ -2,11 +2,15 @@ import {Row, Col, Form} from 'react-bootstrap';
 import {Autocomplete} from '@mui/material';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUsersList, getCurrentUser} from '@/shared/redux/slices/user';
-import {fetchTransactions} from '@/shared/redux/slices/transaction';
+import {
+  fetchTransactions,
+  getViewUser,
+} from '@/shared/redux/slices/transaction';
 
 const UserProfileSwitcher = () => {
   const currentUser = useSelector(getCurrentUser);
   const allUsers = useSelector(getUsersList);
+  const viewUser = useSelector(getViewUser);
   const dispatch = useDispatch();
 
   return (
@@ -18,12 +22,9 @@ const UserProfileSwitcher = () => {
             options={allUsers}
             getOptionLabel={(option) => option?.displayName || option?.username}
             onChange={async (e, value) => {
-              const {userPaymentId} = value;
-              await dispatch(
-                fetchTransactions({userPaymentIdFromAdmin: userPaymentId})
-              );
+              await dispatch(fetchTransactions({user: value}));
             }}
-            defaultValue={allUsers[0]}
+            defaultValue={viewUser}
             renderInput={(params) => (
               <div ref={params.InputProps.ref}>
                 <Form.Label {...params.InputLabelProps}>

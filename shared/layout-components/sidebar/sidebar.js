@@ -355,12 +355,18 @@ const Sidebar = () => {
                       )}
 
                       {menuItem.type === 'link' ? (
-                        <Link
-                          href={menuItem.path}
+                        <div
                           className={`side-menu__item ${
                             menuItem.selected ? 'active' : ''
                           }`}
-                          onClick={() => toggleSidemenu(menuItem)}
+                          onClick={() => {
+                            document
+                              .querySelector('.app')
+                              .classList.remove('sidenav-toggled');
+                            toggleSidemenu(menuItem);
+                            location.push(menuItem.path);
+                          }}
+                          style={{cursor: 'pointer'}}
                         >
                           <i className={`${menuItem.icon} side-menu__icon`}></i>
                           <span className="side-menu__label">
@@ -373,7 +379,7 @@ const Sidebar = () => {
                           ) : (
                             ''
                           )}
-                        </Link>
+                        </div>
                       ) : (
                         ''
                       )}

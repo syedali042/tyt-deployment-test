@@ -11,6 +11,7 @@ const TransactionsTableRow = ({index, item}) => {
       <td
         className="inbox-small-cells"
         title={TRANSACTION_STATUS[item?.status].label}
+        style={{width: '50px'}}
       >
         <i
           className={`fa fa-circle text-${
@@ -19,18 +20,22 @@ const TransactionsTableRow = ({index, item}) => {
         ></i>
       </td>
       <td
-        className="inbox-small-cells text-center"
+        className="inbox-small-cells"
         title={TRANSACTION_TYPES[item?.type.toLowerCase()].label}
+        style={{width: '150px'}}
       >
         {TRANSACTION_TYPES[item?.type.toLowerCase()].icon}
       </td>
-      <td className="view-message dont-show text-dark fw-semibold clickable-row">
+      <td
+        className=" dont-show text-dark fw-semibold clickable-row"
+        style={{width: '150px'}}
+      >
         ${item?.amount}
       </td>
-      <td className="view-message  text-dark clickable-row">{item?.notes}</td>
+      <td className="text-dark clickable-row">{item?.notes}</td>
       <td
         style={{display: currentUser?.role == 'user' ? 'none' : 'block'}}
-        className="view-message text-dark clickable-row text-end"
+        className="text-dark clickable-row text-end"
       >
         {item.isRefundable && (
           <button
@@ -44,10 +49,7 @@ const TransactionsTableRow = ({index, item}) => {
           </button>
         )}
       </td>
-      <td
-        style={{maxWidth: '150px !important'}}
-        className="view-message text-dark clickable-row text-end"
-      >
+      <td className="text-dark clickable-row text-end">
         {new Date(item.date).toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'long',

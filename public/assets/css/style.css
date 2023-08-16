@@ -64274,7 +64274,7 @@ textarea.form-control {
   color: #fff !important;
 }
 
-.form-control-custom:disabled {
+.dark-mode .form-control-custom:disabled {
   color: #fff;
 }
 
