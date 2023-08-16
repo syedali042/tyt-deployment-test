@@ -15,7 +15,7 @@ const DashboardSummary = () => {
         const chart = widget[1];
         const key = widget[2];
         return (
-          <Col key={index} lg={3} md={3} sm={12} xxl={3}>
+          <Col key={key} lg={3} md={3} sm={12} xxl={3}>
             <SummaryCard label={label} chart={chart} summaryKey={key} />
           </Col>
         );
