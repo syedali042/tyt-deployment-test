@@ -118,28 +118,20 @@ const slice = createSlice({
       state.startDate = null;
       state.endDate = null;
       state.summary = {};
+      state.viewUser = null;
     },
     // Update transactions list
     updateTransactionsList(state, action) {
-      const list = state.list;
-
+      let list = state.list;
       const {transactions} = action.payload;
-
-      const tip = transactions.find(
-        ({type}) => type == TRANSACTION_TYPES.tip.value
-      );
-
-      const refund = transactions.find(
-        ({type}) => type == TRANSACTION_TYPES.refund.value
-      );
-
-      const foundIndex = list.findIndex(
-        ({objId, tipperId}) => tipperId && objId == tip.objId
-      );
-
-      list[foundIndex] = tip;
-      list.push(refund);
-
+      for (let transaction of transactions) {
+        const foundIndex = list.findIndex(
+          ({objId, type}) =>
+            type == TRANSACTION_TYPES.tip.value && objId == transaction.objId
+        );
+        if (foundIndex !== -1) list[foundIndex] = transaction;
+        else list.push(transaction);
+      }
       state.list = list;
     },
     // Set Active View User
