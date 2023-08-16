@@ -82,8 +82,7 @@ const slice = createSlice({
 
       let totalRefundAmount = 0;
 
-      for (let i = 0; i < transactions.length; i++) {
-        const transaction = transactions[i];
+      for (let transaction of transactions) {
         const {type, tipperId, amount} = transaction;
 
         if (type == 'tip') {

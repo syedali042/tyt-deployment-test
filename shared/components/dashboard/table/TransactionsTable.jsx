@@ -18,10 +18,10 @@ export const TransactionsTable = () => {
   const [sortedTransactions, setSortedTransactions] = useState([]);
 
   useEffect(() => {
-    let filteredTransactions = [...transactions];
-    setSortedTransactions(
-      filteredTransactions.sort((a, b) => new Date(b.date) - new Date(a.date))
+    let sortedTransactionsArr = [...transactions].sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
     );
+    setSortedTransactions(sortedTransactionsArr);
   }, [transactions]);
 
   const itemsPerPage = 10;
