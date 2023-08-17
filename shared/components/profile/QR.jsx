@@ -15,7 +15,7 @@ const QR = () => {
       .replace('image/png', 'image/octet-stream');
     let downloadLink = document.createElement('a');
     downloadLink.href = pngUrl;
-    downloadLink.download = 'userIdentifierQRCode.png';
+    downloadLink.download = `${currentUser.username}-tip-qr-code.png`;
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
