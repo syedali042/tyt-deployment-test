@@ -24,7 +24,8 @@ const UserProfileSwitcher = () => {
             onChange={async (e, value) => {
               await dispatch(fetchTransactions({user: value}));
             }}
-            defaultValue={viewUser}
+            value={viewUser || null}
+            defaultValue={null}
             renderInput={(params) => (
               <div ref={params.InputProps.ref}>
                 <Form.Label {...params.InputLabelProps}>
