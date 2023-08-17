@@ -7,6 +7,7 @@ import {Col, Row} from 'react-bootstrap';
 // Components
 import PaymentAccounts from '@/shared/components/profile/PaymentAccount';
 import UserInfo from '@/shared/components/profile/UserInfo';
+import QR from '@/shared/components/profile/QR';
 
 const Dashboard = () => {
   return (
@@ -18,6 +19,7 @@ const Dashboard = () => {
         </Col>
         <Col lg={4} md={4} sm={12} xxl={3}>
           <PaymentAccounts />
+          <QR />
         </Col>
       </Row>
     </ContentLayout>
