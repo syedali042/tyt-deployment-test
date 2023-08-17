@@ -85,7 +85,7 @@ const TransactionsGraphActions = () => {
         className="d-flex align-items-center btn btn-info btn-sm"
         onClick={() => handleGraphAction('next')}
         disabled={
-          new Date(startDate) <=
+          new Date(endDate) >=
           new Date(transactions?.[transactions?.length - 1]?.date)
         }
       >

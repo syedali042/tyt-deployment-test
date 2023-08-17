@@ -49,11 +49,16 @@ const slice = createSlice({
     },
     // Set Transactions List
     setTransactionsList(state, action) {
-      const transactions = action.payload;
-      const transactionsSortedByDate = transactions.sort(
+      const oldTransactions = state.list;
+      const newList = [...oldTransactions, ...action.payload];
+      const uniqueList = [
+        ...new Map(
+          newList.map((transaction) => [transaction['id'], transaction])
+        ).values(),
+      ];
+      const transactionsSortedByDate = uniqueList.sort(
         (a, b) => new Date(a.date) - new Date(b.date)
       );
-
       state.list = transactionsSortedByDate;
     },
     // Calculate Transactions Dates For Graph
@@ -249,9 +254,7 @@ export const fetchTransactions =
         const {nextKey: nextRecordKey, list} = response.data.body;
         nextKey = nextRecordKey;
         startingAfter = nextRecordKey;
-        dispatch(
-          actions.setTransactionsList([...oldTransactionsList, ...list])
-        );
+        await dispatch(actions.setTransactionsList(list));
       }
       dispatch(actions.stopLoading());
     } catch (error) {

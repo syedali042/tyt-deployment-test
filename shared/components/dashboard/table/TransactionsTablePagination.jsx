@@ -7,9 +7,9 @@ const TransactionsTablePagination = ({
   pageCount,
 }) => {
   return (
-    <div className="d-flex align-items-center justify-content-end mt-3">
-      <center>
-        <Pagination>
+    <center>
+      <div className="d-flex align-items-center justify-content-end mt-3">
+        <Pagination size="sm" style={{overflow: 'scroll'}}>
           <Pagination.Prev
             disabled={currentPage === 1}
             onClick={() => handlePageChange(currentPage - 1)}
@@ -30,8 +30,8 @@ const TransactionsTablePagination = ({
             onClick={() => handlePageChange(currentPage + 1)}
           />
         </Pagination>
-      </center>
-    </div>
+      </div>
+    </center>
   );
 };
 
