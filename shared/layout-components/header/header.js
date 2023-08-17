@@ -55,9 +55,11 @@ const Header = ({localVaraiable}) => {
     if (document.querySelector('.app').classList.contains('dark-mode')) {
       document.querySelector('.app').classList.remove('dark-mode');
       dispatch(setThemeMode({mode: 'light-mode'}));
+      localStorage.setItem('theme-mode', 'light-mode');
     } else {
       document.querySelector('.app').classList.add('dark-mode');
       dispatch(setThemeMode({mode: 'dark-mode'}));
+      localStorage.setItem('theme-mode', 'dark-mode');
     }
   };
 

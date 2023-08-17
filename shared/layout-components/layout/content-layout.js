@@ -24,9 +24,10 @@ const Contentlayout = ({children}) => {
   );
 
   useEffect(() => {
+    const mode = localStorage.getItem('theme-mode');
     document
       .querySelector('body')
-      .classList.add('app', 'sidebar-mini', 'ltr', 'light-mode');
+      .classList.add('app', 'sidebar-mini', 'ltr', mode || 'light-mode');
     document
       .querySelector('body')
       .classList.remove('login-img', 'landing-page', 'horizontal');
