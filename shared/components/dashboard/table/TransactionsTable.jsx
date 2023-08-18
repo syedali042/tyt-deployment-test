@@ -11,11 +11,16 @@ import {getTransactions} from '@/shared/redux/slices/transaction';
 import TransactionsTableHead from './TransactionsTableHead';
 import TransactionsTablePagination from './TransactionsTablePagination';
 import TransactionsTableRow from './TransactionsTableRow';
+import {TransactionsGroupModal} from './TransactionsGroupModal';
 
 export const TransactionsTable = () => {
   const transactions = useSelector(getTransactions({filterByActiveType: true}));
 
   const [sortedTransactions, setSortedTransactions] = useState([]);
+
+  const [transactionsModalShow, setTransactionsModalShow] = useState(false);
+
+  const [groupId, setGroupId] = useState(false);
 
   useEffect(() => {
     let sortedTransactionsArr = [...transactions].sort(
@@ -56,6 +61,10 @@ export const TransactionsTable = () => {
                           item={item}
                           index={index}
                           key={index}
+                          onClick={() => {
+                            setGroupId(item?.groupId);
+                            setTransactionsModalShow(true);
+                          }}
                         />
                       ))
                     ) : (
@@ -63,6 +72,11 @@ export const TransactionsTable = () => {
                         No Transaction Found
                       </Stack>
                     )}
+                    <TransactionsGroupModal
+                      show={transactionsModalShow}
+                      onHide={() => setTransactionsModalShow(false)}
+                      groupid={groupId}
+                    />
                   </tbody>
                 </Table>
               </div>

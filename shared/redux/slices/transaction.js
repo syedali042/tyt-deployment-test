@@ -154,7 +154,7 @@ export const getActiveType = (state) => state.transaction.activeType;
 
 // Get Transactions
 export const getTransactions =
-  ({filterByActiveType, filterByStartDate, filterByEndDate}) =>
+  ({filterByActiveType, filterByStartDate, filterByEndDate, filterByGroupId}) =>
   (state) => {
     const transactionsState = state.transaction;
     let transactions = transactionsState.list;
@@ -176,6 +176,11 @@ export const getTransactions =
       );
     }
 
+    if (filterByGroupId) {
+      transactions = transactions.filter(
+        ({groupId}) => groupId == filterByGroupId
+      );
+    }
     return transactions;
   };
 

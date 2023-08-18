@@ -3,11 +3,11 @@ import {TRANSACTION_STATUS, TRANSACTION_TYPES} from '@/shared/constants';
 import {createRefund} from '@/shared/redux/slices/transaction';
 import {getCurrentUser} from '@/shared/redux/slices/user';
 import {useDispatch, useSelector} from 'react-redux';
-const TransactionsTableRow = ({index, item}) => {
+const TransactionsTableRow = ({index, item, onClick}) => {
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
   return (
-    <tr key={index}>
+    <tr key={index} onClick={onClick}>
       <td
         className="inbox-small-cells"
         title={TRANSACTION_STATUS[item?.status].label}
