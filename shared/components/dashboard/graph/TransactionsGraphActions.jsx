@@ -20,55 +20,27 @@ const TransactionsGraphActions = () => {
   const dispatch = useDispatch();
 
   const handleGraphAction = async (action) => {
-    if (action === 'previous') {
-      const startDateObj = new Date(startDate);
-      const previousTransactions = transactions?.filter(
-        ({date}) => new Date(date) < startDateObj
-      );
-      const newStartDate = previousTransactions[0].date;
-      const newEndDate =
-        previousTransactions[previousTransactions.length - 1].date;
-      const difference = getMonthDifference(newStartDate, newEndDate);
-      if (difference <= 12) {
-        dispatch(setStartDate({date: newStartDate}));
-        dispatch(setEndDate({date: newEndDate}));
-      } else {
-        let startDateForMoreThanTwelveMonthsDifference = new Date(newEndDate);
-        startDateForMoreThanTwelveMonthsDifference.setFullYear(
-          new Date(newEndDate).getFullYear() - 1
-        );
-        startDateForMoreThanTwelveMonthsDifference.setDate(1);
-        startDateForMoreThanTwelveMonthsDifference.setMonth(
-          new Date(newEndDate).getMonth() + 1
-        );
-        dispatch(
-          setStartDate({date: startDateForMoreThanTwelveMonthsDifference})
-        );
-        dispatch(setEndDate({date: newEndDate}));
-      }
-    } else {
-      const endDateObj = new Date(endDate);
-      const nextTransactions = transactions?.filter(
-        ({date}) => new Date(date) > endDateObj
-      );
-      const newStartDate = nextTransactions[0].date;
-      const newEndDate = nextTransactions[nextTransactions.length - 1].date;
-      const difference = getMonthDifference(newStartDate, newEndDate);
-      if (difference <= 12) {
-        dispatch(setStartDate({date: newStartDate}));
-        dispatch(setEndDate({date: newEndDate}));
-      } else {
-        let endDateForMoreThanTwelveMonthsDifference = new Date(newStartDate);
-        endDateForMoreThanTwelveMonthsDifference.setFullYear(
-          new Date(newStartDate).getFullYear() + 1
-        );
-        endDateForMoreThanTwelveMonthsDifference.setDate(1);
-        endDateForMoreThanTwelveMonthsDifference.setMonth(
-          new Date(newStartDate).getMonth() - 1
-        );
-        dispatch(setStartDate({date: newStartDate}));
-        dispatch(setEndDate({date: endDateForMoreThanTwelveMonthsDifference}));
-      }
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+
+    if (action == 'previous') {
+      let newStartDate = new Date(startDateObj);
+      newStartDate.setFullYear(newStartDate.getFullYear() - 1);
+
+      let newEndDate = new Date(endDateObj);
+      newEndDate.setFullYear(newEndDate.getFullYear() - 1);
+      dispatch(setStartDate({date: newStartDate}));
+      dispatch(setEndDate({date: newEndDate}));
+    }
+
+    if (action == 'next') {
+      let newStartDate = new Date(startDateObj);
+      newStartDate.setFullYear(newStartDate.getFullYear() + 1);
+
+      let newEndDate = new Date(endDateObj);
+      newEndDate.setFullYear(newEndDate.getFullYear() + 1);
+      dispatch(setStartDate({date: newStartDate}));
+      dispatch(setEndDate({date: newEndDate}));
     }
   };
   return (
