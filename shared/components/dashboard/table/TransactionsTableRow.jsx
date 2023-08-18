@@ -10,7 +10,6 @@ const TransactionsTableRow = ({index, item, onClick}) => {
   return (
     <tr key={index} onClick={onClick}>
       <td
-        className="inbox-small-cells"
         title={TRANSACTION_STATUS[item?.status].label}
         style={{width: '50px'}}
       >
@@ -21,15 +20,15 @@ const TransactionsTableRow = ({index, item, onClick}) => {
         ></i>
       </td>
       <td
-        width={'150px'}
+        width={'100px'}
         title={TRANSACTION_TYPES[item?.type.toLowerCase()].label}
       >
         {TRANSACTION_TYPES[item?.type.toLowerCase()].icon}
       </td>
-      <td width={'150px'}>${item?.amount}</td>
+      <td width={'100px'}>${item?.amount}</td>
       <td>
         <Typography
-          width={200}
+          width={500}
           fontSize={14}
           fontWeight={400}
           padding={0}
