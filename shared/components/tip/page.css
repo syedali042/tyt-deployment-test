@@ -15,10 +15,6 @@
 }
 
 @media screen and (max-width: 540px) {
-  .md-step-title {
-    font-size: 14px !important;
-  }
-
   .tip-error {
     display: none;
   }

@@ -4,7 +4,7 @@
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // React Bootstrap
-import {Stack, Row, Container, Image} from 'react-bootstrap';
+import {Stack, Container, Image} from 'react-bootstrap';
 // Components
 import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
 import StepsHeader from '@/shared/components/tip/StepHeader';
