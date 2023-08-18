@@ -22,7 +22,7 @@ import {
 // Component
 import CheckoutForm from './CheckoutForm';
 // Styles
-import '../../../app/tip/page.css';
+import './page.css';
 
 const CheckoutTab = () => {
   const notes = useSelector(getTipNotes);

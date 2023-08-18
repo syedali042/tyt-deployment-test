@@ -273,3 +273,22 @@ export const setActiveStep = (step) => (dispatch) =>
 
 // Get Temporary Payment Id
 export const getPaymentIdToBeUsed = (state) => state.tip.paymentIdToBeUsed;
+
+// Initialize Direct Tip
+export const initializeDirectTip =
+  ({usernameOrUserPublicIdentifier}) =>
+  async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `/users/${usernameOrUserPublicIdentifier}`
+      );
+      const {body} = response.data;
+      dispatch(actions.setCurrentTeacher({...body}));
+      dispatch(actions.setTeacherUsernameOrEmail(body?.email));
+      dispatch(actions.setActiveStep(2));
+      dispatch(actions.stopLoading());
+    } catch (error) {
+      dispatch(actions.stopLoading());
+      dispatch(actions.setError(error));
+    }
+  };

@@ -15,10 +15,6 @@
 }
 
 @media screen and (max-width: 540px) {
-  .md-step-title {
-    font-size: 14px !important;
-  }
-
   .tip-error {
     display: none;
   }
@@ -94,7 +90,6 @@
   background-color: rgb(33, 150, 243);
 }
 .md-stepper-horizontal .md-step.done .md-step-circle:before {
-  font-family: 'FontAwesome';
   font-weight: 100;
   content: '\f00c';
 }
@@ -109,7 +104,6 @@
   transform: scaleX(-1);
 }
 .md-stepper-horizontal .md-step.editable .md-step-circle:before {
-  font-family: 'FontAwesome';
   font-weight: 100;
   content: '\f040';
 }
