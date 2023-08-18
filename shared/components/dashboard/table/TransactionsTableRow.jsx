@@ -11,7 +11,7 @@ const TransactionsTableRow = ({index, item, onClick}) => {
     <tr key={index} onClick={onClick}>
       <td
         title={TRANSACTION_STATUS[item?.status].label}
-        style={{width: '50px'}}
+        style={{width: '100px'}}
       >
         <i
           className={`fa fa-circle text-${
@@ -20,12 +20,12 @@ const TransactionsTableRow = ({index, item, onClick}) => {
         ></i>
       </td>
       <td
-        width={'100px'}
+        width={'150px'}
         title={TRANSACTION_TYPES[item?.type.toLowerCase()].label}
       >
         {TRANSACTION_TYPES[item?.type.toLowerCase()].icon}
       </td>
-      <td width={'100px'}>${item?.amount}</td>
+      <td width={'150px'}>${item?.amount}</td>
       <td>
         <Typography
           width={500}
