@@ -56,9 +56,9 @@ const slice = createSlice({
           newList.map((transaction) => [transaction['id'], transaction])
         ).values(),
       ];
-      const transactionsSortedByDate = uniqueList.sort(
-        (a, b) => new Date(a.date) - new Date(b.date)
-      );
+      const transactionsSortedByDate = uniqueList
+        .slice()
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
       state.list = transactionsSortedByDate;
     },
     // Calculate Transactions Dates For Graph
