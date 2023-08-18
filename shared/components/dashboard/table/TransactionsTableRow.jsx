@@ -2,6 +2,7 @@
 import {TRANSACTION_STATUS, TRANSACTION_TYPES} from '@/shared/constants';
 import {createRefund} from '@/shared/redux/slices/transaction';
 import {getCurrentUser} from '@/shared/redux/slices/user';
+import {Typography} from '@mui/material';
 import {useDispatch, useSelector} from 'react-redux';
 const TransactionsTableRow = ({index, item, onClick}) => {
   const dispatch = useDispatch();
@@ -9,7 +10,6 @@ const TransactionsTableRow = ({index, item, onClick}) => {
   return (
     <tr key={index} onClick={onClick}>
       <td
-        className="inbox-small-cells"
         title={TRANSACTION_STATUS[item?.status].label}
         style={{width: '50px'}}
       >
@@ -20,22 +20,27 @@ const TransactionsTableRow = ({index, item, onClick}) => {
         ></i>
       </td>
       <td
-        className="inbox-small-cells"
+        width={'100px'}
         title={TRANSACTION_TYPES[item?.type.toLowerCase()].label}
-        style={{width: '150px'}}
       >
         {TRANSACTION_TYPES[item?.type.toLowerCase()].icon}
       </td>
-      <td
-        className=" dont-show text-dark fw-semibold clickable-row"
-        style={{width: '150px'}}
-      >
-        ${item?.amount}
+      <td width={'100px'}>${item?.amount}</td>
+      <td>
+        <Typography
+          width={500}
+          fontSize={14}
+          fontWeight={400}
+          padding={0}
+          noWrap
+          color={'#282f53'}
+        >
+          {item?.notes}
+        </Typography>
       </td>
-      <td className="text-dark clickable-row">{item?.notes}</td>
       <td
+        width={'150px'}
         style={{display: currentUser?.role == 'user' ? 'none' : 'block'}}
-        className="text-dark clickable-row text-end"
       >
         {item.isRefundable && (
           <button
@@ -49,7 +54,7 @@ const TransactionsTableRow = ({index, item, onClick}) => {
           </button>
         )}
       </td>
-      <td className="text-dark clickable-row text-end">
+      <td className="text-end">
         {new Date(item.date).toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'long',

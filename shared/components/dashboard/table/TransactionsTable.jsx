@@ -4,12 +4,13 @@ import {useState, useEffect} from 'react';
 // React Bootstrap
 import {Row, Card, Col, Stack, Table} from 'react-bootstrap';
 import 'react-data-table-component-extensions/dist/index.css';
+// MUI
+import {Pagination} from '@mui/material';
 // Redux
 import {useSelector} from 'react-redux';
 import {getTransactions} from '@/shared/redux/slices/transaction';
 // Components
 import TransactionsTableHead from './TransactionsTableHead';
-import TransactionsTablePagination from './TransactionsTablePagination';
 import TransactionsTableRow from './TransactionsTableRow';
 import {TransactionsGroupModal} from './TransactionsGroupModal';
 
@@ -35,7 +36,7 @@ export const TransactionsTable = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
 
@@ -81,11 +82,18 @@ export const TransactionsTable = () => {
                 </Table>
               </div>
             </Stack>
-            <TransactionsTablePagination
-              currentPage={currentPage}
-              handlePageChange={handlePageChange}
-              pageCount={pageCount}
-            />
+            <div className="d-flex align-items-center justify-content-end mt-5">
+              <Pagination
+                component={'div'}
+                count={pageCount}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+                size={'large'}
+                showFirstButton={true}
+                showLastButton={true}
+              />
+            </div>
           </Card.Body>
         </Card>
       </Col>
