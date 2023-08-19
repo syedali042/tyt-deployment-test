@@ -7,7 +7,9 @@ import {Typography} from '@mui/material';
 export const TransactionsGroupModal = (props) => {
   const {groupid} = props;
   const transactions = useSelector(getTransactions({filterByGroupId: groupid}));
-  const decideSizeOrColumns = ({size, columns}) => {
+  const modalSize = () => decideSizeOrColumns().size;
+  const cardColumns = () => decideSizeOrColumns().columns;
+  const decideSizeOrColumns = () => {
     let result;
     switch (transactions?.length) {
       case 3:
@@ -19,13 +21,12 @@ export const TransactionsGroupModal = (props) => {
       default:
         result = {size: 'md', columns: 12};
     }
-    if (size) return result.size;
-    if (columns) return result.columns;
+    return result;
   };
   return (
     <Modal
       {...props}
-      size={decideSizeOrColumns({size: true})}
+      size={modalSize()}
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
@@ -38,10 +39,7 @@ export const TransactionsGroupModal = (props) => {
         <Row>
           {transactions.map((transaction) => {
             return (
-              <Col
-                key={transaction?.id}
-                md={decideSizeOrColumns({columns: true})}
-              >
+              <Col key={transaction?.id} md={cardColumns()}>
                 <Card className={`p-3 bg-light`}>
                   <div className="my-4 d-flex align-items-center justify-content-between">
                     <div>
