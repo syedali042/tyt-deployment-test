@@ -11,7 +11,6 @@ import {
   setEndDate,
   setStartDate,
 } from '@/shared/redux/slices/transaction';
-import {getMonthDifference} from '@/shared/utils/transaction';
 
 const TransactionsGraphActions = () => {
   const startDate = useSelector(getStartDate);

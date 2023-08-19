@@ -243,7 +243,6 @@ export const fetchTransactions =
       // For Initial Request
       let startingAfter = null;
       let nextKey;
-      let oldTransactionsList = state.transaction.list;
       while (nextKey !== null) {
         const response = await axios.get(
           `/transactions/${paymentId}/${startingAfter}`,
