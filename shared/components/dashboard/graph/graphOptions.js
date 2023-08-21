@@ -6,6 +6,11 @@ export const graphOptions = ({themeMode}) => {
       colors: {
         forceOverride: true,
       },
+      legend: {
+        labels: {
+          color: themeMode == 'light-mode' ? '#0C0D0E' : '#fff',
+        },
+      },
     },
     tooltips: {
       enabled: false,

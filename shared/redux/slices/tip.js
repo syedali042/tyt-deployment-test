@@ -94,7 +94,7 @@ export const verifyUserToTip = () => async (dispatch, getState) => {
       ? 'email'
       : 'username';
     await axios
-      .get(`/users?${type}=${teacherUsernameOrEmail}`)
+      .get(`/users/get-user-info?${type}=${teacherUsernameOrEmail}`)
       .then((response) => {
         const {body} = response.data;
         dispatch(actions.setCurrentTeacher({...body}));
@@ -205,7 +205,7 @@ export const getTeacherByEmail = () => async (dispatch, getState) => {
       ? 'email'
       : 'username';
     await axios
-      .get(`/users?${type}=${teacherUsernameOrEmail}`)
+      .get(`/users/get-user-info?${type}=${teacherUsernameOrEmail}`)
       .then((response) => {
         const {body} = response.data;
         dispatch(actions.setCurrentTeacher({...body}));

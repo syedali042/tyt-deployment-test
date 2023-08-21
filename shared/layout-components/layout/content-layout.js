@@ -1,43 +1,33 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Footer from '../footer/footer';
 import Rightside from '../rightside/rightside';
 import BacktoTop from '../backtotop/backtotop';
 import Header from '../header/header';
 import Sidebar from '../sidebar/sidebar';
 import SSRProvider from 'react-bootstrap/SSRProvider';
-import {usePathname, useRouter} from 'next/navigation';
 import {useDispatch, useSelector} from 'react-redux';
+import {getCurrentUser} from '@/shared/redux/slices/user';
 import {
-  getCurrentUser,
-  setUserInStateFromLocalStorage,
-} from '@/shared/redux/slices/user';
+  calculateTransactionsDatesForGraph,
+  getIsTransactionsRequestLoading,
+  getTransactions,
+  prepareTransactionsSummary,
+} from '@/shared/redux/slices/transaction';
 
 const Contentlayout = ({children}) => {
-  const pathname = usePathname();
-  const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
-  const isDashboardPage = pathname.includes('/dashboard');
+  const transactionsList = useSelector(getTransactions({}));
+  const isTransactionsRequestLoading = useSelector(
+    getIsTransactionsRequestLoading
+  );
 
   useEffect(() => {
-    const setUserInState = async () => {
-      await dispatch(setUserInStateFromLocalStorage());
-    };
-    if (!currentUser?.userInternalId) setUserInState();
-  }, []);
-
-  useEffect(() => {
-    if (currentUser?.userInternalId && !isDashboardPage)
-      router.push('/dashboard/home');
-    else if (!currentUser?.userInternalId && isDashboardPage)
-      router.push('/auth/login');
-  }, [currentUser]);
-
-  useEffect(() => {
+    const mode = localStorage.getItem('theme-mode');
     document
       .querySelector('body')
-      .classList.add('app', 'sidebar-mini', 'ltr', 'light-mode');
+      .classList.add('app', 'sidebar-mini', 'ltr', mode || 'light-mode');
     document
       .querySelector('body')
       .classList.remove('login-img', 'landing-page', 'horizontal');
@@ -67,6 +57,14 @@ const Contentlayout = ({children}) => {
       document.querySelector('.card.search-result').classList.add('d-none');
     }
   };
+
+  useEffect(() => {
+    if (transactionsList.length > 0 && !isTransactionsRequestLoading) {
+      dispatch(prepareTransactionsSummary());
+      dispatch(calculateTransactionsDatesForGraph());
+    }
+  }, [transactionsList, isTransactionsRequestLoading]);
+
   return (
     <>
       {/* <Script src="//code.tidio.co/ejjaylsnuydywf5a0sqc1gvcus5orpml.js" /> */}

@@ -33,22 +33,86 @@ const TransactionsGraph = () => {
   const startDate = useSelector(getStartDate);
   const endDate = useSelector(getEndDate);
   const labels = generateMonthYearLabelsArray({startDate, endDate});
-  const transactions = useSelector(
+  let transactions = useSelector(
     getTransactions({filterByStartDate: true, filterByEndDate: true})
   );
-  const transactionsSumByMonth = sumAmountsByMonth(
-    transactions?.length > 0 ? transactions : []
-  );
+
+  const transactionsByTypes = {
+    tip: {
+      list: [],
+      totalByMonths: [],
+    },
+    refund: {
+      list: [],
+      totalByMonths: [],
+    },
+    fee: {
+      list: [],
+      totalByMonths: [],
+    },
+    disbursement: {
+      list: [],
+      totalByMonths: [],
+    },
+  };
+
+  transactions.map((transaction) => {
+    const {type} = transaction;
+    transactionsByTypes[type].list.push(transaction);
+  });
+
+  for (let key in transactionsByTypes) {
+    const {list} = transactionsByTypes[key];
+    const totalByMonths = sumAmountsByMonth(list, startDate);
+    transactionsByTypes[key].totalByMonths = totalByMonths;
+  }
+
+  const {
+    tip: {totalByMonths: tipTotalByMonths},
+    refund: {totalByMonths: refundTotalByMonths},
+    fee: {totalByMonths: feeTotalByMonths},
+    disbursement: {totalByMonths: disbursementTotalByMonths},
+  } = transactionsByTypes;
 
   const data = {
     labels,
     datasets: [
       {
         fill: true,
-        label: '',
-        data: transactionsSumByMonth,
-        borderColor: '#6c5ffc',
-        backgroundColor: 'rgba(108, 95, 252, 0.6)',
+        label: 'Tips',
+        data: tipTotalByMonths,
+        borderColor: '#ac0700',
+        backgroundColor: '#09AD95',
+        tension: 0.3,
+        borderWidth: 3,
+        pointRadius: 0,
+      },
+      {
+        fill: true,
+        label: 'Refunds',
+        data: refundTotalByMonths,
+        borderColor: '#E82646',
+        backgroundColor: '#E82646',
+        tension: 0.3,
+        borderWidth: 3,
+        pointRadius: 0,
+      },
+      {
+        fill: true,
+        label: 'Fees',
+        data: feeTotalByMonths,
+        borderColor: '#F7B731',
+        backgroundColor: '#F7B731',
+        tension: 0.3,
+        borderWidth: 3,
+        pointRadius: 0,
+      },
+      {
+        fill: true,
+        label: 'Disbursements',
+        data: disbursementTotalByMonths,
+        borderColor: '#55B0EE',
+        backgroundColor: '#55B0EE',
         tension: 0.3,
         borderWidth: 3,
         pointRadius: 0,

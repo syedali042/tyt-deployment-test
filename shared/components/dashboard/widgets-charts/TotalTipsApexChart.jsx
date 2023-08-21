@@ -58,7 +58,7 @@ const TotalTipsApexChart = () => {
         options={options}
         series={series}
         type="line"
-        height={70}
+        height={50}
         width={'100%'}
       />
     </div>

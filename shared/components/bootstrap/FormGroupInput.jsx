@@ -46,7 +46,7 @@ export const FormGroupInput = ({
                 cursor: 'pointer',
               }}
             >
-              <i class={`fa ${showPassword ? 'fa-eye' : 'fa-eye-slash'}`} />
+              <i className={`fa ${showPassword ? 'fa-eye' : 'fa-eye-slash'}`} />
             </div>
           )}
         </InputGroup>

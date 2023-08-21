@@ -68,7 +68,7 @@ export const DASHBOARD_WIDGETS = {
     label: 'Total Tips Amount',
     chart: <TotalTipsAmountApexChart />,
   },
-  totalTips: {
+  totalNumberOfTips: {
     label: 'Total Tips',
     chart: <TotalTipsApexChart />,
   },
@@ -93,24 +93,45 @@ export const TRANSACTION_TYPES = {
     notSpecificType: true,
   },
   tip: {
-    label: 'Tip',
+    label: 'Tips',
     value: 'tip',
-    icon: <i className="text-info fa-solid fa-circle-dollar-to-slot"></i>,
+    icon: (
+      <badge style={{width: '70px'}} className="badge bg-success text-white">
+        Tip
+      </badge>
+    ),
   },
-  //   tax: {
-  //     label: 'Tax',
-  //     value: 'tax',
-  //     icon: 'fa fa-calendar',
-  //   },
+  // tax: {
+  //   label: 'Taxes',
+  //   value: 'tax',
+  //   icon: <i className="text-info fa fa-calendar"></i>,
+  // },
   fee: {
-    label: 'Fee',
+    label: 'Fees',
     value: 'fee',
-    icon: <i className="text-info fa-solid fa-receipt"></i>,
+    icon: (
+      <badge style={{width: '70px'}} className="badge bg-info text-white">
+        Fee
+      </badge>
+    ),
   },
   disbursement: {
-    label: 'Disbursement',
+    label: 'Disbursements',
     value: 'disbursement',
-    icon: <i className="text-info fa fa-repeat"></i>,
+    icon: (
+      <badge style={{width: '70px'}} className="badge bg-secondary text-white">
+        Tip
+      </badge>
+    ),
+  },
+  refund: {
+    label: 'Refunds',
+    value: 'refund',
+    icon: (
+      <badge style={{width: '70px'}} className="badge bg-danger text-white">
+        Refund
+      </badge>
+    ),
   },
 };
 
@@ -120,14 +141,19 @@ export const TRANSACTION_STATUS = {
     value: 'pending',
     color: 'warning',
   },
-  cancelled: {
-    label: 'Cancelled',
-    value: 'cancelled',
-    color: 'danger',
-  },
-  succeeded: {
-    label: 'Succeeded',
-    value: 'succeeded',
+  // cancelled: {
+  //   label: 'Cancelled',
+  //   value: 'cancelled',
+  //   color: 'danger',
+  // },
+  cleared: {
+    label: 'Cleared',
+    value: 'cleared',
     color: 'success',
+  },
+  refunded: {
+    label: 'Refunded',
+    value: 'refunded',
+    color: 'danger',
   },
 };

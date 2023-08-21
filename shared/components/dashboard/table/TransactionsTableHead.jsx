@@ -26,7 +26,7 @@ const TransactionsTableHead = () => {
                   variant="light"
                   size="sm"
                 >
-                  {activeType}
+                  {TRANSACTION_TYPES[activeType].label}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {Object.keys(TRANSACTION_TYPES).map((key) => {
