@@ -33,24 +33,16 @@ const UserInfo = () => {
     watch,
     setError,
     setValue,
+    getValues,
     formState: {errors, isSubmitSuccessful, isSubmitting},
   } = methods;
   const values = watch();
 
-  const onSubmit = (data) => {
-    const obj = {
-      displayName: data.displayName,
-      photoURL: data.photoURL,
-    };
+  const onSubmit = () => {
+    const {photoURL, displayName} = getValues();
+    const obj = {displayName, photoURL};
     updateProfile(firebaseAuth?.currentUser, obj)
       .then(() => {
-        dispatch(
-          userActions.setCurrentUser({
-            ...currentUser,
-            photoURL: firebaseAuth?.currentUser?.photoURL,
-            displayName: firebaseAuth?.currentUser?.displayName,
-          })
-        );
         dispatch(
           updateUser({
             userDataToUpdate: {
@@ -74,7 +66,7 @@ const UserInfo = () => {
     formData.append('type', 'profile');
     const urlArray = await uploadAttachment(formData);
     setValue('photoURL', urlArray[0]);
-    onSubmit(values);
+    onSubmit();
   };
 
   return (
