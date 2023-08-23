@@ -59,7 +59,7 @@ const Contentlayout = ({children}) => {
   };
 
   useEffect(() => {
-    if (transactionsList.length > 0 && !isTransactionsRequestLoading) {
+    if (!isTransactionsRequestLoading) {
       dispatch(prepareTransactionsSummary());
       dispatch(calculateTransactionsDatesForGraph());
     }

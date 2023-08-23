@@ -113,10 +113,10 @@ const slice = createSlice({
       averageTipAmount = totalTipsAmount / totalNumberOfTips;
 
       state.summary = {
-        totalTippers: parseInt(totalTippers),
-        totalNumberOfTips: parseInt(totalNumberOfTips),
-        totalTipsAmount: parseInt(totalTipsAmount),
-        averageTipAmount: parseInt(averageTipAmount),
+        totalTippers: parseInt(totalTippers) || 0,
+        totalNumberOfTips: parseInt(totalNumberOfTips) || 0,
+        totalTipsAmount: parseInt(totalTipsAmount) || 0,
+        averageTipAmount: parseInt(averageTipAmount) || 0,
       };
     },
     // Reset Transactions State
