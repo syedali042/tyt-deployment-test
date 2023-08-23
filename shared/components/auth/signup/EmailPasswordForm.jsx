@@ -51,7 +51,7 @@ export const EmailPasswordForm = ({
   const getInvitationLink = async () => {
     try {
       const {email} = values;
-      await dispatch(getInvitationLinkEmail({email}));
+      if (email.length > 3) await dispatch(getInvitationLinkEmail({email}));
     } catch (error) {
       console.log(error);
     }
@@ -94,7 +94,10 @@ export const EmailPasswordForm = ({
             }}
             className="btn btn-sm btn-secondary"
             // disabled={isEmailAvailable}
-            onClick={() => verifyEmail()}
+            onClick={(e) => {
+              verifyEmail();
+              e.preventDefault();
+            }}
           >
             <span
               style={{
@@ -153,7 +156,8 @@ export const EmailPasswordForm = ({
           </div>
         </div>
       )}
-      {(isEmailAvailable && isEmailAvailable != 202) || invitedUser ? (
+      {(isEmailAvailable && isEmailAvailable != 202) ||
+      (invitedUser && isEmailAvailable != 202) ? (
         <>
           <FormGroupInput
             label={'Password'}
