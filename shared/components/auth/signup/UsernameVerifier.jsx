@@ -86,7 +86,10 @@ export const UsernameVerifier = ({
               }}
               className="btn btn-sm btn-secondary"
               disabled={isUsernameVerified}
-              onClick={() => verifyUsernameAvailability()}
+              onClick={(e) => {
+                e.preventDefault();
+                verifyUsernameAvailability();
+              }}
             >
               <span
                 style={{
