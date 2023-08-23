@@ -8,7 +8,7 @@ const TransactionsTableRow = ({index, item, onClick}) => {
   const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
   return (
-    <tr key={index} onClick={onClick}>
+    <tr key={index}>
       <td
         title={TRANSACTION_STATUS[item?.status].label}
         style={{width: '100px'}}
@@ -26,7 +26,7 @@ const TransactionsTableRow = ({index, item, onClick}) => {
         {TRANSACTION_TYPES[item?.type.toLowerCase()].icon}
       </td>
       <td width={'150px'}>${item?.amount}</td>
-      <td>
+      <td onClick={onClick}>
         <Typography
           width={500}
           fontSize={14}
