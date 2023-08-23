@@ -171,6 +171,7 @@ export const SignUpForm = () => {
           isUsernameVerified={isUsernameVerified}
           isSubmitSuccessful={isSubmitSuccessful}
           isSubmitting={isSubmitting}
+          values={values}
         />
         {/* <Row className="text-center pt-3"></Row>
         <center>

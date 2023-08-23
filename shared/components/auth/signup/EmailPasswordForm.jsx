@@ -1,12 +1,17 @@
 // React
 import {useEffect, useState} from 'react';
 // React Bootstrap
-import {Stack, Row, Button, Alert} from 'react-bootstrap';
+import {Stack, Row, Button, Alert, Col} from 'react-bootstrap';
 // Mui
 import {CircularProgress, Typography} from '@mui/material';
 // Redux
-import {useSelector} from 'react-redux';
-import {getInvitedUser} from '@/shared/redux/slices/user';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  checkEmailAvailability,
+  getInvitationLinkEmail,
+  getInvitedUser,
+  isLoading as getIsUserRequestLoading,
+} from '@/shared/redux/slices/user';
 // Components
 import {FormGroupInput} from '../../bootstrap/FormGroupInput';
 
@@ -16,28 +21,99 @@ export const EmailPasswordForm = ({
   isUsernameVerified,
   isSubmitSuccessful,
   isSubmitting,
+  values,
 }) => {
+  const isRequestLoading = useSelector(getIsUserRequestLoading);
+
+  const dispatch = useDispatch();
   const invitedUser = useSelector(getInvitedUser);
+
   const [isEmailDisabled, setIsEmailDisabled] = useState(invitedUser);
+
+  const [isEmailAvailable, setIsEmailAvailable] = useState(false);
+
   useEffect(() => {
     if (invitedUser) setIsEmailDisabled(true);
   }, [invitedUser]);
 
+  const verifyEmail = async () => {
+    setIsEmailAvailable(false);
+    try {
+      const {email} = values;
+      await dispatch(checkEmailAvailability({email}));
+      setIsEmailAvailable(true);
+    } catch (error) {
+      const {statusCode} = error;
+      setIsEmailAvailable(statusCode);
+    }
+  };
+
+  const getInvitationLink = async () => {
+    try {
+      const {email} = values;
+      await dispatch(getInvitationLinkEmail({email}));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Stack>
-      <Row style={{border: '1px solid #eee'}}></Row>
-      <FormGroupInput
-        label={'Email'}
-        labelColor={'#fff'}
-        name={'email'}
-        type={'email'}
-        register={register}
-        error={errors?.email?.message}
-        placeholder={'Enter Your Email'}
-        required
-        id={'signup-email-field'}
-        disabled={invitedUser && isEmailDisabled}
-      />
+      {/* <Row className="mb-4" style={{border: '1px solid #eee'}}></Row> */}
+      <Row
+        style={{
+          alignItems: 'center',
+          paddingLeft: '12px',
+          paddingRight: '12px',
+        }}
+      >
+        <Col md={{span: 9}} className="p-0">
+          <FormGroupInput
+            name={'email'}
+            type={'email'}
+            register={register}
+            error={errors?.email?.message}
+            placeholder={'Enter Your Email'}
+            required
+            id={'signup-email-field'}
+            disabled={!isUsernameVerified || (invitedUser && isEmailDisabled)}
+            onKeyDown={(e) => {
+              if (e.key == 'Enter') {
+                verifyEmail();
+                e.preventDefault();
+              }
+            }}
+          />
+        </Col>
+        <Col md={3}>
+          <button
+            style={{
+              width: '100%',
+              // cursor: `${isEmailAvailable ? 'not-allowed' : 'pointer'}`,
+              transform: 'translateY(-30%)',
+            }}
+            className="btn btn-sm btn-secondary"
+            // disabled={isEmailAvailable}
+            onClick={() => verifyEmail()}
+          >
+            <span
+              style={{
+                display: isRequestLoading ? 'none' : 'inline',
+              }}
+            >
+              Verify
+            </span>
+            <Stack
+              style={{
+                transform: 'translateY(15%)',
+                display: isRequestLoading ? 'inline' : 'none',
+              }}
+            >
+              <CircularProgress size={'15px'} color="inherit" />
+            </Stack>
+          </button>
+        </Col>
+      </Row>
       <Stack>
         <Typography
           textAlign={'right'}
@@ -55,73 +131,105 @@ export const EmailPasswordForm = ({
           <u>Chnage Email</u>
         </Typography>
       </Stack>
-      <FormGroupInput
-        label={'Password'}
-        labelColor={'#fff'}
-        name={'password'}
-        type={'password'}
-        register={register}
-        error={errors?.password?.message}
-        placeholder={'Enter Your Password'}
-        required
-      />
-      {!errors?.password?.message && (
-        <Typography
-          sx={{color: '#fff !important'}}
-          fontSize={12}
-          px={0.5}
-          mt={-1.5}
-        >
-          Password has to have at least 1 small character, 1 capital character,
-          a number and a special character
-        </Typography>
+      {isEmailAvailable == 202 && (
+        <div style={{padding: '0px 12px 0px 0px'}}>
+          <div
+            style={{
+              color: '#ac0700 !important',
+              background: '#fff',
+              borderRadius: '5px',
+              padding: '10px',
+              fontSize: '13px',
+              textAlign: 'center',
+            }}
+          >
+            <p>Someone already invited you, click the button below</p>
+            <button
+              onClick={() => getInvitationLink()}
+              className="btn btn-primary btn-sm w-100"
+            >
+              Get Invitation Link Email
+            </button>
+          </div>
+        </div>
       )}
-      <FormGroupInput
-        label={'Confirm Password'}
-        labelColor={'#fff'}
-        name={'confirmPassword'}
-        type={'password'}
-        register={register}
-        error={errors?.confirmPassword?.message}
-        placeholder={'Enter Your Password Again'}
-        required
-      />
-      <Stack className="container-login100-form-btn">
-        <Button
-          variant={'secondary'}
-          type="submit"
-          className="login100-form-btn"
-          disabled={!isUsernameVerified || isSubmitting || isSubmitSuccessful}
-          style={{
-            cursor: `${
-              !isUsernameVerified || isSubmitting || isSubmitSuccessful
-                ? 'not-allowed'
-                : 'pointer'
-            }`,
-          }}
-        >
-          {isSubmitSuccessful ? (
-            <>Please wait, I&apos;m preparing dashboard</>
-          ) : (
-            <>
-              <span
-                style={{
-                  display: isSubmitting ? 'none' : 'inline',
-                }}
-              >
-                Sign Up
-              </span>
-              <CircularProgress
-                style={{
-                  display: isSubmitting ? 'inline' : 'none',
-                }}
-                size={'20px'}
-                color="inherit"
-              />
-            </>
+      {(isEmailAvailable && isEmailAvailable != 202) || invitedUser ? (
+        <>
+          <FormGroupInput
+            label={'Password'}
+            labelColor={'#fff'}
+            name={'password'}
+            type={'password'}
+            register={register}
+            error={errors?.password?.message}
+            placeholder={'Enter Your Password'}
+            required
+          />
+
+          {!errors?.password?.message && (
+            <Typography
+              sx={{color: '#fff !important'}}
+              fontSize={12}
+              px={0.5}
+              mt={-1.5}
+            >
+              Password has to have at least 1 small character, 1 capital
+              character, a number and a special character
+            </Typography>
           )}
-        </Button>
-      </Stack>
+
+          <FormGroupInput
+            label={'Confirm Password'}
+            labelColor={'#fff'}
+            name={'confirmPassword'}
+            type={'password'}
+            register={register}
+            error={errors?.confirmPassword?.message}
+            placeholder={'Enter Your Password Again'}
+            required
+          />
+          <Stack className="container-login100-form-btn">
+            <Button
+              variant={'secondary'}
+              type="submit"
+              className="login100-form-btn"
+              disabled={
+                !isUsernameVerified || isSubmitting || isSubmitSuccessful
+              }
+              style={{
+                cursor: `${
+                  !isUsernameVerified || isSubmitting || isSubmitSuccessful
+                    ? 'not-allowed'
+                    : 'pointer'
+                }`,
+              }}
+            >
+              {isSubmitSuccessful ? (
+                <>Please wait, I&apos;m preparing dashboard</>
+              ) : (
+                <>
+                  <span
+                    style={{
+                      display: isSubmitting ? 'none' : 'inline',
+                    }}
+                  >
+                    Sign Up
+                  </span>
+                  <CircularProgress
+                    style={{
+                      display: isSubmitting ? 'inline' : 'none',
+                    }}
+                    size={'20px'}
+                    color="inherit"
+                  />
+                </>
+              )}
+            </Button>
+          </Stack>
+        </>
+      ) : (
+        ''
+      )}
     </Stack>
   );
 };

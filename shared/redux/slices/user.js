@@ -280,3 +280,36 @@ export const fetchUsers = () => async (dispatch, getState) => {
 
 // Get Users List
 export const getUsersList = (state) => state.user.list;
+
+export const checkEmailAvailability =
+  ({email}) =>
+  async (dispatch) => {
+    dispatch(actions.startLoading());
+    try {
+      const response = await axios.post('/users/check-availability', {
+        value: email,
+      });
+      const {statusCode, message} = response.data;
+      if (statusCode === 202) {
+        dispatch(actions.hasError({statusCode, message}));
+        throw {statusCode, message};
+      }
+      dispatch(actions.stopLoading());
+    } catch (error) {
+      dispatch(actions.stopLoading());
+      dispatch(actions.hasError(error));
+      throw error;
+    }
+  };
+
+export const getInvitationLinkEmail =
+  ({email}) =>
+  async (dispatch) => {
+    try {
+      await axios.post(`/users/send-invitation-link-email`, {email});
+    } catch (error) {
+      dispatch(actions.stopLoading());
+      dispatch(actions.hasError(error));
+      throw error;
+    }
+  };
