@@ -96,7 +96,7 @@ export const TRANSACTION_TYPES = {
     label: 'Tips',
     value: 'tip',
     icon: (
-      <badge style={{width: '70px'}} className="badge bg-success text-white">
+      <badge style={{width: '80px'}} className="badge bg-success text-white">
         Tip
       </badge>
     ),
@@ -110,7 +110,7 @@ export const TRANSACTION_TYPES = {
     label: 'Fees',
     value: 'fee',
     icon: (
-      <badge style={{width: '70px'}} className="badge bg-info text-white">
+      <badge style={{width: '80px'}} className="badge bg-info text-white">
         Fee
       </badge>
     ),
@@ -119,8 +119,8 @@ export const TRANSACTION_TYPES = {
     label: 'Disbursements',
     value: 'disbursement',
     icon: (
-      <badge style={{width: '70px'}} className="badge bg-secondary text-white">
-        Tip
+      <badge style={{width: '80px'}} className="badge bg-secondary text-white">
+        Disbursement
       </badge>
     ),
   },
@@ -128,7 +128,7 @@ export const TRANSACTION_TYPES = {
     label: 'Refunds',
     value: 'refund',
     icon: (
-      <badge style={{width: '70px'}} className="badge bg-danger text-white">
+      <badge style={{width: '80px'}} className="badge bg-danger text-white">
         Refund
       </badge>
     ),
