@@ -20,7 +20,9 @@ const UserProfileSwitcher = () => {
         <Col md={4}>
           <Autocomplete
             options={allUsers}
-            getOptionLabel={(option) => option?.displayName || option?.username}
+            getOptionLabel={(option) =>
+              option?.displayName || option?.username || option?.email
+            }
             onChange={async (e, value) => {
               await dispatch(fetchTransactions({user: value}));
             }}
