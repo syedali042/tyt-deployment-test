@@ -289,11 +289,9 @@ export const checkEmailAvailability =
       const response = await axios.post('/users/check-availability', {
         value: email,
       });
-      const {statusCode, message} = response.data;
-      if (statusCode === 202) {
-        dispatch(actions.hasError({statusCode, message}));
-        throw new Error(statusCode);
-      }
+      const {unverifiedUser} = response.data.body;
+      if (unverifiedUser)
+        throw new Error('Unverified User', {cause: {unverifiedUser}});
       dispatch(actions.stopLoading());
     } catch (error) {
       dispatch(actions.stopLoading());
@@ -302,7 +300,7 @@ export const checkEmailAvailability =
     }
   };
 
-export const getInvitationLinkEmail =
+export const triggerSendingInvitationLinkEmail =
   ({email}) =>
   async (dispatch) => {
     dispatch(actions.startLoading());

@@ -8,7 +8,7 @@ import {CircularProgress, Typography} from '@mui/material';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   checkEmailAvailability,
-  getInvitationLinkEmail,
+  triggerSendingInvitationLinkEmail,
   getInvitedUser,
   isLoading as getIsUserRequestLoading,
 } from '@/shared/redux/slices/user';
@@ -23,6 +23,7 @@ export const EmailPasswordForm = ({
   isSubmitSuccessful,
   isSubmitting,
   values,
+  setError,
 }) => {
   const router = useRouter();
   const isRequestLoading = useSelector(getIsUserRequestLoading);
@@ -42,13 +43,17 @@ export const EmailPasswordForm = ({
 
   const verifyEmail = async () => {
     setIsEmailAvailable(false);
+    setError('email', {message: ''});
     try {
       const {email} = values;
       await dispatch(checkEmailAvailability({email}));
       setIsEmailAvailable(true);
     } catch (error) {
       const {message} = error;
-      setIsEmailAvailable(message);
+      if (error?.cause?.unverifiedUser) setIsEmailAvailable(null);
+      else {
+        setError('email', {message});
+      }
     }
   };
 
@@ -56,7 +61,7 @@ export const EmailPasswordForm = ({
     try {
       const {email} = values;
       if (email.length > 3) {
-        await dispatch(getInvitationLinkEmail({email}));
+        await dispatch(triggerSendingInvitationLinkEmail({email}));
         setInvitationLinkSent(true);
       }
     } catch (error) {
@@ -139,7 +144,7 @@ export const EmailPasswordForm = ({
           <u>Chnage Email</u>
         </Typography>
       </Stack>
-      {isEmailAvailable == 202 && (
+      {isEmailAvailable == null && (
         <div style={{padding: '0px 12px 0px 0px'}}>
           <div
             style={{
@@ -187,8 +192,7 @@ export const EmailPasswordForm = ({
           </div>
         </div>
       )}
-      {(isEmailAvailable && isEmailAvailable != 202) ||
-      (invitedUser && isEmailAvailable != 202) ? (
+      {invitedUser || isEmailAvailable ? (
         <>
           <FormGroupInput
             label={'Password'}

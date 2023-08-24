@@ -166,6 +166,7 @@ export const SignUpForm = () => {
         {/* {isUsernameAndPassword && ( */}
         {/* <> */}
         <EmailPasswordForm
+          setError={setError}
           register={register}
           errors={errors}
           isUsernameVerified={isUsernameVerified}
