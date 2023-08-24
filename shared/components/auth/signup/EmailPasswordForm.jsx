@@ -14,6 +14,7 @@ import {
 } from '@/shared/redux/slices/user';
 // Components
 import {FormGroupInput} from '../../bootstrap/FormGroupInput';
+import {useRouter} from 'next/navigation';
 
 export const EmailPasswordForm = ({
   register,
@@ -23,6 +24,7 @@ export const EmailPasswordForm = ({
   isSubmitting,
   values,
 }) => {
+  const router = useRouter();
   const isRequestLoading = useSelector(getIsUserRequestLoading);
 
   const dispatch = useDispatch();
@@ -31,6 +33,8 @@ export const EmailPasswordForm = ({
   const [isEmailDisabled, setIsEmailDisabled] = useState(invitedUser);
 
   const [isEmailAvailable, setIsEmailAvailable] = useState(false);
+
+  const [isInvitationLinkSent, setInvitationLinkSent] = useState(false);
 
   useEffect(() => {
     if (invitedUser) setIsEmailDisabled(true);
@@ -51,7 +55,10 @@ export const EmailPasswordForm = ({
   const getInvitationLink = async () => {
     try {
       const {email} = values;
-      if (email.length > 3) await dispatch(getInvitationLinkEmail({email}));
+      if (email.length > 3) {
+        await dispatch(getInvitationLinkEmail({email}));
+        setInvitationLinkSent(true);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -89,11 +96,9 @@ export const EmailPasswordForm = ({
           <button
             style={{
               width: '100%',
-              // cursor: `${isEmailAvailable ? 'not-allowed' : 'pointer'}`,
               transform: 'translateY(-30%)',
             }}
             className="btn btn-sm btn-secondary"
-            // disabled={isEmailAvailable}
             onClick={(e) => {
               verifyEmail();
               e.preventDefault();
@@ -148,11 +153,38 @@ export const EmailPasswordForm = ({
           >
             <p>Someone already invited you, click the button below</p>
             <button
-              onClick={() => getInvitationLink()}
+              style={{
+                cursor: `${isInvitationLinkSent ? 'not-allowed' : 'pointer'}`,
+              }}
+              disabled={isInvitationLinkSent}
+              onClick={(e) => {
+                e.preventDefault();
+                getInvitationLink();
+              }}
               className="btn btn-primary btn-sm w-100"
             >
-              Get Invitation Link Email
+              {isRequestLoading ? (
+                <CircularProgress size={'13px'} />
+              ) : isInvitationLinkSent ? (
+                'Invitation link sent to your email'
+              ) : (
+                'Get Invitation Link Email'
+              )}
             </button>
+          </div>
+          <div
+            onClick={(e) => {
+              router.push('/auth/login');
+              e.preventDefault();
+            }}
+            style={{
+              textAlign: 'right',
+              color: '#fff',
+              paddingTop: '10px',
+              cursor: 'pointer',
+            }}
+          >
+            <u>Go to Login</u>
           </div>
         </div>
       )}
