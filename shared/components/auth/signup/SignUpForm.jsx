@@ -166,11 +166,13 @@ export const SignUpForm = () => {
         {/* {isUsernameAndPassword && ( */}
         {/* <> */}
         <EmailPasswordForm
+          setError={setError}
           register={register}
           errors={errors}
           isUsernameVerified={isUsernameVerified}
           isSubmitSuccessful={isSubmitSuccessful}
           isSubmitting={isSubmitting}
+          values={values}
         />
         {/* <Row className="text-center pt-3"></Row>
         <center>

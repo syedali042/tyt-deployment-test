@@ -199,8 +199,8 @@ export const setInvitedUser =
       const response = await axios.get(
         `/users/get-user-info?email=${invitedUser?.email}`
       );
-      const {verified} = response.data.body;
-      if (!verified) dispatch(actions.setInvitedUser(invitedUser));
+      const {verified, userInternalId, email} = response.data.body;
+      if (!verified) dispatch(actions.setInvitedUser({email, userInternalId}));
       else
         dispatch(
           actions.hasError({code: 403, message: 'User Already Verified'})
@@ -280,3 +280,38 @@ export const fetchUsers = () => async (dispatch, getState) => {
 
 // Get Users List
 export const getUsersList = (state) => state.user.list;
+
+export const checkEmailAvailability =
+  ({email}) =>
+  async (dispatch) => {
+    dispatch(actions.startLoading());
+    try {
+      const response = await axios.post('/users/check-availability', {
+        value: email,
+      });
+      const {unverifiedUser} = response.data.body;
+      if (unverifiedUser) {
+        dispatch(actions.stopLoading());
+        return {unverifiedUser};
+      }
+      dispatch(actions.stopLoading());
+    } catch (error) {
+      dispatch(actions.stopLoading());
+      dispatch(actions.hasError(error));
+      throw error;
+    }
+  };
+
+export const triggerSendingInvitationLinkEmail =
+  ({email}) =>
+  async (dispatch) => {
+    dispatch(actions.startLoading());
+    try {
+      await axios.post(`/users/send-invitation-link-email`, {email});
+      dispatch(actions.stopLoading());
+    } catch (error) {
+      dispatch(actions.stopLoading());
+      dispatch(actions.hasError(error));
+      throw error;
+    }
+  };

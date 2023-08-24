@@ -64266,11 +64266,11 @@ textarea.form-control {
   background-color: #bf4d4d !important;
 }
 
-.dark-mode i.text-info{
-  color: #09BAEF !important;
+.dark-mode i.text-info {
+  color: #09baef !important;
 }
 
-.dark-mode .disabled{
+.dark-mode .disabled {
   color: #fff !important;
 }
 
@@ -64278,8 +64278,11 @@ textarea.form-control {
   color: #fff;
 }
 
-.visually-hidden{
- display:none !important;
+.visually-hidden {
+  display: none !important;
 }
 
+#signup-email-field:disabled {
+  color: #fff !important;
+}
 /*# sourceMappingURL=style.css.map */
