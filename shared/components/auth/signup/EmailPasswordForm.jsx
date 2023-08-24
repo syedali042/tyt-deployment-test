@@ -67,6 +67,12 @@ export const EmailPasswordForm = ({
     }
   };
 
+  const isEmailFieldDisabled =
+    !isUsernameVerified || (invitedUser && isEmailDisabled);
+
+  const isSignUpButtonDisabled =
+    !isUsernameVerified || isSubmitting || isSubmitSuccessful;
+
   return (
     <Stack>
       {/* <Row className="mb-4" style={{border: '1px solid #eee'}}></Row> */}
@@ -86,7 +92,7 @@ export const EmailPasswordForm = ({
             placeholder={'Enter Your Email'}
             required
             id={'signup-email-field'}
-            disabled={!isUsernameVerified || (invitedUser && isEmailDisabled)}
+            disabled={isEmailFieldDisabled}
             onKeyDown={(e) => {
               if (e.key == 'Enter') {
                 verifyEmail();
@@ -107,20 +113,16 @@ export const EmailPasswordForm = ({
               e.preventDefault();
             }}
           >
-            <span
-              style={{
-                display: isRequestLoading ? 'none' : 'inline',
-              }}
-            >
-              Verify
-            </span>
-            <Stack
-              style={{
-                transform: 'translateY(15%)',
-                display: isRequestLoading ? 'inline' : 'none',
-              }}
-            >
-              <CircularProgress size={'15px'} color="inherit" />
+            <Stack>
+              {isRequestLoading ? (
+                <CircularProgress
+                  style={{transform: 'translateY(15%)'}}
+                  size={'15px'}
+                  color="inherit"
+                />
+              ) : (
+                'Verify'
+              )}
             </Stack>
           </button>
         </Col>
@@ -230,35 +232,26 @@ export const EmailPasswordForm = ({
               variant={'secondary'}
               type="submit"
               className="login100-form-btn"
-              disabled={
-                !isUsernameVerified || isSubmitting || isSubmitSuccessful
-              }
+              disabled={isSignUpButtonDisabled}
               style={{
-                cursor: `${
-                  !isUsernameVerified || isSubmitting || isSubmitSuccessful
-                    ? 'not-allowed'
-                    : 'pointer'
-                }`,
+                cursor: `${isSignUpButtonDisabled ? 'not-allowed' : 'pointer'}`,
               }}
             >
               {isSubmitSuccessful ? (
                 <>Please wait, I&apos;m preparing dashboard</>
               ) : (
                 <>
-                  <span
-                    style={{
-                      display: isSubmitting ? 'none' : 'inline',
-                    }}
-                  >
-                    Sign Up
-                  </span>
-                  <CircularProgress
-                    style={{
-                      display: isSubmitting ? 'inline' : 'none',
-                    }}
-                    size={'20px'}
-                    color="inherit"
-                  />
+                  {isSubmitting ? (
+                    <CircularProgress
+                      style={{
+                        display: isSubmitting ? 'inline' : 'none',
+                      }}
+                      size={'20px'}
+                      color="inherit"
+                    />
+                  ) : (
+                    'Sign Up'
+                  )}
                 </>
               )}
             </Button>
