@@ -292,7 +292,7 @@ export const checkEmailAvailability =
       const {statusCode, message} = response.data;
       if (statusCode === 202) {
         dispatch(actions.hasError({statusCode, message}));
-        throw {statusCode, message};
+        throw new Error(statusCode);
       }
       dispatch(actions.stopLoading());
     } catch (error) {

@@ -1,7 +1,7 @@
 // React
 import {useEffect, useState} from 'react';
 // React Bootstrap
-import {Stack, Row, Button, Alert, Col} from 'react-bootstrap';
+import {Stack, Row, Button, Col} from 'react-bootstrap';
 // Mui
 import {CircularProgress, Typography} from '@mui/material';
 // Redux
@@ -47,8 +47,8 @@ export const EmailPasswordForm = ({
       await dispatch(checkEmailAvailability({email}));
       setIsEmailAvailable(true);
     } catch (error) {
-      const {statusCode} = error;
-      setIsEmailAvailable(statusCode);
+      const {message} = error;
+      setIsEmailAvailable(message);
     }
   };
 
@@ -163,13 +163,12 @@ export const EmailPasswordForm = ({
               }}
               className="btn btn-primary btn-sm w-100"
             >
-              {isRequestLoading ? (
-                <CircularProgress size={'13px'} />
-              ) : isInvitationLinkSent ? (
-                'Invitation link sent to your email'
-              ) : (
-                'Get Invitation Link Email'
-              )}
+              {(() => {
+                if (isRequestLoading) return <CircularProgress size={'13px'} />;
+                else if (isInvitationLinkSent)
+                  return 'Invitation link sent to your email';
+                else return 'Get Invitation Link Email';
+              })()}
             </button>
           </div>
           <div
