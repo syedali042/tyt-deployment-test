@@ -46,14 +46,12 @@ export const EmailPasswordForm = ({
     setError('email', {message: ''});
     try {
       const {email} = values;
-      await dispatch(checkEmailAvailability({email}));
-      setIsEmailAvailable(true);
+      const verifyEmail = await dispatch(checkEmailAvailability({email}));
+      if (verifyEmail?.unverifiedUser) setIsEmailAvailable(null);
+      else setIsEmailAvailable(true);
     } catch (error) {
       const {message} = error;
-      if (error?.cause?.unverifiedUser) setIsEmailAvailable(null);
-      else {
-        setError('email', {message});
-      }
+      setError('email', {message});
     }
   };
 

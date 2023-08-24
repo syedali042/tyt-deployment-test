@@ -290,8 +290,10 @@ export const checkEmailAvailability =
         value: email,
       });
       const {unverifiedUser} = response.data.body;
-      if (unverifiedUser)
-        throw new Error('Unverified User', {cause: {unverifiedUser}});
+      if (unverifiedUser) {
+        dispatch(actions.stopLoading());
+        return {unverifiedUser};
+      }
       dispatch(actions.stopLoading());
     } catch (error) {
       dispatch(actions.stopLoading());
