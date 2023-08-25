@@ -24,6 +24,7 @@ export const EmailPasswordForm = ({
   isSubmitting,
   values,
   setError,
+  clearErrors,
 }) => {
   const router = useRouter();
   const isRequestLoading = useSelector(getIsUserRequestLoading);
@@ -42,10 +43,9 @@ export const EmailPasswordForm = ({
   }, [invitedUser]);
 
   const verifyEmail = async () => {
-    setIsEmailAvailable(false);
-    setError('email', {message: ''});
     try {
       const {email} = values;
+      if (email == invitedUser?.email) return setIsEmailAvailable(true);
       const verifyEmail = await dispatch(checkEmailAvailability({email}));
       if (verifyEmail?.unverifiedUser) setIsEmailAvailable(null);
       else setIsEmailAvailable(true);
@@ -66,6 +66,11 @@ export const EmailPasswordForm = ({
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    setIsEmailAvailable(false);
+    clearErrors('email');
+  }, [values?.email]);
 
   const isEmailFieldDisabled =
     !isUsernameVerified || (invitedUser && isEmailDisabled);
@@ -88,7 +93,6 @@ export const EmailPasswordForm = ({
             name={'email'}
             type={'email'}
             register={register}
-            error={errors?.email?.message}
             placeholder={'Enter Your Email'}
             required
             id={'signup-email-field'}
@@ -127,7 +131,28 @@ export const EmailPasswordForm = ({
           </button>
         </Col>
       </Row>
-      <Stack>
+      <Stack className="d-flex justify-content-between">
+        <Typography
+          className="px-1"
+          style={{
+            cursor: 'pointer',
+            display: errors?.email ? 'block' : 'none',
+            fontSize: '0.8rem',
+            color: '#FFFFCC',
+          }}
+        >
+          {errors?.email?.message}
+        </Typography>
+        <Typography
+          className="text-success px-1"
+          style={{
+            cursor: 'pointer',
+            display: isEmailAvailable ? 'block' : 'none',
+            fontSize: '0.8rem',
+          }}
+        >
+          Email is available
+        </Typography>
         <Typography
           textAlign={'right'}
           onClick={() => {

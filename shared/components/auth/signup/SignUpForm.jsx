@@ -86,6 +86,7 @@ export const SignUpForm = () => {
     watch,
     setError,
     setValue,
+    clearErrors,
     formState: {errors, isSubmitting, isSubmitSuccessful},
   } = methods;
 
@@ -168,6 +169,7 @@ export const SignUpForm = () => {
         <EmailPasswordForm
           setError={setError}
           register={register}
+          clearErrors={clearErrors}
           errors={errors}
           isUsernameVerified={isUsernameVerified}
           isSubmitSuccessful={isSubmitSuccessful}
