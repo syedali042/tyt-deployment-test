@@ -157,3 +157,24 @@ export const TRANSACTION_STATUS = {
     color: 'danger',
   },
 };
+
+export const IS_DISABLED = {
+  isEmailFieldDisabled: ({
+    isUsernameVerified,
+    invitedUser,
+    isEmailDisabled,
+  }) => {
+    if (!isUsernameVerified) return true;
+    if (invitedUser && isEmailDisabled) return true;
+    return false;
+  },
+  isSignUpButtonDisabled: ({
+    isUsernameVerified,
+    isSubmitting,
+    isSubmitSuccessful,
+  }) => {
+    if (!isUsernameVerified) return true;
+    if (isSubmitting) return true;
+    if (isSubmitSuccessful) return true;
+  },
+};
