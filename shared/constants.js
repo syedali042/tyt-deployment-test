@@ -165,8 +165,7 @@ export const IS_DISABLED = {
     isEmailDisabled,
   }) => {
     if (!isUsernameVerified) return true;
-    if (invitedUser && isEmailDisabled) return true;
-    else return false;
+    return invitedUser && isEmailDisabled;
   },
   isSignUpButtonDisabled: ({
     isUsernameVerified,
