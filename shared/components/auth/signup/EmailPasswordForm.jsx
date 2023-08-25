@@ -15,6 +15,7 @@ import {
 // Components
 import {FormGroupInput} from '../../bootstrap/FormGroupInput';
 import {useRouter} from 'next/navigation';
+import {IS_DISABLED} from '@/shared/constants';
 
 export const EmailPasswordForm = ({
   register,
@@ -72,11 +73,17 @@ export const EmailPasswordForm = ({
     clearErrors('email');
   }, [values?.email]);
 
-  const isEmailFieldDisabled =
-    !isUsernameVerified || (invitedUser && isEmailDisabled);
+  const isEmailFieldDisabled = IS_DISABLED.isEmailFieldDisabled({
+    isUsernameVerified,
+    invitedUser,
+    isEmailDisabled,
+  });
 
-  const isSignUpButtonDisabled =
-    !isUsernameVerified || isSubmitting || isSubmitSuccessful;
+  const isSignUpButtonDisabled = IS_DISABLED.isSignUpButtonDisabled({
+    isUsernameVerified,
+    isSubmitting,
+    isSubmitSuccessful,
+  });
 
   return (
     <Stack>
