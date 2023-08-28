@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   fetchUsers,
   getCurrentUser,
+  getIsCurrentUserInitialValue,
   setUserInStateFromLocalStorage,
 } from '@/shared/redux/slices/user';
 import {initializeTransactions} from '@/shared/redux/slices/transaction';
@@ -12,6 +13,7 @@ import {CircularProgress} from '@mui/material';
 
 const AuthGaurd = ({children}) => {
   const currentUser = useSelector(getCurrentUser);
+  const isCurrentUserInitialValue = useSelector(getIsCurrentUserInitialValue);
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
@@ -19,6 +21,7 @@ const AuthGaurd = ({children}) => {
   const isAuthPage = pathname.includes('/auth');
   const [layoutDecided, setLayoutDecided] = useState(false);
   useEffect(() => {
+    setLayoutDecided(false);
     // Set User In State If Exists in Local Storage
     const setUserInState = async () => {
       await dispatch(setUserInStateFromLocalStorage());
@@ -40,22 +43,25 @@ const AuthGaurd = ({children}) => {
     setLayoutDecided(true);
   }, [currentUser?.userInternalId]);
 
-  return layoutDecided ? (
-    children
-  ) : (
-    <div
-      style={{
-        backgroundColor: 'rgb(45,71,107)',
-        width: '100%',
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <CircularProgress size={'50px'} style={{color: '#fff'}} />
-    </div>
-  );
+  const LoaderComponent = () => {
+    return (
+      <div
+        style={{
+          backgroundColor: 'rgb(45,71,107)',
+          width: '100%',
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <CircularProgress size={'50px'} style={{color: '#fff'}} />
+      </div>
+    );
+  };
+
+  if (layoutDecided && !isCurrentUserInitialValue) return children;
+  else return <LoaderComponent />;
 };
 
 export default AuthGaurd;
