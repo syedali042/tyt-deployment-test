@@ -1,35 +1,23 @@
 'use client';
-import React, {useEffect, useState} from 'react';
 import SSRProvider from 'react-bootstrap/SSRProvider';
-import {useRouter} from 'next/navigation';
-import {usePathname} from 'next/navigation';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  getCurrentUser,
-  setUserInStateFromLocalStorage,
-} from '@/shared/redux/slices/user';
+import {useSelector} from 'react-redux';
+import {getCurrentUser} from '@/shared/redux/slices/user';
+import {useState} from 'react';
+import {useEffect} from 'react';
 
 const Authenticationlayout = ({children}) => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const dispatch = useDispatch();
   const currentUser = useSelector(getCurrentUser);
-  const isDashboardPage = pathname.includes('/dashboard');
+  const [display, setDisplay] = useState('none');
   useEffect(() => {
-    const setUserInState = async () => {
-      await dispatch(setUserInStateFromLocalStorage());
-    };
-    if (!currentUser?.userInternalId) setUserInState();
-  }, []);
-
-  useEffect(() => {
-    if (currentUser?.userInternalId && !isDashboardPage)
-      router.push('/dashboard/home');
-    else if (!currentUser?.userInternalId && isDashboardPage)
-      router.push('/auth/login');
+    if (currentUser == null) setDisplay('block');
   }, [currentUser]);
-
-  return !currentUser?.userInternalId && <SSRProvider>{children}</SSRProvider>;
+  return (
+    !currentUser && (
+      <SSRProvider>
+        <div style={{display}}>{children}</div>
+      </SSRProvider>
+    )
+  );
 };
 
 export default Authenticationlayout;
