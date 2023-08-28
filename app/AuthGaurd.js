@@ -1,11 +1,7 @@
 'use client';
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  fetchUsers,
-  getCurrentUser,
-  getIsCurrentUserInitialValue,
-} from '@/shared/redux/slices/user';
+import {fetchUsers, getCurrentUser} from '@/shared/redux/slices/user';
 import {initializeTransactions} from '@/shared/redux/slices/transaction';
 import {usePathname, useRouter} from 'next/navigation';
 import {CircularProgress} from '@mui/material';
@@ -29,7 +25,6 @@ const LoaderComponent = () => {
 
 const AuthGaurd = ({children}) => {
   const currentUser = useSelector(getCurrentUser);
-  const isCurrentUserInitialValue = useSelector(getIsCurrentUserInitialValue);
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
@@ -54,7 +49,7 @@ const AuthGaurd = ({children}) => {
     setLayoutDecided(true);
   }, [currentUser?.userInternalId]);
 
-  if (layoutDecided && !isCurrentUserInitialValue) return children;
+  if (layoutDecided) return children;
   else return <LoaderComponent />;
 };
 
