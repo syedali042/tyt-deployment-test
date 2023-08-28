@@ -3,25 +3,33 @@ import React, {useEffect, useState} from 'react';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import {useRouter} from 'next/navigation';
 import {usePathname} from 'next/navigation';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getCurrentUser,
+  setUserInStateFromLocalStorage,
+} from '@/shared/redux/slices/user';
 
 const Authenticationlayout = ({children}) => {
-  const [renderUi, setRenderUi] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const dispatch = useDispatch();
+  const currentUser = useSelector(getCurrentUser);
+  const isDashboardPage = pathname.includes('/dashboard');
   useEffect(() => {
-    const isWelcomeOrDashboardIncludes =
-      pathname.includes('/welcome') || pathname.includes('/dashboard');
-    const userFromStorage = localStorage.getItem('user');
-    if (userFromStorage && !isWelcomeOrDashboardIncludes)
-      router.push('/welcome');
-    else if (!userFromStorage && !isWelcomeOrDashboardIncludes)
-      setRenderUi(true);
-    else if (userFromStorage && isWelcomeOrDashboardIncludes) setRenderUi(true);
-    else if (!userFromStorage && isWelcomeOrDashboardIncludes)
-      router.push('/auth/login');
+    const setUserInState = async () => {
+      await dispatch(setUserInStateFromLocalStorage());
+    };
+    if (!currentUser?.userInternalId) setUserInState();
   }, []);
 
-  return <SSRProvider>{renderUi && children}</SSRProvider>;
+  useEffect(() => {
+    if (currentUser?.userInternalId && !isDashboardPage)
+      router.push('/dashboard/home');
+    else if (!currentUser?.userInternalId && isDashboardPage)
+      router.push('/auth/login');
+  }, [currentUser]);
+
+  return !currentUser?.userInternalId && <SSRProvider>{children}</SSRProvider>;
 };
 
 export default Authenticationlayout;

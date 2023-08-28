@@ -1,20 +1,31 @@
+// React
+import {useState} from 'react';
+// Next
+import {useRouter} from 'next/navigation';
+// Redux
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  createUser,
+  getInvitedUser,
+  updateUser,
+} from '@/shared/redux/slices/user';
+// Firebase
+import {auth as firebaseAuth} from '@/shared/firebase';
 import {
   GoogleAuthProvider,
   signInWithPopup,
   getAdditionalUserInfo,
 } from 'firebase/auth';
-import {createUser} from '@/shared/redux/slices/user';
-import AppModal from '@/shared/components/AppModal';
-import {useState} from 'react';
-import {auth as firebaseAuth} from '@/shared/firebase';
+// React Bootstrap
 import {Stack, Image} from 'react-bootstrap';
-import {useDispatch} from 'react-redux';
-import {useRouter} from 'next/navigation';
+// Components
+import AppModal from '@/shared/components/AppModal';
 
 export const SignUpWithGoogle = ({isUsernameVerified, setError, username}) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [openModal, setOpenModal] = useState(false);
+  const invitedUser = useSelector(getInvitedUser);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
   const signUpWithGoogle = () => {
@@ -30,7 +41,7 @@ export const SignUpWithGoogle = ({isUsernameVerified, setError, username}) => {
         const additionalInfo = getAdditionalUserInfo(result);
         const {isNewUser} = additionalInfo;
         const {displayName, photoURL, uid, email, accessToken} = user;
-        const createUserObj = {
+        const userObj = {
           firebaseId: uid,
           email,
           username,
@@ -41,8 +52,12 @@ export const SignUpWithGoogle = ({isUsernameVerified, setError, username}) => {
         };
 
         if (isNewUser) {
-          await dispatch(createUser(createUserObj));
-          router.push('/welcome');
+          if (!invitedUser) await dispatch(createUser(userObj));
+          else {
+            userObj.userInternalId = invitedUser?.userInternalId;
+            userObj.verified = true;
+            await dispatch(updateUser({userDataToUpdate: userObj}));
+          }
         } else {
           handleOpenModal();
         }

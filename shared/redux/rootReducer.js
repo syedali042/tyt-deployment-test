@@ -3,6 +3,9 @@ import {persistReducer} from 'redux-persist';
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 // slices
 import userReducer from './slices/user';
+import tipReducer from './slices/tip';
+import transactionReducer from './slices/transaction';
+import themeReducer from './slices/theme';
 import {clearStore} from './util';
 
 // ----------------------------------------------------------------------
@@ -38,9 +41,36 @@ const userPersistConfig = {
   // whitelist: [],
 };
 
+const tipPersistConfig = {
+  key: 'tip',
+  storage,
+  keyPrefix: 'redux-',
+  // whitelist: [],
+};
+
+const transactionPersistConfig = {
+  key: 'transaction',
+  storage,
+  keyPrefix: 'redux-',
+  // whitelist: [],
+};
+
+const themePersistConfig = {
+  key: 'theme',
+  storage,
+  keyPrefix: 'redux-',
+  // whitelist: [],
+};
+
 const appReducer = combineReducers({
   user: userReducer,
+  tip: tipReducer,
+  transaction: transactionReducer,
+  theme: themeReducer,
+  // transaction: persistReducer(transactionPersistConfig, transactionReducer),
   // user: persistReducer(userPersistConfig, userReducer),
+  // tip: persistReducer(tipPersistConfig, tipReducer),
+  // theme: persistReducer(themePersistConfig, themeReducer),
 });
 
 const rootReducer = (state, action) => {
@@ -48,6 +78,9 @@ const rootReducer = (state, action) => {
   if (action.type === clearStore.type) {
     storage.removeItem('persist:root');
     storage.removeItem('persist:user');
+    storage.removeItem('persist:transaction');
+    storage.removeItem('persist:tip');
+    storage.removeItem('persist:theme');
 
     return appReducer(undefined, action);
   }

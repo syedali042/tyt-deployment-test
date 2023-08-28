@@ -1,6 +1,9 @@
 'use client';
+// React
 import {useState} from 'react';
+// React Bootstrap
 import {Form, InputGroup} from 'react-bootstrap';
+// Components
 import FormFieldError from '../FormFieldError';
 
 export const FormGroupInput = ({
@@ -10,21 +13,25 @@ export const FormGroupInput = ({
   register,
   error,
   placeholder,
+  labelColor,
   ...others
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   return (
     <>
       <Form.Group className="text-start form-group" controlId="formpassword">
-        <Form.Label>{label}</Form.Label>
+        {label && (
+          <Form.Label style={{color: labelColor || 'inherit'}}>
+            {label}
+          </Form.Label>
+        )}
         <InputGroup>
           <Form.Control
-            className="form-control"
+            className="form-control form-control-custom"
             placeholder={placeholder}
             name={name}
             {...register(name)}
             type={!showPassword && type === 'password' ? 'password' : 'text'}
-            required
             {...others}
           />
           {type === 'password' && (
@@ -39,7 +46,7 @@ export const FormGroupInput = ({
                 cursor: 'pointer',
               }}
             >
-              <i class={`fa ${showPassword ? 'fa-eye' : 'fa-eye-slash'}`} />
+              <i className={`fa ${showPassword ? 'fa-eye' : 'fa-eye-slash'}`} />
             </div>
           )}
         </InputGroup>

@@ -1,31 +1,33 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Footer from '../footer/footer';
 import Rightside from '../rightside/rightside';
 import BacktoTop from '../backtotop/backtotop';
 import Header from '../header/header';
 import Sidebar from '../sidebar/sidebar';
 import SSRProvider from 'react-bootstrap/SSRProvider';
-import {usePathname, useRouter} from 'next/navigation';
+import {useDispatch, useSelector} from 'react-redux';
+import {getCurrentUser} from '@/shared/redux/slices/user';
+import {
+  calculateTransactionsDatesForGraph,
+  getIsTransactionsRequestLoading,
+  getTransactions,
+  prepareTransactionsSummary,
+} from '@/shared/redux/slices/transaction';
 
 const Contentlayout = ({children}) => {
-  const [renderUi, setRenderUi] = useState(false);
-  const router = useRouter();
-  const pathname = usePathname();
-  useEffect(() => {
-    const isDashboardIncludes = pathname.includes('/dashboard');
-    const userFromStorage = localStorage.getItem('user');
-    if (userFromStorage && !isDashboardIncludes) router.push('/dashboard');
-    else if (!userFromStorage && !isDashboardIncludes) setRenderUi(true);
-    else if (userFromStorage && isDashboardIncludes) setRenderUi(true);
-    else if (!userFromStorage && isDashboardIncludes)
-      router.push('/auth/login');
-  }, []);
+  const dispatch = useDispatch();
+  const currentUser = useSelector(getCurrentUser);
+  const transactionsList = useSelector(getTransactions({}));
+  const isTransactionsRequestLoading = useSelector(
+    getIsTransactionsRequestLoading
+  );
 
   useEffect(() => {
+    const mode = localStorage.getItem('theme-mode');
     document
       .querySelector('body')
-      .classList.add('app', 'sidebar-mini', 'ltr', 'light-mode');
+      .classList.add('app', 'sidebar-mini', 'ltr', mode || 'light-mode');
     document
       .querySelector('body')
       .classList.remove('login-img', 'landing-page', 'horizontal');
@@ -55,10 +57,18 @@ const Contentlayout = ({children}) => {
       document.querySelector('.card.search-result').classList.add('d-none');
     }
   };
+
+  useEffect(() => {
+    if (!isTransactionsRequestLoading) {
+      dispatch(prepareTransactionsSummary());
+      dispatch(calculateTransactionsDatesForGraph());
+    }
+  }, [transactionsList, isTransactionsRequestLoading]);
+
   return (
     <>
       {/* <Script src="//code.tidio.co/ejjaylsnuydywf5a0sqc1gvcus5orpml.js" /> */}
-      {renderUi && (
+      {currentUser?.userInternalId && (
         <SSRProvider>
           <div className="horizontalMenucontainer">
             <div className="page">

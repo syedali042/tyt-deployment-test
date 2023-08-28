@@ -1,0 +1,52 @@
+.bg-light-blue {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+}
+
+.get-started-default-input {
+  border-width: 0;
+  border-style: solid;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+.get-started-default-input {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  margin: 0;
+  overflow: visible;
+  padding: 0;
+  color: inherit;
+}
+
+.get-started-default-input {
+  width: 100%;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  position: relative;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  font-size: 14px;
+  -webkit-padding-start: 0px;
+  padding-inline-start: 0px;
+  -webkit-padding-end: 0px;
+  padding-inline-end: 0px;
+  height: auto;
+  padding-left: 0px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.9);
+  transform: translateY(0%);
+}
+
+.get-started-tip-text {
+  font-size: 14px !important;
+}
+
+@media screen and (max-width: 270px) {
+  .get-started-tip-text {
+    display: none !important;
+  }
+}

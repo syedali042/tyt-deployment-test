@@ -1,29 +1,6 @@
-.get-started-input-row {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  box-shadow: 0px 15px 87px rgba(0, 0, 0, 0.06);
-  border-radius: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
-  min-width: 370px;
-  height: 67px;
-  margin-top: 30px;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  align-items: center;
-}
-
-@media screen and (min-width: 48em) {
-  .get-started-input-row {
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-    justify-content: space-between;
-  }
+.bg-light-blue {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
 }
 
 .get-started-default-input {
@@ -31,78 +8,6 @@
   border-style: solid;
   box-sizing: border-box;
   word-wrap: break-word;
-}
-
-.default-input-url {
-  margin-top: 10px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  padding-left: 60px;
-}
-
-@media screen and (min-width: 48em) {
-  .default-input-url {
-    padding-left: 30px;
-  }
-}
-
-.get-started-default-input-container {
-  position: relative;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  padding-top: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: '#718096';
-}
-
-.get-started-default-input-button-container {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  padding-right: 10px;
-}
-
-.defualt-input-url-text {
-  font-weight: 700;
-  font-size: 19px;
-  line-height: 1.33;
-  transform: translateY(-10%);
-}
-
-@media screen and (min-width: 30em) {
-  .defualt-input-url-text {
-    line-height: 1.2;
-  }
-}
-
-@media screen and (min-width: 48em) {
-  .defualt-input-url-text {
-    font-size: 25px;
-  }
-}
-
-.defualt-input-url-slash {
-  font-weight: 400;
-  font-size: 19px;
-}
-
-@media screen and (min-width: 48em) {
-  .defualt-input-url-slash {
-    font-size: 25px;
-  }
 }
 
 .get-started-default-input {
@@ -124,7 +29,7 @@
   -moz-appearance: none;
   -ms-appearance: none;
   appearance: none;
-  font-size: 18px;
+  font-size: 14px;
   -webkit-padding-start: 0px;
   padding-inline-start: 0px;
   -webkit-padding-end: 0px;
@@ -133,11 +38,11 @@
   padding-left: 0px;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.9);
-  transform: translateY(5%);
+  transform: translateY(8%);
 }
 
 .get-started-tip-text {
-  font-size: 18px !important;
+  font-size: 14px !important;
 }
 
 @media screen and (min-width: 48em) {
@@ -153,65 +58,21 @@
   }
 }
 
-.custom-button {
-  font-family: inherit;
-  font-size: 100%;
-  line-height: inherit;
-  margin: 0;
-  overflow: visible;
-  text-transform: none;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-  color: inherit;
-}
-
-.get-started-default-input-button {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  appearance: none;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  position: relative;
-  white-space: nowrap;
-  vertical-align: middle;
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  line-height: 1.2;
-  border-radius: 10px;
-  font-weight: 600;
-  height: 0px;
-  padding: 8px 20px;
-  opacity: 0;
-  pointer-events: none;
-  width: 0px;
-}
-
-@media screen and (min-width: 48em) {
-  .get-started-default-input-button {
-    height: 50px;
-    opacity: 1;
-    pointer-events: visible;
-    width: 100%;
+@media screen and (max-width: 270px) {
+  .get-started-tip-text {
+    display: none !important;
   }
 }
 
 .field-error-container {
   max-width: 600px;
   /* min-width: 370px; */
+}
+
+.page-signup-get-started-tip-text {
+  font-size: 14px !important;
+}
+
+.page-signup-get-started-default-input {
+  font-size: 14px !important;
 }

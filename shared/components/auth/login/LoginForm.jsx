@@ -48,7 +48,6 @@ export const LoginForm = () => {
     await signInWithEmailAndPassword(firebaseAuth, usernameOrEmail, password)
       .then(async (user) => {
         await dispatch(signInUser(user.user));
-        router.push('/welcome');
       })
       .catch((error) => {
         const errorString = error.toString();
@@ -70,10 +69,10 @@ export const LoginForm = () => {
   return (
     <FormProvider methods={methods} className="login100-form validate-form">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="text-center mt-5"> Login</h1>
+        <h1 className="text-center text-white mt-5"> Login</h1>
         <Row
           className="mx-auto mb-5"
-          style={{width: '4vh', borderBottom: '1px solid #555'}}
+          style={{width: '4vh', borderBottom: '1px solid #fff'}}
         ></Row>
         <Stack>
           <FormGroupInput
@@ -81,6 +80,7 @@ export const LoginForm = () => {
             register={register}
             label={'Email'}
             type={'email'}
+            labelColor={'#fff'}
             placeholder={'Enter Your Email'}
             error={errors?.usernameOrEmail?.message}
             onKeyDown={(e) => {
@@ -97,17 +97,18 @@ export const LoginForm = () => {
               register={register}
               label={'Password'}
               type={'password'}
+              labelColor={'#fff'}
               placeholder={'Enter Your Password'}
               error={errors?.password?.message}
             />
           )}
           <Stack className="container-login100-form-btn">
             {showEmailPasswordForm ? (
-              <Button
-                variant={'secondary'}
+              <button
+                // variant={'secondary'}
                 disabled={isSubmitting || isSubmitSuccessful}
                 type="submit"
-                className="login100-form-btn"
+                className="login100-form-btn btn btn-secondary"
               >
                 {isSubmitSuccessful ? (
                   <>Please wait, heading to dashboard</>
@@ -129,20 +130,20 @@ export const LoginForm = () => {
                     />
                   </>
                 )}
-              </Button>
+              </button>
             ) : (
-              <Button
-                variant={'secondary'}
+              <button
+                // variant={'secondary'}
                 onClick={() => setShowEmailPasswordForm(true)}
-                className="login100-form-btn"
+                className="login100-form-btn btn btn-secondary"
               >
                 Next
-              </Button>
+              </button>
             )}
           </Stack>
 
           <Stack className="text-center pt-3">
-            <p className="text-dark mb-0">
+            <p className="text-white mb-0">
               Not a member?{' '}
               <span
                 style={{cursor: 'pointer'}}

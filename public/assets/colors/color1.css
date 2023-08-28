@@ -1,5 +1,5 @@
 :root {
-  --primary-rgb: 108, 95, 252;
+  --primary-rgb: 45, 71, 107;
   --primary-bg-color: rgb(var(--primary-rgb));
   --primary-bg-hover: rgb(var(--primary-rgb), 0.9);
   --primary-bg-border: rgb(var(--primary-rgb));
@@ -39,7 +39,7 @@
   --gray: #6c757d;
   --gray-dark: #343a40;
   --primary: #6c5ffc;
-  --secondary: #6c757d;
+  --secondary: #bf4d4d;
   --success: #28a745;
   --info: #17a2b8;
   --warning: #ffc107;
@@ -67,11 +67,11 @@
 /*Dark Theme Variables*/
 /*Transparent variables*/
 a {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 a:hover {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .bg-primary {
@@ -120,12 +120,12 @@ button.bg-primary-gradient:focus {
 }
 
 .text-primary {
-  color: var(--primary-bg-color) !important;
+  color: rgb(191, 77, 77) !important;
 }
 
 a.text-primary:hover,
 a.text-primary:focus {
-  color: var(--primary-bg-color) !important;
+  color: rgb(191, 77, 77) !important;
 }
 
 .table-primary {
@@ -206,7 +206,7 @@ a.text-primary:focus {
 }
 
 .btn-primary-light {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
   background: var(--primary02) !important;
 }
 
@@ -275,7 +275,7 @@ a.text-primary:focus {
 }
 
 .btn-outline-primary {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
   background: transparent;
   background-image: none;
   border-color: var(--primary-bg-color);
@@ -294,7 +294,7 @@ a.text-primary:focus {
 
 .btn-outline-primary.disabled,
 .btn-outline-primary:disabled {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
   background-color: transparent;
 }
 
@@ -321,18 +321,18 @@ a.text-primary:focus {
 }
 
 .btn-link {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .btn-link:hover {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .dropdown-item:hover,
 .dropdown-item:focus,
 .dropdown-item.active,
 .dropdown-item:active {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .timeline__item:after {
@@ -388,7 +388,7 @@ a.text-primary:focus {
 }
 
 .page-link:hover {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .page-item.active .page-link {
@@ -430,7 +430,7 @@ a.text-primary:focus {
 }
 
 .breadcrumb-item1 a {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .panel-title1 a {
@@ -442,7 +442,7 @@ a.text-primary:focus {
 }
 
 .alert-primary {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .alert-primary hr {
@@ -454,13 +454,13 @@ a.text-primary:focus {
 }
 
 .list-group-item-primary {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
   background-color: #cbdbf2;
 }
 
 .list-group-item-primary.list-group-item-action:hover,
 .list-group-item-primary.list-group-item-action:focus {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
   background-color: #b7cded;
 }
 
@@ -477,12 +477,12 @@ a.text-primary:focus {
 }
 
 .footer a:not(.btn) {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .nav-tabs .nav-link:hover:not(.disabled),
 .nav-tabs .nav-link.active {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 @media (max-width: 991px) {
@@ -509,11 +509,7 @@ a.text-primary:focus {
 
 .login-img::before {
   content: '';
-  background: linear-gradient(
-    to right,
-    var(--primary06) 0%,
-    var(--primary02) 100%
-  );
+  background: var(--primary-bg-color);
   height: 100%;
   width: 100%;
   position: absolute;
@@ -554,14 +550,14 @@ a.text-primary:focus {
 .selectgroup-input:checked + .selectgroup-button {
   border-color: var(--primary-bg-color);
   z-index: 1;
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
   background: #f6f4fb;
 }
 
 .selectgroup-input:focus + .selectgroup-button {
   border-color: var(--primary-bg-color);
   z-index: 2;
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
   box-shadow: 0 0 0 2px var(--primary02);
 }
 
@@ -570,7 +566,7 @@ a.text-primary:focus {
 }
 
 .ui-datepicker .ui-datepicker-title {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .timeline--horizontal .timeline-divider {
@@ -582,7 +578,7 @@ a.text-primary:focus {
 }
 
 #back-to-top:hover {
-  color: var(--primary-bg-color) !important;
+  color: rgb(191, 77, 77) !important;
   border: 2px solid var(--primary-bg-color);
 }
 
@@ -592,7 +588,7 @@ a.text-primary:focus {
 
 .tab-content i,
 .tabs-menu2 ul li .active {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .tab-content .btn i {
@@ -652,7 +648,7 @@ a.text-primary:focus {
 }
 
 .fc-event {
-  color: var(--primary-bg-color) !important;
+  color: rgb(191, 77, 77) !important;
   background-color: var(--primary01);
 }
 
@@ -667,7 +663,7 @@ a.text-primary:focus {
 
 /* ----Added css----*/
 form.convFormDynamic button.submit {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
   border: 1px solid var(--primary-bg-color) !important;
 }
 
@@ -714,7 +710,7 @@ div.conv-form-wrapper div#messages div.message.from {
 }
 
 .product-grid6 .title a:hover {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .product-grid6 .icons li a {
@@ -728,7 +724,7 @@ div.conv-form-wrapper div#messages div.message.from {
 
 #user-profile .profile-details a > i,
 #user-profile .profile-details i {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 @media (max-width: 767.98px) and (min-width: 576px) {
@@ -761,28 +757,28 @@ div.conv-form-wrapper div#messages div.message.from {
 }
 
 .top-footer p:hover {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .top-footer a address:hover,
 .top-footer a:hover {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .footer-payments a:hover {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .footer-social-list a {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .footer-social-list a:hover {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .sw-theme-dots .nav-tabs .nav-link:hover:not(.disabled) {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .custom-switch-input:checked ~ .custom-switch-indicator {
@@ -814,11 +810,11 @@ div.conv-form-wrapper div#messages div.message.from {
 
 /*-- Sidemenu --*/
 .side-menu__item.active {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .side-menu__item.active .side-menu__icon {
-  color: var(--primary-bg-color) !important;
+  color: rgb(191, 77, 77) !important;
 }
 
 /*-- Horizontal-menu --*/
@@ -844,33 +840,33 @@ div.conv-form-wrapper div#messages div.message.from {
 .dropdown-item:focus,
 .dark-mode .dropdown-item.active,
 .dropdown-item:active {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .dark-mode .side-menu__item.active,
 .dark-mode .side-menu__item:hover,
 .dark-mode .side-menu__item:focus,
 .dark-mode .side-menu__item.active .side-menu__icon {
-  color: var(--primary-bg-color) !important;
+  color: rgb(191, 77, 77) !important;
 }
 
 .dark-mode .side-menu__item:hover,
 .dark-mode .side-menu__item:focus {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .dark-mode.dark-menu .side-menu__item.active .side-menu__icon,
 .dark-mode.dark-menu .side-menu__item:hover .side-menu__icon,
 .dark-mode.dark-menu .side-menu__item:focus .side-menu__icon {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .dark-mode .footer a:not(.btn) {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .dark-mode .text-primary {
-  color: var(--primary-bg-color) !important;
+  color: rgb(191, 77, 77) !important;
 }
 
 .dark-mode .panel-default > .panel-heading,
@@ -879,7 +875,7 @@ div.conv-form-wrapper div#messages div.message.from {
 }
 
 .dark-mode .sidebar-icon {
-  color: var(--primary-bg-color) !important;
+  color: rgb(191, 77, 77) !important;
 }
 
 .dark-mode .side-menu__item.active {
@@ -904,11 +900,11 @@ div.conv-form-wrapper div#messages div.message.from {
 .light-menu .side-menu__item.active,
 .light-menu .side-menu__item:hover,
 .light-menu .side-menu__item:focus {
-  color: var(--primary-bg-color);
+  color: rgb(191, 77, 77);
 }
 
 .transparent-mode.light-menu .side-menu__item.active .side-menu__icon {
-  color: var(--primary-bg-color) !important;
+  color: rgb(191, 77, 77) !important;
 }
 
 .transparent-mode.light-menu .side-menu__item:hover .side-menu__icon,
@@ -918,7 +914,7 @@ div.conv-form-wrapper div#messages div.message.from {
 .transparent-mode.light-menu .side-menu__item.active,
 .transparent-mode.light-menu .side-menu__item:hover,
 .transparent-mode.light-menu .side-menu__item:focus {
-  color: var(--primary-bg-color) !important;
+  color: rgb(191, 77, 77) !important;
 }
 
 .default-body .app-sidebar {
