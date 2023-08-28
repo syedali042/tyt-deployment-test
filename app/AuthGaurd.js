@@ -31,6 +31,7 @@ const AuthGaurd = ({children}) => {
   const isDashboardPage = pathname.includes('/dashboard');
   const isAuthPage = pathname.includes('/auth') || pathname == '/';
   const [layoutDecided, setLayoutDecided] = useState(false);
+
   useEffect(() => {
     setLayoutDecided(false);
 
@@ -39,14 +40,16 @@ const AuthGaurd = ({children}) => {
       router.push('/dashboard/home');
     else if (!currentUser?.userInternalId && isDashboardPage)
       router.push('/auth/login');
+    setLayoutDecided(true);
+  }, [pathname, currentUser]);
 
+  useEffect(() => {
     // Initalizate Dashboard Preparation
     const initializeDashboardPreparation = async () => {
       if (currentUser?.role == 'admin') await dispatch(fetchUsers());
       await dispatch(initializeTransactions());
     };
     if (currentUser?.userInternalId) initializeDashboardPreparation();
-    setLayoutDecided(true);
   }, [currentUser?.userInternalId]);
 
   if (layoutDecided) return children;
