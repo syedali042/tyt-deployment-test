@@ -1,5 +1,5 @@
 'use client';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   fetchUsers,
@@ -8,7 +8,6 @@ import {
 } from '@/shared/redux/slices/user';
 import {initializeTransactions} from '@/shared/redux/slices/transaction';
 import {usePathname, useRouter} from 'next/navigation';
-import {useState} from 'react';
 import {CircularProgress} from '@mui/material';
 
 const AuthGaurd = ({children}) => {
