@@ -18,7 +18,7 @@ const LoaderComponent = () => {
         justifyContent: 'center',
       }}
     >
-      <CircularProgress size={'50px'} style={{color: '#fff'}} />
+      <CircularProgress size={'45px'} style={{color: '#fff'}} />
     </div>
   );
 };
