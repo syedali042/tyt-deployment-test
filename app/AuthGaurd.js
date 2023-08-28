@@ -8,6 +8,8 @@ import {
 } from '@/shared/redux/slices/user';
 import {initializeTransactions} from '@/shared/redux/slices/transaction';
 import {usePathname, useRouter} from 'next/navigation';
+import {useState} from 'react';
+import {CircularProgress} from '@mui/material';
 
 const AuthGaurd = ({children}) => {
   const currentUser = useSelector(getCurrentUser);
@@ -15,6 +17,8 @@ const AuthGaurd = ({children}) => {
   const pathname = usePathname();
   const router = useRouter();
   const isDashboardPage = pathname.includes('/dashboard');
+  const isAuthPage = pathname.includes('/auth');
+  const [layoutDecided, setLayoutDecided] = useState(false);
   useEffect(() => {
     // Set User In State If Exists in Local Storage
     const setUserInState = async () => {
@@ -23,7 +27,7 @@ const AuthGaurd = ({children}) => {
     if (!currentUser?.userInternalId) setUserInState();
 
     // Redirect to login or home w.r.t user
-    if (currentUser?.userInternalId && !isDashboardPage)
+    if (currentUser?.userInternalId && isAuthPage)
       router.push('/dashboard/home');
     else if (!currentUser?.userInternalId && isDashboardPage)
       router.push('/auth/login');
@@ -34,9 +38,25 @@ const AuthGaurd = ({children}) => {
       await dispatch(initializeTransactions());
     };
     if (currentUser?.userInternalId) initializeDashboardPreparation();
+    setLayoutDecided(true);
   }, [currentUser?.userInternalId]);
 
-  return children;
+  return layoutDecided ? (
+    children
+  ) : (
+    <div
+      style={{
+        backgroundColor: 'rgb(45,71,107)',
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <CircularProgress size={'50px'} style={{color: '#fff'}} />
+    </div>
+  );
 };
 
 export default AuthGaurd;
