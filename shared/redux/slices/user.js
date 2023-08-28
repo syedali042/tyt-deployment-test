@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import jwt_decode from 'jwt-decode';
 
 import axios from '../axios';
 import {tokenVariable} from '@/shared/config';
@@ -42,12 +41,10 @@ const slice = createSlice({
       state.currentUser = user;
       state.token = token;
       state.isCurrentUserInitialValue = false;
-      localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('token', JSON.stringify(token));
     },
 
     removeCurrentUser(state) {
-      localStorage.removeItem('user');
       localStorage.removeItem('token');
       state.isLoading = false;
       state.error = null;
@@ -250,15 +247,6 @@ export const updateUser =
       throw error;
     }
   };
-
-// set user in state
-export const setUserInStateFromLocalStorage = () => (dispatch, getState) => {
-  const user = localStorage.getItem('user');
-  const token = localStorage.getItem('token');
-  dispatch(
-    actions.setCurrentUser({user: JSON.parse(user), token: JSON.parse(token)})
-  );
-};
 
 // Get username to register
 export const getUsernameToRegister = (state) => state.user.usernameToRegister;

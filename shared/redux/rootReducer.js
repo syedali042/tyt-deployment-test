@@ -63,12 +63,10 @@ const themePersistConfig = {
 };
 
 const appReducer = combineReducers({
-  user: userReducer,
+  user: persistReducer(userPersistConfig, userReducer),
   tip: tipReducer,
-  transaction: transactionReducer,
+  transaction: persistReducer(transactionPersistConfig, transactionReducer),
   theme: themeReducer,
-  // transaction: persistReducer(transactionPersistConfig, transactionReducer),
-  // user: persistReducer(userPersistConfig, userReducer),
   // tip: persistReducer(tipPersistConfig, tipReducer),
   // theme: persistReducer(themePersistConfig, themeReducer),
 });

@@ -39,11 +39,6 @@ const AuthGaurd = ({children}) => {
   const [layoutDecided, setLayoutDecided] = useState(false);
   useEffect(() => {
     setLayoutDecided(false);
-    // Set User In State If Exists in Local Storage
-    const setUserInState = async () => {
-      await dispatch(setUserInStateFromLocalStorage());
-    };
-    if (!currentUser?.userInternalId) setUserInState();
 
     // Redirect to login or home w.r.t user
     if (currentUser?.userInternalId && isAuthPage)
