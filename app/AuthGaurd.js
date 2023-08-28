@@ -5,7 +5,6 @@ import {
   fetchUsers,
   getCurrentUser,
   getIsCurrentUserInitialValue,
-  setUserInStateFromLocalStorage,
 } from '@/shared/redux/slices/user';
 import {initializeTransactions} from '@/shared/redux/slices/transaction';
 import {usePathname, useRouter} from 'next/navigation';
