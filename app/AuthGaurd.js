@@ -11,6 +11,23 @@ import {initializeTransactions} from '@/shared/redux/slices/transaction';
 import {usePathname, useRouter} from 'next/navigation';
 import {CircularProgress} from '@mui/material';
 
+const LoaderComponent = () => {
+  return (
+    <div
+      style={{
+        backgroundColor: 'rgb(45,71,107)',
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <CircularProgress size={'50px'} style={{color: '#fff'}} />
+    </div>
+  );
+};
+
 const AuthGaurd = ({children}) => {
   const currentUser = useSelector(getCurrentUser);
   const isCurrentUserInitialValue = useSelector(getIsCurrentUserInitialValue);
@@ -42,23 +59,6 @@ const AuthGaurd = ({children}) => {
     if (currentUser?.userInternalId) initializeDashboardPreparation();
     setLayoutDecided(true);
   }, [currentUser?.userInternalId]);
-
-  const LoaderComponent = () => {
-    return (
-      <div
-        style={{
-          backgroundColor: 'rgb(45,71,107)',
-          width: '100%',
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <CircularProgress size={'50px'} style={{color: '#fff'}} />
-      </div>
-    );
-  };
 
   if (layoutDecided && !isCurrentUserInitialValue) return children;
   else return <LoaderComponent />;
