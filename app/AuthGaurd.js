@@ -29,7 +29,7 @@ const AuthGaurd = ({children}) => {
   const pathname = usePathname();
   const router = useRouter();
   const isDashboardPage = pathname.includes('/dashboard');
-  const isAuthPage = pathname.includes('/auth');
+  const isAuthPage = pathname.includes('/auth') || pathname == '/';
   const [layoutDecided, setLayoutDecided] = useState(false);
   useEffect(() => {
     setLayoutDecided(false);

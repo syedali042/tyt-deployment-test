@@ -13,6 +13,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {CircularProgress} from '@mui/material';
 import {useEffect} from 'react';
+import Authenticationlayout from '@/shared/layout-components/layout/authentication-layout';
 
 export default function GetStarted() {
   let router = useRouter();
@@ -53,7 +54,7 @@ export default function GetStarted() {
   };
 
   return (
-    <>
+    <Authenticationlayout>
       <Stack className="login-img">
         <Stack
           className="position-absolute p-5"
@@ -158,7 +159,7 @@ export default function GetStarted() {
           {/* // <!-- CONTAINER CLOSED --> */}
         </Stack>
       </Stack>
-    </>
+    </Authenticationlayout>
   );
 }
 
