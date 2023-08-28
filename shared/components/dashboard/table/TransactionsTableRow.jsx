@@ -25,7 +25,7 @@ const TransactionsTableRow = ({index, item, onClick}) => {
       >
         {TRANSACTION_TYPES[item?.type.toLowerCase()].icon}
       </td>
-      <td width={'150px'}>${item?.amount}</td>
+      <td width={'150px'}>${parseFloat(item?.amount).toFixed(2)}</td>
       <td onClick={onClick}>
         <Typography
           width={500}
