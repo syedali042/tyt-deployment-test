@@ -1,22 +1,34 @@
 'use client';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import {useSelector} from 'react-redux';
-import {getCurrentUser} from '@/shared/redux/slices/user';
-import {useState} from 'react';
-import {useEffect} from 'react';
+import {
+  getCurrentUser,
+  getIsCurrentUserInitialValue,
+} from '@/shared/redux/slices/user';
+import {CircularProgress} from '@mui/material';
 
 const Authenticationlayout = ({children}) => {
   const currentUser = useSelector(getCurrentUser);
-  const [display, setDisplay] = useState('none');
-  useEffect(() => {
-    if (currentUser == null) setDisplay('block');
-  }, [currentUser]);
+  const isCurrentUserInitialValue = useSelector(getIsCurrentUserInitialValue);
+
   return (
-    !currentUser && (
-      <SSRProvider>
-        <div style={{display}}>{children}</div>
-      </SSRProvider>
-    )
+    <SSRProvider>
+      {currentUser === null && !isCurrentUserInitialValue ? (
+        <div>{children}</div>
+      ) : (
+        <div
+          style={{
+            width: '100%',
+            height: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CircularProgress size={'24px'} />
+        </div>
+      )}
+    </SSRProvider>
   );
 };
 
