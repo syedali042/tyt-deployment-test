@@ -5,6 +5,7 @@ import {fetchUsers, getCurrentUser} from '@/shared/redux/slices/user';
 import {initializeTransactions} from '@/shared/redux/slices/transaction';
 import {usePathname, useRouter} from 'next/navigation';
 import {CircularProgress} from '@mui/material';
+import Footer from '@/shared/layout-components/footer/footer';
 
 const LoaderComponent = () => {
   return (
@@ -52,7 +53,27 @@ const AuthGaurd = ({children}) => {
     if (currentUser?.userInternalId) initializeDashboardPreparation();
   }, [currentUser?.userInternalId]);
 
-  if (layoutDecided) return children;
+  if (layoutDecided)
+    return (
+      <>
+        {children}
+        <div
+          style={{
+            display: isDashboardPage && 'none',
+            position: 'fixed',
+            bottom: 0,
+            background: '#4c6281',
+            width: '100%',
+            padding: '15px 0px',
+            zIndex: 999,
+          }}
+        >
+          <div className="container text-white">
+            <Footer linkColor={'#FFFFCC'} />
+          </div>
+        </div>
+      </>
+    );
   else return <LoaderComponent />;
 };
 
