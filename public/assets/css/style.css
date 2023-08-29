@@ -14343,8 +14343,8 @@ a.icon:hover {
 #back-to-top {
   color: #fff;
   position: fixed;
-  inset-block-end: 20px;
-  inset-inline-end: 20px;
+  inset-block-end: 40px;
+  inset-inline-end: 40px;
   z-index: 99;
   display: none;
   text-align: center;

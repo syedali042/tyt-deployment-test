@@ -1,24 +1,36 @@
 'use client';
-import React, {Fragment} from 'react';
+import React from 'react';
 import {Col, Row} from 'react-bootstrap';
 import Link from 'next/link';
 
-const Footer = () => {
+const Footer = ({linkColor}) => {
   return (
-    <Fragment>
-      <footer className="footer mt-3  ">
-        <div className="container">
-          <Row className="align-items-center flex-row-reverse">
-            <Col md={12} sm={12} className="text-center">
-              Copyright © 2023 <Link href="#!">Tip Your Teacher</Link>.
-              Developed by <Link href="#!"> Desol Int. </Link> All rights
-              reserved.
-            </Col>
-          </Row>
-        </div>
-      </footer>
-      {/* <!-- FOOTER CLOSED --> */}
-    </Fragment>
+    <Row className="align-items-center">
+      <Col md={6} sm={12} className="">
+        Copyright © 2023{' '}
+        <Link href="#!" style={{color: linkColor || '#e74c3c'}}>
+          Tip Your Teacher
+        </Link>
+        . Developed by{' '}
+        <Link href="#!" style={{color: linkColor || '#e74c3c'}}>
+          {' '}
+          Desol Int.{' '}
+        </Link>{' '}
+        All rights reserved.
+      </Col>
+      <Col md={6} sm={12} className="text-end">
+        <Link
+          href="/terms-and-conditions"
+          style={{color: linkColor || '#e74c3c'}}
+        >
+          Terms & Conditions
+        </Link>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <Link href="/privacy-policy" style={{color: linkColor || '#e74c3c'}}>
+          Privacy Policy
+        </Link>
+      </Col>
+    </Row>
   );
 };
 

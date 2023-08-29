@@ -1,6 +1,9 @@
+'use client';
 import '@/styles/globals.scss';
 import {Providers} from '@/shared/redux/provider';
 import AuthGaurd from './AuthGaurd';
+import {usePathname} from 'next/navigation';
+import Footer from '@/shared/layout-components/footer/footer';
 export const metadata = {
   viewport: {
     width: 'device-width',
@@ -8,6 +11,9 @@ export const metadata = {
   },
 };
 export default function RootLayout({children}) {
+  const pathname = usePathname();
+  const isDashboardPage = pathname.includes('/dashboard');
+
   return (
     <html lang="en">
       <title>Tip your teacher</title>
@@ -21,6 +27,21 @@ export default function RootLayout({children}) {
       <body>
         <Providers>
           <AuthGaurd>{children}</AuthGaurd>
+          <div
+            style={{
+              display: isDashboardPage && 'none',
+              position: 'fixed',
+              bottom: 0,
+              background: '#4c6281',
+              width: '100%',
+              padding: '15px 0px',
+              zIndex: 999,
+            }}
+          >
+            <div className="container text-white">
+              <Footer linkColor={'#FFFFCC'} />
+            </div>
+          </div>
         </Providers>
       </body>
     </html>

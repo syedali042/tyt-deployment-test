@@ -42,7 +42,6 @@ const Contentlayout = ({children}) => {
   }, []);
 
   const remove = () => {
-    document.querySelector('.sidebar-right').classList.remove('sidebar-open');
     document.querySelector('body').classList.remove('main-sidebar-show');
     document.querySelectorAll('.slide-menu').forEach((res) => {
       if (
@@ -92,7 +91,11 @@ const Contentlayout = ({children}) => {
                   </div>
                 </div>
               </div>
-              <Footer />
+              <footer className="footer mt-3  ">
+                <div className="container">
+                  <Footer />
+                </div>
+              </footer>
             </div>
             <Rightside />
             <BacktoTop />
