@@ -88,13 +88,15 @@ const slice = createSlice({
 
       let totalTipsAmount = 0;
 
-      let totalFeeAmount = 0;
-
       for (let transaction of transactions) {
         const {type, tipperId, amount, status} = transaction;
 
         if (type !== TRANSACTION_TYPES.disbursement.value) {
-          if (tipperId && !uniqueTippers.includes(tipperId)) {
+          if (
+            tipperId &&
+            !uniqueTippers.includes(tipperId) &&
+            status !== TRANSACTION_STATUS.refunded.value
+          ) {
             uniqueTippers.push(tipperId);
           }
           if (
