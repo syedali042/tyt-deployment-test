@@ -1,32 +1,49 @@
 'use client';
-import '@/styles/globals.scss';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  fetchUsers,
-  getCurrentUser,
-  setUserInStateFromLocalStorage,
-} from '@/shared/redux/slices/user';
+import {fetchUsers, getCurrentUser} from '@/shared/redux/slices/user';
 import {initializeTransactions} from '@/shared/redux/slices/transaction';
 import {usePathname, useRouter} from 'next/navigation';
+import {CircularProgress} from '@mui/material';
 
-const RootLayout = ({children}) => {
+const LoaderComponent = () => {
+  return (
+    <div
+      style={{
+        backgroundColor: 'rgb(45,71,107)',
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <CircularProgress size={'45px'} style={{color: '#fff'}} />
+    </div>
+  );
+};
+
+const AuthGaurd = ({children}) => {
   const currentUser = useSelector(getCurrentUser);
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
   const isDashboardPage = pathname.includes('/dashboard');
+  const isAuthPage = pathname.includes('/auth') || pathname == '/';
+  const [layoutDecided, setLayoutDecided] = useState(false);
+
   useEffect(() => {
-    // Set User In State If Exists in Local Storage
-    const setUserInState = async () => {
-      await dispatch(setUserInStateFromLocalStorage());
-    };
-    if (!currentUser?.userInternalId) setUserInState();
+    setLayoutDecided(false);
+
     // Redirect to login or home w.r.t user
-    if (currentUser?.userInternalId && !isDashboardPage)
+    if (currentUser?.userInternalId && isAuthPage)
       router.push('/dashboard/home');
     else if (!currentUser?.userInternalId && isDashboardPage)
       router.push('/auth/login');
+    setLayoutDecided(true);
+  }, [pathname, currentUser]);
+
+  useEffect(() => {
     // Initalizate Dashboard Preparation
     const initializeDashboardPreparation = async () => {
       if (currentUser?.role == 'admin') await dispatch(fetchUsers());
@@ -35,13 +52,8 @@ const RootLayout = ({children}) => {
     if (currentUser?.userInternalId) initializeDashboardPreparation();
   }, [currentUser?.userInternalId]);
 
-  return (
-    <html lang="en">
-      <title>Tip your teacher - Dashboard</title>
-      <link rel="icon" href={'../../../assets/images/brand/favicon.ico'} />
-      <body>{children}</body>
-    </html>
-  );
+  if (layoutDecided) return children;
+  else return <LoaderComponent />;
 };
 
-export default RootLayout;
+export default AuthGaurd;

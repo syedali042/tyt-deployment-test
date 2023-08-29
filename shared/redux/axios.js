@@ -7,10 +7,24 @@ const axiosInstance = axios.create({
 console.log(process.env.NEXT_PUBLIC_SERVER_URL);
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) =>
+  (error) => {
+    const {
+      response: {
+        data: {message},
+      },
+    } = error;
+
+    if (message == 'invalid token') {
+      localStorage.removeItem('redux-user');
+      localStorage.removeItem('redux-transaction');
+      window.location.href = '/auth/login';
+      return;
+    }
+
     Promise.reject(
       (error.response && error.response.data) || 'Something went wrong'
-    )
+    );
+  }
 );
 
 export default axiosInstance;

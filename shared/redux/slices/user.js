@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import jwt_decode from 'jwt-decode';
 
 import axios from '../axios';
 import {tokenVariable} from '@/shared/config';
@@ -15,6 +14,7 @@ const defaultState = {
   isUsernameVerified: true,
   invitedUser: null,
   currentUser: null,
+  isCurrentUserInitialValue: true,
   token: null,
   list: [],
 };
@@ -40,14 +40,21 @@ const slice = createSlice({
       const {user, token} = action.payload;
       state.currentUser = user;
       state.token = token;
-      localStorage.setItem('user', JSON.stringify(user));
+      state.isCurrentUserInitialValue = false;
       localStorage.setItem('token', JSON.stringify(token));
     },
 
     removeCurrentUser(state) {
-      localStorage.removeItem('user');
       localStorage.removeItem('token');
-      return defaultState;
+      state.isLoading = false;
+      state.error = null;
+      state.usernameToRegister = '';
+      state.isUsernameVerified = true;
+      state.invitedUser = null;
+      state.currentUser = null;
+      state.isCurrentUserInitialValue = false;
+      state.token = null;
+      state.list = [];
     },
 
     setInvitedUser(state, action) {
@@ -187,6 +194,9 @@ export const getUserToken = (state) => state.user.token;
 
 export const getCurrentUser = (state) => state.user.currentUser;
 
+export const getIsCurrentUserInitialValue = (state) =>
+  state.user.isCurrentUserInitialValue;
+
 export const isLoading = (state) => state.user.isLoading;
 
 // Set Invited User
@@ -237,15 +247,6 @@ export const updateUser =
       throw error;
     }
   };
-
-// set user in state
-export const setUserInStateFromLocalStorage = () => (dispatch, getState) => {
-  const currentUser = getState().user.currentUser;
-  const user = JSON.parse(localStorage.getItem('user'));
-  const token = JSON.parse(localStorage.getItem('token'));
-  if (user?.userInternalId !== currentUser?.userInternalId)
-    dispatch(actions.setCurrentUser({user, token}));
-};
 
 // Get username to register
 export const getUsernameToRegister = (state) => state.user.usernameToRegister;

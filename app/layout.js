@@ -1,5 +1,6 @@
 import '@/styles/globals.scss';
 import {Providers} from '@/shared/redux/provider';
+import AuthGaurd from './AuthGaurd';
 export const metadata = {
   viewport: {
     width: 'device-width',
@@ -18,7 +19,9 @@ export default function RootLayout({children}) {
         async
       ></script>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <AuthGaurd>{children}</AuthGaurd>
+        </Providers>
       </body>
     </html>
   );
