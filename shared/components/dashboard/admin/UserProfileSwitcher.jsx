@@ -5,12 +5,16 @@ import {getUsersList, getCurrentUser} from '@/shared/redux/slices/user';
 import {
   fetchTransactions,
   getViewUser,
+  getIsTransactionsRequestLoading,
 } from '@/shared/redux/slices/transaction';
 
 const UserProfileSwitcher = () => {
   const currentUser = useSelector(getCurrentUser);
   const allUsers = useSelector(getUsersList);
   const viewUser = useSelector(getViewUser);
+  const isTransactionsRequestLoading = useSelector(
+    getIsTransactionsRequestLoading
+  );
   const dispatch = useDispatch();
 
   return (
@@ -23,6 +27,7 @@ const UserProfileSwitcher = () => {
             getOptionLabel={(option) =>
               option?.displayName || option?.username || option?.email
             }
+            disabled={isTransactionsRequestLoading}
             onChange={async (e, value) => {
               await dispatch(fetchTransactions({user: value}));
             }}

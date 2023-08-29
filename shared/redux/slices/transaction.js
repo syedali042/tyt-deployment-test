@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {TRANSACTION_TYPES} from '@/shared/constants';
+import {TRANSACTION_STATUS, TRANSACTION_TYPES} from '@/shared/constants';
 import axios from '../axios';
 import {tokenVariable} from '@/shared/config';
 
@@ -88,27 +88,27 @@ const slice = createSlice({
 
       let totalTipsAmount = 0;
 
-      let totalRefundAmount = 0;
-
       for (let transaction of transactions) {
-        const {type, tipperId, amount} = transaction;
+        const {type, tipperId, amount, status} = transaction;
 
-        if (type == 'tip') {
-          if (tipperId && !uniqueTippers.includes(tipperId)) {
+        if (type !== TRANSACTION_TYPES.disbursement.value) {
+          if (
+            tipperId &&
+            !uniqueTippers.includes(tipperId) &&
+            status !== TRANSACTION_STATUS.refunded.value
+          ) {
             uniqueTippers.push(tipperId);
           }
+          if (
+            type == TRANSACTION_TYPES.tip.value &&
+            status !== TRANSACTION_STATUS.refunded.value
+          )
+            totalNumberOfTips++;
           totalTipsAmount += amount;
-          totalNumberOfTips++;
-        }
-
-        if (type == 'refund') {
-          totalRefundAmount += amount;
-          totalNumberOfTips -= 1;
         }
       }
 
       totalTippers = uniqueTippers.length;
-      totalTipsAmount = totalTipsAmount + totalRefundAmount;
 
       averageTipAmount = totalTipsAmount / totalNumberOfTips;
 
