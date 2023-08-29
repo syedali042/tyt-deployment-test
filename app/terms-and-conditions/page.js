@@ -1,29 +1,32 @@
 'use client';
 import {Typography} from '@mui/material';
 import {Stack} from 'react-bootstrap';
-
+import {TermsAndPrivacyTextStyles} from '@/shared/constants';
 const TermsAndConditions = () => {
   return (
     <Stack className="container" style={{padding: '40px 20px 100px 20px'}}>
-      <Typography fontWeight={700} fontSize={36} className="pt-5">
+      <Typography
+        fontWeight={TermsAndPrivacyTextStyles.main.fontWeight}
+        fontSize={TermsAndPrivacyTextStyles.main.fontSize}
+        className="pt-5"
+      >
         Terms & Conditions
       </Typography>
 
       <Typography
-        fontWeight={500}
+        fontWeight={TermsAndPrivacyTextStyles.sub.fontWeight}
         color={'#4c6281 !important'}
-        fontSize={18}
+        fontSize={TermsAndPrivacyTextStyles.sub.fontSize}
         className="pt-5"
       >
         Information Collection, Use, and Sharing
       </Typography>
 
       <Typography
-        fontWeight={500}
         color={'#76797c !important'}
-        fontSize={14}
-        letterSpacing={1}
-        lineHeight={2}
+        fontSize={TermsAndPrivacyTextStyles.text.fontSize}
+        letterSpacing={TermsAndPrivacyTextStyles.text.letterSpacing}
+        lineHeight={TermsAndPrivacyTextStyles.text.lineHeight}
         className="pt-5"
       >
         We are the sole owners of the information collected on this site. We
@@ -39,20 +42,19 @@ const TermsAndConditions = () => {
       </Typography>
 
       <Typography
-        fontWeight={500}
+        fontWeight={TermsAndPrivacyTextStyles.sub.fontWeight}
         color={'#4c6281 !important'}
-        fontSize={18}
+        fontSize={TermsAndPrivacyTextStyles.sub.fontSize}
         className="pt-5"
       >
         Information Security
       </Typography>
 
       <Typography
-        fontWeight={500}
         color={'#76797c !important'}
-        fontSize={14}
-        letterSpacing={1}
-        lineHeight={2}
+        fontSize={TermsAndPrivacyTextStyles.text.fontSize}
+        letterSpacing={TermsAndPrivacyTextStyles.text.letterSpacing}
+        lineHeight={TermsAndPrivacyTextStyles.text.lineHeight}
         className="pt-5"
       >
         We take precautions to protect your information. When you submit
@@ -70,20 +72,19 @@ const TermsAndConditions = () => {
       </Typography>
 
       <Typography
-        fontWeight={500}
+        fontWeight={TermsAndPrivacyTextStyles.sub.fontWeight}
         color={'#4c6281 !important'}
-        fontSize={18}
+        fontSize={TermsAndPrivacyTextStyles.sub.fontSize}
         className="pt-5"
       >
         Notification of Changes
       </Typography>
 
       <Typography
-        fontWeight={500}
         color={'#76797c !important'}
-        fontSize={14}
-        letterSpacing={1}
-        lineHeight={2}
+        fontSize={TermsAndPrivacyTextStyles.text.fontSize}
+        letterSpacing={TermsAndPrivacyTextStyles.text.letterSpacing}
+        lineHeight={TermsAndPrivacyTextStyles.text.lineHeight}
         className="pt-5"
       >
         We have the right to make changes to the clauses mentioned in this terms

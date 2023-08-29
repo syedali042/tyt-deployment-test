@@ -177,3 +177,19 @@ export const IS_DISABLED = {
     if (isSubmitSuccessful) return true;
   },
 };
+
+export const TermsAndPrivacyTextStyles = {
+  main: {
+    fontWeight: 700,
+    fontSize: 36,
+  },
+  sub: {
+    fontWeight: 500,
+    fontSize: 18,
+  },
+  text: {
+    fontSize: 14,
+    letterSpacing: 1,
+    lineHeight: 2,
+  },
+};
