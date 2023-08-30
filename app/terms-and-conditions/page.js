@@ -1,8 +1,7 @@
 'use client';
 import {Typography} from '@mui/material';
 import {Stack} from 'react-bootstrap';
-import {TermsAndPrivacyTextStyles} from '@/shared/constants';
-import {DUMMY_TEXTS} from '@/shared/constants';
+import {TermsAndPrivacyTextStyles, DUMMY_TEXTS} from '@/shared/constants';
 
 const TermsAndConditions = () => {
   return (

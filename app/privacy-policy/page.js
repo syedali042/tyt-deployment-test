@@ -1,8 +1,8 @@
 'use client';
 import {Typography} from '@mui/material';
 import {Stack} from 'react-bootstrap';
-import {TermsAndPrivacyTextStyles} from '@/shared/constants';
-import {DUMMY_TEXTS} from '@/shared/constants';
+import {TermsAndPrivacyTextStyles, DUMMY_TEXTS} from '@/shared/constants';
+
 const PrivacyPolicy = () => {
   return (
     <Stack className="container" style={{padding: '40px 20px 100px 20px'}}>
