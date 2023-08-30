@@ -1,75 +1,23 @@
 'use client';
-import {Typography} from '@mui/material';
 import {Stack} from 'react-bootstrap';
-import {TermsAndPrivacyTextStyles, DUMMY_TEXTS} from '@/shared/constants';
-
+import {DUMMY_TEXTS} from '@/shared/constants';
+import {
+  MainHeading,
+  SubHeading,
+  Paragraph,
+} from '@/shared/components/terms-and-privacy';
 const TermsAndConditions = () => {
   return (
     <Stack className="container" style={{padding: '40px 20px 100px 20px'}}>
-      <Typography
-        fontWeight={TermsAndPrivacyTextStyles.main.fontWeight}
-        fontSize={TermsAndPrivacyTextStyles.main.fontSize}
-        className="pt-5"
-      >
-        Terms & Conditions
-      </Typography>
+      <MainHeading text={'Terms & Conditions'} />
+      <SubHeading text={DUMMY_TEXTS.headingOne} />
+      <Paragraph text={DUMMY_TEXTS.paragraphOne} />
 
-      <Typography
-        fontWeight={TermsAndPrivacyTextStyles.sub.fontWeight}
-        color={'#4c6281 !important'}
-        fontSize={TermsAndPrivacyTextStyles.sub.fontSize}
-        className="pt-5"
-      >
-        {DUMMY_TEXTS.headingOne}
-      </Typography>
+      <SubHeading text={DUMMY_TEXTS.headingTwo} />
+      <Paragraph text={DUMMY_TEXTS.paragraphTwo} />
 
-      <Typography
-        color={'#76797c !important'}
-        fontSize={TermsAndPrivacyTextStyles.text.fontSize}
-        letterSpacing={TermsAndPrivacyTextStyles.text.letterSpacing}
-        lineHeight={TermsAndPrivacyTextStyles.text.lineHeight}
-        className="pt-5"
-      >
-        {DUMMY_TEXTS.paragraphOne}
-      </Typography>
-
-      <Typography
-        fontWeight={TermsAndPrivacyTextStyles.sub.fontWeight}
-        color={'#4c6281 !important'}
-        fontSize={TermsAndPrivacyTextStyles.sub.fontSize}
-        className="pt-5"
-      >
-        {DUMMY_TEXTS.headingTwo}
-      </Typography>
-
-      <Typography
-        color={'#76797c !important'}
-        fontSize={TermsAndPrivacyTextStyles.text.fontSize}
-        letterSpacing={TermsAndPrivacyTextStyles.text.letterSpacing}
-        lineHeight={TermsAndPrivacyTextStyles.text.lineHeight}
-        className="pt-5"
-      >
-        {DUMMY_TEXTS.paragraphTwo}
-      </Typography>
-
-      <Typography
-        fontWeight={TermsAndPrivacyTextStyles.sub.fontWeight}
-        color={'#4c6281 !important'}
-        fontSize={TermsAndPrivacyTextStyles.sub.fontSize}
-        className="pt-5"
-      >
-        {DUMMY_TEXTS.headingThree}
-      </Typography>
-
-      <Typography
-        color={'#76797c !important'}
-        fontSize={TermsAndPrivacyTextStyles.text.fontSize}
-        letterSpacing={TermsAndPrivacyTextStyles.text.letterSpacing}
-        lineHeight={TermsAndPrivacyTextStyles.text.lineHeight}
-        className="pt-5"
-      >
-        {DUMMY_TEXTS.paragraphThree}
-      </Typography>
+      <SubHeading text={DUMMY_TEXTS.headingThree} />
+      <Paragraph text={DUMMY_TEXTS.paragraphThree} />
     </Stack>
   );
 };
