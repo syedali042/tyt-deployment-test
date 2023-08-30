@@ -197,12 +197,12 @@ export const TermsAndPrivacyTextStyles = {
 // Will be removed later
 export const DUMMY_TEXTS = {
   headingOne: 'Information Collection, Use, and Sharing',
-  headingTwo: 'Information Security',
-  headingThree: 'Notification of Changes',
   paragraphOne:
     ' We are the sole owners of the information collected on this site. We only have access to/collect information that you voluntarily give us via email or other direct contact from you. We will not sell or rent this information to anyone. We will use your information to respond to you, regarding the reason you contacted us. We will not share your information with any third party outside of our organization, other than as necessary to fulfill your request, e.g. to ship an order. Unless you ask us not to, we may contact you via email in the future to tell you about specials, new products or services, or changes to this privacy policy.',
+  headingTwo: 'Information Security',
   paragraphTwo:
     'We take precautions to protect your information. When you submit sensitive information via the website, your information is protected both online and offline. Wherever we collect sensitive information (such as credit card data), that information is encrypted and securely transmitted to us. You can verify this by looking for a lock icon in the address bar and looking for “HTTPS” at the beginning of the address of the Web page. While we use encryption to protect sensitive information transmitted online, we also protect your information offline. Only employees who need the information to perform a specific job (for example, billing or customer service) are granted access to personally identifiable information. The computers/servers in which we store personally identifiable information are kept in a secure environment',
+  headingThree: 'Notification of Changes',
   paragraphThree:
     ' We have the right to make changes to the clauses mentioned in this terms and conditions document when they see fit. Continued use of this website will mean you agree to the changes that take place within the website in the future. In the event of a change within the website&apos;s terms and conditions, you will be duly informed through mail or when you land on our website. Any changes to this policy will be mentioned on our website a month before the change has been made. Therefore, you are advised to read this privacy policy on a regular basis.',
 };

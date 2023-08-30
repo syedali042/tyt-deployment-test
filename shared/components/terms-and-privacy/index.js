@@ -1,5 +1,6 @@
 import {Typography} from '@mui/material';
-import {TermsAndPrivacyTextStyles} from '@/shared/constants';
+import {DUMMY_TEXTS, TermsAndPrivacyTextStyles} from '@/shared/constants';
+
 export const MainHeading = ({text}) => {
   return (
     <Typography
@@ -37,4 +38,11 @@ export const Paragraph = ({text}) => {
       {text}
     </Typography>
   );
+};
+
+export const RenderData = () => {
+  return Object.keys(DUMMY_TEXTS).map((key) => {
+    if (key.includes('heading')) return <SubHeading text={DUMMY_TEXTS[key]} />;
+    else return <Paragraph text={DUMMY_TEXTS[key]} />;
+  });
 };
